@@ -10,7 +10,10 @@
     </parent>
     <groupId>com.football</groupId>
     <artifactId>BackEnd</artifactId>
-    <packaging>pom</packaging>  <!-- add -->
+    <packaging>pom</packaging>
+    <modules>
+        <module>micro-demo</module>
+    </modules>  <!-- add -->
     <version>0.0.1-SNAPSHOT</version>
     <name>BackEnd</name>
     <description>BackEnd</description>
@@ -22,6 +25,7 @@
         <druid.version>1.2.12</druid.version>
         <lombok.version>1.18.30</lombok.version>
         <mysql.version>8.0.33</mysql.version>
+        <spring-boot-version>3.1.5</spring-boot-version>
         <!-- add -->
     </properties>
 
@@ -50,13 +54,6 @@
                 <artifactId>druid-spring-boot-starter</artifactId>
                 <version>${druid.version}</version>
             </dependency>
-            <!--lombok驱动包-->
-            <dependency>
-                <groupId>org.projectlombok</groupId>
-                <artifactId>lombok</artifactId>
-                <optional>true</optional>
-                <version>${lombok.version}</version>
-            </dependency>
             <!--mybatis起步依赖-->
             <dependency>
                 <groupId>org.mybatis.spring.boot</groupId>
@@ -73,14 +70,32 @@
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-web</artifactId>
+                <version>${spring-boot-version}</version>
             </dependency>
+            <!-- 修复spring-boot-starter有漏洞的依赖项 -->
             <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-test</artifactId>
-                <scope>test</scope>
+                <groupId>org.yaml</groupId>
+                <artifactId>snakeyaml</artifactId>
+                <version>2.0</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <dependencies>
+        <!--lombok驱动包-->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+            <version>${lombok.version}</version>
+        </dependency>
+        <!--单元测试-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 
     <build>
         <plugins>
