@@ -1,0 +1,11 @@
+<template>
+  <TopNav></TopNav>
+  <router-view/>
+</template>
+
+<script setup>
+import TopNav from './components/TopNav.vue';
+</script>
+<style>
+
+</style>
