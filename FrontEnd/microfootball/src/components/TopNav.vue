@@ -77,7 +77,6 @@ export default {
             const token = localStorage.getItem('token');
             if (token == null) {
                 this.islog = false;
-                console.log(this.islog);
                 return;
             }
             let response
@@ -168,11 +167,15 @@ export default {
 </script>
 <style scoped>
 .nav-container {
+    margin-top: -10px;
+    /* padding-top: 10px ; */
     display: flex;
     justify-content: space-between;
     align-items: center;
     height: 60px;
-    padding: 0 20px;
+    width: 100%;
+    /* padding: 0 20px; */
+    background-color: #fff;
 }
 
 .nav-left {

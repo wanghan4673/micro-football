@@ -46,6 +46,11 @@ const routes = [
     path: '/IM',
     name: 'IM',
     component: () => import('../views/IMView.vue')
+  },
+  {
+    path: '/post',
+    name: 'post',
+    component: () => import('../views/ForumPost.vue')
   }
 ]
 

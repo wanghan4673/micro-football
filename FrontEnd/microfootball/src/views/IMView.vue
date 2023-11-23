@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <!-- <div>
         <div class="home-TUIKit-main">
             <div :class="env?.isH5 ? 'conversation-h5' : 'conversation'"
                 v-show="!env?.isH5 || currentModel === 'conversation'">
@@ -13,7 +13,7 @@
             </div>
         </div>
 
-    </div>
+    </div> -->
 </template>
 
 <script setup>
