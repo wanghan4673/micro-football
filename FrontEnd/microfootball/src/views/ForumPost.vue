@@ -1,21 +1,40 @@
 <template>
     <div style="display: flex;">
-        <el-icon @click="back" style="margin-top: 18px; margin-left: 10px;">
+        <el-icon @click="back" style="margin-top: 20px; margin-left: 10px;">
             <Back />
         </el-icon>
         <div id="Box" v-if="forumstore.chosedPost.title">
-            <p>{{forumstore.chosedPost.title}}</p>
+            <p style="font-size: large; font-weight: 400;">{{ forumstore.chosedPost.title }}</p>
         </div>
     </div>
     <div id="QC-bg">
-
         <div id="Box" v-if="forumstore.chosedPost.content">
-            <p style="width: 60%;" v-html="forumstore.chosedPost.content"></p>
+            <div style="width: 80%;word-wrap: break-word">
+                <p v-html="forumstore.chosedPost.content"></p>
+            </div>
         </div>
         <!-- v-if="props.Question.img && props.Question.img.length > 0"  -->
-        <div id="Box" v-if="forumstore.chosedPost.img"> 
+        <div id="Box" v-if="forumstore.chosedPost.img">
             <div v-for="img of forumstore.chosedPost.img" :key="img">
                 <img :src="img" alt="图片加载失败" style="max-width: 60%;" />
+            </div>
+        </div>
+        <div class="approval-collect">
+            <el-icon>
+                <CircleCheck />
+            </el-icon>
+            <!-- <span class="post-approval">{{ post_approval[index] }}</span> -->
+            <el-icon>
+                <Star />
+            </el-icon>
+            <!-- <span>{{ post_collect[index] }}</span> -->
+        </div>
+    </div>
+    <p style="font-size: large; font-weight: 400; margin-left: 10px;">评论 {{ forumstore.chosedPost.comments.length }}</p>
+    <div id="QC-bg">
+        <div id="Box" v-for="comment of forumstore.chosedPost.comments" :key="comment">
+            <div style="width: 80%; word-wrap: break-word">
+                <p>{{ comment }}</p>
             </div>
         </div>
     </div>
@@ -47,7 +66,7 @@ const back = () => {
     flex-direction: column;
     justify-content: felx-start;
     margin-top: 10px;
-    margin-bottom: 100px;
+    margin-bottom: 20px;
     padding-bottom: 50px;
     box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
 }

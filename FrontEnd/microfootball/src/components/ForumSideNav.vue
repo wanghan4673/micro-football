@@ -1,5 +1,11 @@
 <template>
     <div style="max-width: 200px;">
+        <!-- 发帖按钮 -->
+        <div class="post-button-container">
+            <el-button class="post-button" @click="toNewPost" round>
+                <text class="post-buttontext">{{ store.islogin ? '点此发帖' : '点此登录' }}</text>
+            </el-button>
+        </div>
         <div class="select-tips">
             <span class="tips-text">点击下方不同联赛,查看对应主题帖...</span>
         </div>
@@ -14,7 +20,10 @@
 
 <script setup>
 import { ref } from 'vue'
-
+import { useGeneralStore} from '../stores/general.ts'
+import { useRouter } from 'vue-router';
+const router = useRouter()
+const store = useGeneralStore()
 const leagues_logo = ref([
     { "logo": require('@/assets/img/football_logo.png'), "name": "全部赛事" },
     { "logo": require('@/assets/img/pmlogo.png'), "name": "英超" },
@@ -25,6 +34,11 @@ const leagues_logo = ref([
     { "logo": require('@/assets/img/cslogo.png'), "name": "中超" },
     { "logo": require('@/assets/img/tjlogo.png'), "name": "同济" },
 ]);
+const toNewPost = () =>{
+    router.push({
+        path: '/forum/newpost'
+    })
+}
 </script>
 
 <style scoped>
@@ -36,10 +50,12 @@ const leagues_logo = ref([
     margin-left: 40px;
     margin-right: 10px;
 }
+
 .tips-text {
     font-size: 10px;
     color: cornflowerblue;
 }
+
 .select-tips {
     /* 提示选择联赛 */
     margin-top: 10px;
@@ -50,13 +66,23 @@ const leagues_logo = ref([
     align-items: center;
     justify-content: center;
 }
+
 .tags-container {
     /* 左侧选择联赛菜单 */
     margin-top: 15px;
     /* background-color: #F5F7FA; */
 }
+
 .tag-text {
     font-size: 20px;
     /* font-weight: bold; */
+}
+.post-button-container {
+    margin-top: 10px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 </style>

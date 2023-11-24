@@ -8,12 +8,14 @@
   },
   "dependencies": {
     "@tencentcloud/chat-uikit-vue": "^1.4.5",
+    "@wangeditor/editor": "^5.1.23",
     "axios": "^1.6.2",
     "element-plus": "^2.4.2",
     "pinia": "^2.1.7",
     "pinia-plugin-persistedstate": "^3.2.0",
     "vue": "^3.2.13",
-    "vue-router": "^4.0.3"
+    "vue-router": "^4.0.3",
+    "wangeditor": "^4.7.15"
   },
   "devDependencies": {
     "@vue/cli-plugin-router": "~5.0.0",

@@ -1,0 +1,73 @@
+.clickbutton {
+    background-color: rgba(255, 255, 255, 0.8);
+    /* Semi-transparent white background */
+    color: #333;
+    /* Darker text for contrast */
+    padding: 10px 20px;
+    /* Padding for a larger clickable area */
+    border: none;
+    /* Remove default border */
+    outline: none;
+    /* Remove outline on focus */
+    cursor: pointer;
+    /* Change mouse pointer on hover */
+    border-radius: 20px;
+    /* Rounded corners */
+    font-size: 1em;
+    /* Adjust font size as needed */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    /* Subtle shadow for depth */
+    transition: background-color 0.3s, transform 0.3s;
+    /* Transition for a smooth effect on hover */
+}
+
+.clickbutton:hover {
+    background-color: rgba(255, 255, 255, 1);
+    /* Lighten background on hover for interaction feedback */
+    transform: translateY(-2px);
+    /* Slight upward movement on hover */
+}
+
+.clickbutton:active {
+    transform: translateY(1px);
+    /* Slight inward movement on click */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    /* Adjust shadow to give a pressed effect */
+}
+
+.submitbutton {
+    background-color: rgba(90, 159, 234, 0.8);
+    /* Semi-transparent white background */
+    color: #333;
+    /* Darker text for contrast */
+    padding: 10px 20px;
+    /* Padding for a larger clickable area */
+    border: none;
+    /* Remove default border */
+    outline: none;
+    /* Remove outline on focus */
+    cursor: pointer;
+    /* Change mouse pointer on hover */
+    border-radius: 20px;
+    /* Rounded corners */
+    font-size: 1em;
+    /* Adjust font size as needed */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    /* Subtle shadow for depth */
+    transition: background-color 0.3s, transform 0.3s;
+    /* Transition for a smooth effect on hover */
+}
+
+.submitbutton:hover {
+    background-color: rgb(60, 149, 239);
+    /* Lighten background on hover for interaction feedback */
+    transform: translateY(-2px);
+    /* Slight upward movement on hover */
+}
+
+.submitbutton:active {
+    transform: translateY(1px);
+    /* Slight inward movement on click */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    /* Adjust shadow to give a pressed effect */
+}
