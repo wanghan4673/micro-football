@@ -1,9 +1,9 @@
 <template>
     <input type="file" ref="clearFile" @change="getFile($event)" multiple="multiplt" class="add-file-right-input"
         style="margin-left:10px;" accept=".png,.jpg,.jpeg">
-    <div class="filebox" v-for="file in fileList" :key="file" style="display: flex;gap:10px;height: 20px;">
-        <p>{{ file.name }}</p>
-        <el-icon style="padding-top:18px;" @click="removefile(file)">
+    <div class="filebox" v-for="file in fileList" :key="file" style="gap:10px;height: 20px;">
+        <span>{{ file.name }}</span>
+        <el-icon style="padding-top: 15px;" @click="removefile(file)">
             <CircleCloseFilled />
         </el-icon>
     </div>

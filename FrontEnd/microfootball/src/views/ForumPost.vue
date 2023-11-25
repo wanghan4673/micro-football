@@ -8,6 +8,7 @@
             <p style="font-size: large; font-weight: 400;">{{ forumstore.chosedPost.title }}</p>
         </div>
     </div>
+    
     <div id="QC-bg">
         <div id="Box" v-if="forumstore.chosedPost.content">
             <div style="width: 80%;word-wrap: break-word">
@@ -59,13 +60,14 @@ const back = () => {
 </script>
 
 <style lang="scss" scoped>
+
 #QC-bg {
     width: 90%;
     background-color: #fff;
     max-width: 1200px;
     display: flex;
     flex-direction: column;
-    justify-content: felx-start;
+    justify-content: flex-start;
     margin-top: 10px;
     padding-left: 30px;
     margin-bottom: 20px;
@@ -77,7 +79,7 @@ const back = () => {
     width: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: felx-start;
+    justify-content: flex-start;
     padding-left: 20px;
 }
 
