@@ -1,7 +1,12 @@
 <template>
     <div id="QC-bg">
-        <div id="Box">
-            <p class="QC-title" style="font-size: larger;">新建帖子</p>
+        <div style="display: flex; margin-bottom: -20px;">
+            <el-icon @click="back" style="margin-top: 25px; margin-left: 10px;">
+                <Back />
+            </el-icon>
+            <div id="Box">
+                <p class="QC-title" style="font-size: larger;">新建帖子</p>
+            </div>
         </div>
         <div id="Box">
             <p class="QC-title">标题</p>
@@ -39,6 +44,9 @@ const store = useGeneralStore()
 import { ElMessage } from 'element-plus'
 import axios from 'axios';
 
+const back = () => {
+    router.back();
+}
 const convertFileToImageUrl = (file) => {
     if (file) {
         return URL.createObjectURL(file);
@@ -91,7 +99,19 @@ const addQuestion = async () => {
     padding-left: 20px;
     margin-bottom: 30px;
 }
-
+#QC-bg {
+    width: 90%;
+    background-color: #fff;
+    max-width: 1200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: felx-start;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    padding-left: 30px;
+    padding-bottom: 50px;
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+}
 .QC-title {
     font-size: large;
     font-weight: bold;

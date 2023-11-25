@@ -1,5 +1,6 @@
 <template>
-    <div style="display: flex;">
+    
+    <div style="display: flex; margin-left: 20px;">
         <el-icon @click="back" style="margin-top: 20px; margin-left: 10px;">
             <Back />
         </el-icon>
@@ -66,6 +67,7 @@ const back = () => {
     flex-direction: column;
     justify-content: felx-start;
     margin-top: 10px;
+    padding-left: 30px;
     margin-bottom: 20px;
     padding-bottom: 50px;
     box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);

@@ -49,7 +49,7 @@ const routes = [
   },
   {
     path: '/forum/post',
-    name: 'post',
+    name: '/forum/post',
     component: () => import('../views/ForumPost.vue')
   },
   {
