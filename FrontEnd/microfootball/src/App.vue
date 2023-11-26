@@ -1,6 +1,6 @@
 <template>
   <div style="display: flex; justify-content: center;">
-    <TopNav v-if="isAdminPath" style="position: fixed; width: 100%; z-index: 99999"></TopNav>
+    <TopNav v-if="isAdminPath || route.path=='/' " style="position: fixed; width: 100%; z-index: 99999"></TopNav>
     <AdminTopMenu v-else style="position: fixed; width: 100%; z-index: 99999"></AdminTopMenu>
     <div style="padding-top: 60px;width: 100%;">
       <router-view style=""/>
