@@ -56,6 +56,11 @@ const routes = [
     path: '/forum/newpost',
     name: 'post',
     component: () => import('../views/ForumNewPost.vue')
+  },
+  {
+    path: '/adminHome',
+    name: 'adminHome',
+    component: () => import('../views/AdminViews/AdminHomeView.vue')
   }
 ]
 
