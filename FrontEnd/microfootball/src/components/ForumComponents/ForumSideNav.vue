@@ -10,7 +10,7 @@
             <span class="tips-text">点击下方不同联赛,查看对应主题帖...</span>
         </div>
         <el-menu class="tags-container" @select="SelectLeftTag" default-active="1">
-            <el-menu-item v-for="(league, index) in leagues_logo" :key="index" :index="index + 1">
+            <el-menu-item v-for="(league, index) in leagues_logo" :key="index" :index="`${index + 1}`">
                 <img :src="league.logo" class="logo-show">
                 <span class="tag-text">{{ league.name }}</span>
             </el-menu-item>
