@@ -9,9 +9,9 @@
 </template>
 
 <script setup>
-import ForumSideNav from '../components/ForumSideNav.vue'
-import ForumFilter from '../components/ForumFilter.vue'
-import ForumPostList from '../components/ForumPostList.vue'
+import ForumSideNav from '../../components/ForumComponents/ForumSideNav.vue'
+import ForumFilter from '../../components/ForumComponents/ForumFilter.vue'
+import ForumPostList from '../../components/ForumComponents/ForumPostList.vue'
 </script>
 
 <style scoped>

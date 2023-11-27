@@ -46,7 +46,7 @@
 import { defineProps } from "vue"
 import { useRouter } from "vue-router"
 const router = useRouter()
-import { useForumStore } from '../stores/forum.ts'
+import { useForumStore } from '../../stores/forum.ts'
 const forumstore = useForumStore()
 const back = () => {
     router.back();

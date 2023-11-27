@@ -11,7 +11,7 @@
 import ForumPostItem from "./ForumPostItem.vue"
 import {ref} from 'vue'
 import { defineProps } from 'vue'
-import {useForumStore} from '../stores/forum.ts'
+import {useForumStore} from '../../stores/forum.ts'
 const forumstore = useForumStore()
 import { useRouter } from 'vue-router';
 const router = useRouter()

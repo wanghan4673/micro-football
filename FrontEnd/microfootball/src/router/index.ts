@@ -20,7 +20,7 @@ const routes = [
   {
     path: '/forum',
     name: 'forum',
-    component: () => import('../views/ForumView.vue')
+    component: () => import('../views/ForumViews/ForumView.vue')
   },
   {
     path: '/profile',
@@ -50,12 +50,12 @@ const routes = [
   {
     path: '/forum/post',
     name: '/forum/post',
-    component: () => import('../views/ForumPost.vue')
+    component: () => import('../views/ForumViews/ForumPost.vue')
   },
   {
     path: '/forum/newpost',
     name: 'post',
-    component: () => import('../views/ForumNewPost.vue')
+    component: () => import('../views/ForumViews/ForumNewPost.vue')
   },
   {
     path: '/adminHome',

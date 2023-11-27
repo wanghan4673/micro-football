@@ -20,7 +20,7 @@
 
 <script setup>
 import { ref } from 'vue'
-import { useGeneralStore} from '../stores/general.ts'
+import { useGeneralStore} from '../../stores/general.ts'
 import { useRouter } from 'vue-router';
 const router = useRouter()
 const store = useGeneralStore()

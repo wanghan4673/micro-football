@@ -20,7 +20,7 @@
 
 <script setup>
 import { ref } from 'vue'
-import { useForumStore } from '../stores/forum.ts'
+import { useForumStore } from '../../stores/forum.ts'
 const forumstore = useForumStore()
 
 const changeSort = (type) => {

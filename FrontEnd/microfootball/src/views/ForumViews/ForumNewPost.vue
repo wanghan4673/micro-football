@@ -35,13 +35,13 @@
 
 <script setup>
 import { ref, defineProps } from 'vue'
-import WangEditer from '@/components/WangEditer.vue';
+import WangEditer from '@/components/ForumComponents/WangEditer.vue';
 
-import '../assets/css/forumbuttoncss.css'
+import '../../assets/css/forumbuttoncss.css'
 // import QuestionContent from './QuestionContent.vue';
 // import QuestionPreview from './QuestionPreview.vue';
 import { useGeneralStore } from '@/stores/general';
-import UploadFiles from '../components/UploadFiles.vue';
+import UploadFiles from '../../components/ForumComponents/UploadFiles.vue';
 import router from '@/router';
 const store = useGeneralStore()
 import { ElMessage } from 'element-plus'
