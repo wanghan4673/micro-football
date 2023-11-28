@@ -1,0 +1,15 @@
+* {
+    /*去除浏览器默认内外边距*/
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.center-box{
+    /*水平垂直居中*/
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}

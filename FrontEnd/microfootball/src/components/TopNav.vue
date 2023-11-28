@@ -26,9 +26,8 @@
                     <el-avatar :src=this.avatarurl alt="Avatar" class="avatar"></el-avatar>
                     <template #dropdown>
                         <el-dropdown-menu v-slot: dropdown>
-                            <el-dropdown-item @click="redirectToLogin(0)" v-if="!this.islog">用户登录</el-dropdown-item>
+                            <el-dropdown-item @click="redirectToLogin(0)" v-if="!this.islog">用户登录/注册</el-dropdown-item>
                             <el-dropdown-item @click="redirectToLogin(1)" v-if="!this.islog">管理员登录</el-dropdown-item>
-                            <el-dropdown-item @click="redirectToRegister" v-if="!this.islog">注册</el-dropdown-item>
                             <el-dropdown-item @click="redirectToPersonal" v-if="this.islog">个人中心</el-dropdown-item>
                             <el-dropdown-item @click="logout" v-if="this.islog">登出</el-dropdown-item>
                         </el-dropdown-menu>

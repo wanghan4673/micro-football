@@ -1,25 +1,23 @@
 <template>
   <div style="display: flex; justify-content: center;">
-    <TopNav v-if="!isAdminPath" style="position: fixed; width: 100%; z-index: 99999"></TopNav>
-    <AdminTopMenu v-else style="position: fixed; width: 100%; z-index: 99999"></AdminTopMenu>
-    <div style="padding-top: 60px;width: 100%;">
-      <router-view style=""/>
+    <TopNav v-if="topNav.topNavStatus" style="position: fixed; width: 100%; z-index: 99999"></TopNav>
+    <AdminTopMenu v-if="topNav.adminNavStatus" style="position: fixed; width: 100%; z-index: 99999"></AdminTopMenu>
+    <div :class="{ 'with-margin': topNav.topNavStatus || topNav.adminNavStatus }" style="width: 100%;">
+      <router-view></router-view>
     </div>
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import TopNav from './components/TopNav.vue';
 import AdminTopMenu from './components/AdminComponents/AdminTopMenu.vue'
-import { useRoute } from 'vue-router';
-import {ref,watch} from 'vue'
+import { topNavStore } from './stores/topNav';
 
-const route = useRoute();
-let isAdminPath = ref(false);
-watch(() => route.path,(newpath,prepath) =>{
-  isAdminPath.value = route.path.startsWith('/admin')
-})
+const topNav = topNavStore()
 </script>
-<style>
 
+<style>
+.with-margin {
+  margin-top: 60px;
+}
 </style>

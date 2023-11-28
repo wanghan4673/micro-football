@@ -1,5 +1,6 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import { topNavStore } from '@/stores/topNav'
 
 const routes = [
   {
@@ -10,22 +11,12 @@ const routes = [
   {
     path: '/signin',
     name: 'signin',
-    component: () => import('../views/SigninView.vue')
-  },
-  {
-    path: '/signup',
-    name: 'signup',
-    component: () => import('../views/SignupView.vue')
+    component: () => import('../views/UserViews/SignIn.vue')
   },
   {
     path: '/forum',
     name: 'forum',
     component: () => import('../views/ForumViews/ForumView.vue')
-  },
-  {
-    path: '/profile',
-    name: 'profile',
-    component: () => import('../views/ProfileView.vue')
   },
   {
     path: '/Games',
@@ -67,6 +58,21 @@ const routes = [
 const router = createRouter({
   history: createWebHashHistory(),
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  const topNav = topNavStore()
+  const isAdmin = to.query.isAdmin
+  if (to.name === 'signin') {
+    if (isAdmin === '0') {
+      topNav.bothNotShow()
+    } else if (isAdmin === '1') {
+      topNav.showAdminNav()
+    }
+  } else {
+    topNav.showTopNav()
+  }
+  next()
 })
 
 export default router
