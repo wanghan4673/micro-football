@@ -1,0 +1,22 @@
+{
+  "groups": [
+    {
+      "name": "jwt.token",
+      "type": "com.football.user.utils.JwtProperties",
+      "sourceType": "com.football.user.utils.JwtProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "jwt.token.expire",
+      "type": "java.lang.Long",
+      "sourceType": "com.football.user.utils.JwtProperties"
+    },
+    {
+      "name": "jwt.token.sign-key",
+      "type": "java.lang.String",
+      "sourceType": "com.football.user.utils.JwtProperties"
+    }
+  ],
+  "hints": []
+}

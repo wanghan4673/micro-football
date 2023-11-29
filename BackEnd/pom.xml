@@ -12,7 +12,7 @@
     <artifactId>BackEnd</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>micro-demo</module>
+        <module>User</module>
     </modules>  <!-- add -->
     <version>0.0.1-SNAPSHOT</version>
     <name>BackEnd</name>

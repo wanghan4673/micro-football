@@ -1,0 +1,20 @@
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://110.40.206.206:3306/football-user?useSSL=false&serverTimezone=UTC
+    username: football-user
+    password: Z7xMRj85tyNAs8SC
+
+mybatis:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: true
+
+jwt:
+  token:
+    signKey: superusers
+    expire: 3600000
+
+server:
+  port: 8080
