@@ -1,10 +1,12 @@
 spring:
+############
   application:
-    name: user-service
+    name: user-service  #服务名称
   cloud:
     nacos:
       discovery:
-        server-addr: 110.40.206.206:8848
+        server-addr: 110.40.206.206:8848  #nacos端口
+############
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
