@@ -53,9 +53,12 @@ public class LoginGlobalFilter implements GlobalFilter, Ordered {
             return response.setComplete();
         }
         log.info("login global filter userId: " + userId);
-        // TODO 传递用户信息
-
-        return chain.filter(exchange);  // 放行
+        String user_token_id = userId.toString();
+        // 传递id
+        ServerWebExchange serverWebExchange = exchange.mutate()
+                .request(builder -> builder.header("user-token-id", user_token_id))
+                .build();
+        return chain.filter(serverWebExchange);  // 放行
     }
 
     private boolean pathExclude(String path) {
