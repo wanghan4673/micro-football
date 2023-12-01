@@ -44,6 +44,7 @@ public class LoginGlobalFilter implements GlobalFilter, Ordered {
             // 请求头内有token 开始解析
             token = header.get(0);
         }
+        log.info("token is: "+token);
         Long userId;
         try {
             userId = jwtUtils.parseJwt(token);
