@@ -17,6 +17,7 @@ const topNav = topNavStore()
 </script>
 
 <style>
+@import './assets/css/frame.scss';
 .with-margin {
   margin-top: 60px;
 }

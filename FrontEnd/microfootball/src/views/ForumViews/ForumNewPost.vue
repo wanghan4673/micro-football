@@ -94,6 +94,7 @@ const addQuestion = async () => {
 
 
 <style scoped>
+
 #Box {
     width: 100%;
     display: flex;

@@ -60,7 +60,6 @@ const back = () => {
 </script>
 
 <style lang="scss" scoped>
-
 #QC-bg {
     width: 90%;
     background-color: #fff;
