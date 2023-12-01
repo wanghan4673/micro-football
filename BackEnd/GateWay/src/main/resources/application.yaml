@@ -1,0 +1,24 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: gateway  # 服务名称
+  cloud:
+    nacos:
+      server-addr: 110.40.206.206:8848  # nacos端口
+    gateway:
+      routes:
+        - id: user-service
+          uri: lb://user-service
+          predicates:
+            - Path=/user/**  # 路由断言 判断请求是否符合当前路由
+
+jwt:
+  token:
+    signKey: superusers  # 密钥
+  auth:
+    excludePaths:
+      - /search/**  # 搜索不需要检查JWT令牌
+      - /user/login  # 登录
+      - /user/register  # 注册
+      - /test

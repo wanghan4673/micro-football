@@ -11,8 +11,6 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
     @Override
     public User login(User user) {
-        User getUser = userMapper.getUserByAccAndPas(user);
-        return getUser;
-
+        return userMapper.getUserByAccAndPas(user);
     }
 }

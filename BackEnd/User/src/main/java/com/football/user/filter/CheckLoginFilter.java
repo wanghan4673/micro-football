@@ -31,7 +31,7 @@ public class CheckLoginFilter implements Filter {
             log.info("令牌存在,开始解析");
             try {
                 // 解析令牌
-                new JwtUtils().parseJwt(token);
+                JwtUtils.parseJwt(token);
             } catch (Exception e) {
                 log.info("解析失败,令牌不合法");
                 Result login_error = Result.error("Not Logged In!");
