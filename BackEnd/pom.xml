@@ -16,6 +16,7 @@
         <module>User</module>
         <module>GateWay</module>
         <module>Common</module>
+        <module>Forum</module>
     </modules>  <!-- add -->
     <version>0.0.1-SNAPSHOT</version>
     <name>BackEnd</name>
