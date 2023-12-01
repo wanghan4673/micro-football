@@ -27,12 +27,14 @@ public class LoginGlobalFilter implements GlobalFilter, Ordered {
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
+        log.info("----------login global filter----------");
         // 获取request
         ServerHttpRequest request = exchange.getRequest();
         // 根据路径判断是否需要做登录验证
         if (pathExclude(request.getPath().toString())) {
             // 路径在无需登录的请求路径范围内
             // 放行
+            log.info("the path doesn't need token");
             return chain.filter(exchange);  // 把上下文传给下一个过滤器
         }
         // 获取请求头中的token
@@ -42,7 +44,7 @@ public class LoginGlobalFilter implements GlobalFilter, Ordered {
             // 请求头内有token 开始解析
             token = header.get(0);
         }
-        Long userId = null;
+        Long userId;
         try {
             userId = jwtUtils.parseJwt(token);
         } catch (Exception e) {

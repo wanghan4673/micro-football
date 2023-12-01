@@ -4,6 +4,7 @@ import com.football.user.model.Result;
 import com.football.user.model.User;
 import com.football.user.service.intf.UserService;
 import com.football.user.utils.JwtUtils;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,11 +16,11 @@ import java.util.Map;
 
 @Slf4j
 @RestController
+@RequiredArgsConstructor
 public class LoginController {
-    @Autowired
-    private UserService userService;
-
-    @PostMapping("/login")
+    private final UserService userService;
+    private final JwtUtils jwtUtils;
+    @PostMapping("/user/login")
     public Result login(@RequestBody User user) {
         log.info("----------登录:{}----------", user);
         User login_user = userService.login(user);
@@ -28,7 +29,7 @@ public class LoginController {
             Map<String, Object> claims = new HashMap<>();
             claims.put("id",login_user.getId());
             claims.put("account",login_user.getAccount());
-            String jwt = new JwtUtils().createJwt(claims);  // 生成令牌
+            String jwt = jwtUtils.createJwt(claims);  // 生成令牌
             return Result.success(jwt);
         }
         return Result.error("用户名或密码错误");
