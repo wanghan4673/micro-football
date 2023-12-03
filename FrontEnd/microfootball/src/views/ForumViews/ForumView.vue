@@ -9,6 +9,7 @@
 </template>
 
 <script setup>
+
 import ForumSideNav from '../../components/ForumComponents/ForumSideNav.vue'
 import ForumFilter from '../../components/ForumComponents/ForumFilter.vue'
 import ForumPostList from '../../components/ForumComponents/ForumPostList.vue'

@@ -18,7 +18,7 @@
     </properties>
 
     <dependencies>
-        <!--springboot -->
+        <!--springboot-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -55,6 +55,17 @@
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+        </dependency>
+        <!-- 解决JWT字符类型bug -->
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <version>2.3.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.football</groupId>
+            <artifactId>Common</artifactId>
+            <version>1.0.0</version>
         </dependency>
     </dependencies>
 

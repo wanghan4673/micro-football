@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class JwtUtils {
     @Value("${jwt.token.signKey}")
-    private static String signKey;
+    private String signKey;
 
     // 解析JWT令牌
     public Long parseJwt(String jwt) {

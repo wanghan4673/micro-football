@@ -21,22 +21,22 @@ const routes = [
   {
     path: '/Games',
     name: 'Games',
-    component: () => import('../views/GamesView.vue')
+    component: () => import('../views/GamesViews/GamesView.vue')
   },
   {
     path: '/News',
     name: 'News',
-    component: () => import('../views/NewsView.vue')
+    component: () => import('../views/NewsViews/NewsView.vue')
   },
   {
     path: '/Players',
     name: 'Players',
-    component: () => import('../views/PlayersView.vue')
+    component: () => import('../views/PlayersViews/PlayersView.vue')
   },
   {
     path: '/IM',
     name: 'IM',
-    component: () => import('../views/IMView.vue')
+    component: () => import('../views/IMViews/IMView.vue')
   },
   {
     path: '/forum/post',
