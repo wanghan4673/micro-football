@@ -18,6 +18,7 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 public class LoginController {
+    // 登录 JWT令牌生成
     private final UserService userService;
     private final JwtUtils jwtUtils;
     @PostMapping("/user/login")

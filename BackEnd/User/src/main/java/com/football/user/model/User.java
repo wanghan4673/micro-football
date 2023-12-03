@@ -12,4 +12,7 @@ public class User {
     String name;  // 用户名
     String account;  // 账号
     String password;  // 密码
+    Integer score;  // 积分
+    Integer follow;  // 关注人数
+    Integer fans;  // 粉丝数
 }
