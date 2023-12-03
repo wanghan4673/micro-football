@@ -25,3 +25,4 @@ jwt:
       - /user/login  # 登录
       - /user/register  # 注册
       - /test
+      - /forum
