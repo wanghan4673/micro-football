@@ -52,6 +52,26 @@ const routes = [
     path: '/adminHome',
     name: 'adminHome',
     component: () => import('../views/AdminViews/AdminHomeView.vue')
+  },
+  {
+    path: '/userManage',
+    name: 'userManage',
+    component: () => import('../views/AdminViews/UserManageView.vue')
+  },
+  {
+    path: '/forumManage',
+    name: 'forumManage',
+    component: () => import('../views/AdminViews/ForumManageView.vue')
+  },
+  {
+    path: '/newsManage',
+    name: 'newsManage',
+    component: () => import('../views/AdminViews/NewsManageView.vue')
+  },
+  {
+    path: '/announceManage',
+    name: 'announceManage',
+    component: () => import('../views/AdminViews/AnnounceManageView.vue')
   }
 ]
 
@@ -69,6 +89,8 @@ router.beforeEach((to, from, next) => {
     } else if (isAdmin === '1') {
       topNav.showAdminNav()
     }
+  } else if (to.name === 'adminHome' || to.name === 'userManage' || to.name === 'forumManage' || to.name === 'newsManage' || to.name === 'announceManage'){
+    topNav.showAdminNav()
   } else {
     topNav.showTopNav()
   }

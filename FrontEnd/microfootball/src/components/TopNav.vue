@@ -136,7 +136,7 @@ export default {
         },
         redirectToMain() {
             //跳转到首页页面的逻辑
-            this.$router.push('/')
+            this.$router.push('/adminHome')
         },
         redirectToPersonal() {
             //跳转到个人中心页面的逻辑
