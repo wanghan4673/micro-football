@@ -12,6 +12,10 @@ spring:
           uri: lb://user-service
           predicates:
             - Path=/user/**  # 路由断言 判断请求是否符合当前路由
+        - id: forum-service
+          uri: lb://forum-service
+          predicates:
+            - Path=/forum/**  # 路由断言 判断请求是否符合当前路由
 
 jwt:
   token:
