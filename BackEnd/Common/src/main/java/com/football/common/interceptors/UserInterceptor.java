@@ -15,6 +15,7 @@ public class UserInterceptor implements HandlerInterceptor {
             // 有用户id则存到ThreadLocal中
             UserContext.setUser(Long.valueOf(user_token_id));
         }
+        System.out.println(user_token_id);
         return true;
     }
     @Override
