@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.awt.print.Pageable;
+import java.util.List;
 
 @RestController
 @Slf4j
@@ -15,14 +16,11 @@ import java.awt.print.Pageable;
 public class ForumController {
     @Autowired
     private ForumService forumService;
+
     @GetMapping()
-//    public Result GetPosts(@RequestParam(required = false) String keyword,
-//                           @RequestParam(defaultValue = "0") int page,
-//                           @RequestParam(defaultValue = "10") int size) {
-////        Pageable pageable = PageRequest.of(page, size);
-////        return forumService.getPosts(pageable);
-//        return null;
-    public String GetPosts(){
-        return "success";
+    public Result GetPosts(@RequestParam(defaultValue = "0") Integer page,
+                           @RequestParam(defaultValue = "10") Integer size,
+                           @RequestParam(required = false) String keyword) {
+        return Result.success(forumService.getPosts(page,size,keyword));
     }
 }
