@@ -10,25 +10,25 @@
                         注册
                     </div>
                     <div class="input-box">
-                        <el-form :model="registerForm">
-                            <el-form-item style="margin-bottom: 10px">
+                        <el-form :model="registerForm" :rules="rules" status-icon>
+                            <el-form-item style="margin-bottom: 10px" prop="username">
                                 <el-tooltip effect="light" content="用户名不可超过10个字符" placement="right">
-                                    <el-input style="width:200px" v-model="registerForm.username"
+                                    <el-input style="width:250px" v-model="registerForm.username"
                                         placeholder="用户名"></el-input>
                                 </el-tooltip>
                             </el-form-item>
-                            <el-form-item style="margin-bottom: 10px">
+                            <el-form-item style="margin-bottom: 10px" prop="account">
                                 <el-tooltip effect="light" content="账号仅由数字组成,且不超过10位" placement="right">
                                     <el-input v-model="registerForm.account" placeholder="账号"></el-input>
                                 </el-tooltip>
                             </el-form-item>
-                            <el-form-item style="margin-bottom: 10px">
+                            <el-form-item style="margin-bottom: 10px" prop="password">
                                 <el-tooltip effect="light" content="密码只能由数字和字母组成,且不超过12位" placement="right">
                                     <el-input type="password" v-model="registerForm.password" show-password
                                         placeholder="密码"></el-input>
                                 </el-tooltip>
                             </el-form-item>
-                            <el-form-item>
+                            <el-form-item prop="confirmPassword" validator="validatePassword">
                                 <el-input type="password" v-model="registerForm.confirmPassword" show-password
                                     placeholder="再次输入密码"></el-input>
                             </el-form-item>
@@ -48,7 +48,7 @@
                     <div class="input-box">
                         <el-form :model="loginForm">
                             <el-form-item style="margin-bottom: 15px">
-                                <el-input style="width:200px" v-model="loginForm.account" placeholder="请输入账号"></el-input>
+                                <el-input style="width:250px" v-model="loginForm.account" placeholder="请输入账号"></el-input>
                             </el-form-item>
                             <el-form-item>
                                 <el-input type="password" v-model="loginForm.password" show-password
@@ -57,7 +57,7 @@
                         </el-form>
                     </div>
                     <div class="button-box">
-                        <el-button type="primary" class="login-button">登录</el-button>
+                        <el-button type="primary" class="login-button" @click="login()">登录</el-button>
                     </div>
                     <div class="button-box">
                         <el-button class="jump-button" type="text" @click="changeScene">还没有账号?点此注册</el-button>
@@ -69,21 +69,64 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, reactive } from 'vue'
+import axios from 'axios'
+import { ElMessage, type FormRules } from 'element-plus'
+
+interface RuleForm {
+    username: string
+    account: string
+    password: string
+}
+
 const isRegister = ref(false)  // 当前是否为注册页面 为true则注册 为false则登录
-const loginForm = {
+const loginForm = ref({
     account: '',
     password: '',
-}  // 登录表单
-const registerForm = {
+})  // 登录表单
+const registerForm = ref({
     username: '',
     account: '',
     password: '',
     confirmPassword: '',
-}
+})  // 注册表单
+
+const rules = reactive<FormRules<RuleForm>>({
+    // 定义表单规则(element-plus内置功能) 二次确认密码将在注册前提示
+    username: [
+        { required: true, message: '请输入用户名', trigger: 'blur' },
+        { max: 10, message: '用户名不可超过10个字符', trigger: 'blur' }
+    ],
+    account: [
+        { required: true, message: '请输入账号', trigger: 'blur' },
+        { pattern: /^\d+$/, message: '账号仅由数字组成', trigger: 'blur' },
+        { max: 10, message: '账号不可超过10位', trigger: 'blur' }
+    ],
+    password: [
+        { required: true, message: '请输入密码', trigger: 'blur' },
+        { pattern: /^[a-zA-Z0-9]+$/, message: '密码只能由数字和字母组成', trigger: 'blur' },
+        { max: 12, message: '密码不可超过12位', trigger: 'blur' }
+    ]
+})
 
 const changeScene = () => {
     isRegister.value = !isRegister.value
+}
+
+const login = async () => {
+    let response
+    try {
+        response = await axios.post('/api/user/login', {
+            account: loginForm.value.account,
+            password: loginForm.value.password
+        })
+    } catch (error) {
+        ElMessage({
+            message: '登录请求发送失败',
+            type: 'error',
+        })
+    }
+    console.log("login response: ", response)
 }
 </script>
 
@@ -134,7 +177,8 @@ const changeScene = () => {
     transform: translateX(100%);
 }
 
-.login-box,.register-box{
+.login-box,
+.register-box {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -163,6 +207,7 @@ const changeScene = () => {
     height: 5vh;
     border-radius: 15px;
     font-weight: bold;
+
     &:hover {
         transform: scale(1.05);
     }
@@ -172,6 +217,7 @@ const changeScene = () => {
     margin-top: 1vh;
     width: 45%;
     color: #274046;
+
     &:hover {
         color: #ee9ca7 !important;
         transform: scale(1.05);
