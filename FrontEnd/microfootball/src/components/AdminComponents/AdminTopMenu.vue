@@ -2,9 +2,9 @@
     <div class="topMenu">
         <el-container class="nav-logo">
             <img src="@/assets/img/tjlogo.png" style="height: 7vh;margin-top: 0.5vh;"/>
-            <h3 style="margin-left: 1vw;">管理员系统</h3>
+            <h3 style="margin-left: 1vw;margin-top: 2vh;">管理员系统</h3>
         </el-container>
-        <el-container style="width: 40vw;margin-left: 0;">
+        <el-container style="width: 40vw;margin-left: 0;margin-top: 0.5vh;">
             <el-menu :default-active="adminHome" mode="horizontal" active-text-color="#ffd04b" 
                 @select="handleMenuSelect" style="border: 0 !important;width: 40vw;">
                 <el-menu-item index="adminHome" @click="directToSubsystem(0)">系统总览</el-menu-item>
@@ -52,7 +52,7 @@ export default{
 }
 .topMenu{
     width: 100%;
-    height: 7vh;
+    height: 8vh;
     display: flex;
     flex-direction: row;
     justify-content: center;

@@ -66,12 +66,12 @@ const routes = [
   {
     path: '/newsManage',
     name: 'newsManage',
-    component: () => import('../views/AdminViews/ForumManageView.vue')
+    component: () => import('../views/AdminViews/NewsManageView.vue')
   },
   {
     path: '/announceManage',
     name: 'announceManage',
-    component: () => import('../views/AdminViews/ForumManageView.vue')
+    component: () => import('../views/AdminViews/AnnounceManageView.vue')
   }
 ]
 
