@@ -1,49 +1,17 @@
 <script>
+import NewUsersChart from '@/components/AdminComponents/NewUsersChart.vue';
+import NewReportedPosts from '@/components/AdminComponents/NewReportedPosts.vue';
 export default{
+    components:{
+        NewUsersChart,
+        NewReportedPosts,
+    },
     data(){
         return{
-            reports:[
-                {
-                    reportId:1,
-                    title:"不符合常规",
-                    contains:"违法违规",
-                    time:"2222-22-20",
-                },
-                {
-                    reportId: 1,
-                    title: "不符合常规",
-                    contains: "违法违规",
-                    time: "2222-22-21",
-                },
-                {
-                    reportId: 1,
-                    title: "不符合常规",
-                    contains: "违法违规",
-                    time: "2222-22-22",
-                },
-                {
-                    reportId: 1,
-                    title: "不符合常规",
-                    contains: "违法违规",
-                    time: "2222-22-23",
-                },
-            ],
-            hoverContent: {
-                show: false,
-                id: -1,
-            },
+            
         }
     },
     methods:{
-        showHoverContent(id) {
-            console.log("showHoverContent" + id);
-            this.hoverContent.show = true;
-            this.hoverContent.id = id;
-        },
-        hideHoverContent() {
-            this.hoverContent.show = false;
-            this.hoverContent.id = -1;
-        },
         directToSubsystem(mode) {
             if (mode == 0) {
                 this.$router.push('/adminHome');
@@ -68,11 +36,7 @@ export default{
     </el-row>
     <el-row style="height: 75vh;">
         <el-col :span="8" class="set-vertical" style="margin-top: 2vh;">
-            <el-card style="margin-left: 5vw;height: 35vh;">
-                <h3>
-                    近30日新增用户曲线
-                </h3>
-            </el-card>
+            <new-users-chart style="margin-left: 5vw;height: 35vh;"/>
             <el-card style="margin-left: 5vw;margin-top: 2vh;height: 35vh;">
                 <h3>
                     饼图
@@ -84,38 +48,12 @@ export default{
                 <h3>
                     新增举报
                 </h3>
-                <el-scrollbar style="height: 60vh;">
-                    <el-timeline style="margin-right: 2vw;">
-                        <el-timeline-item 
-                            v-for="(item, index) in reports"
-                            :key="index"
-                            :timestamp="item.time" 
-                            timestamp-color="rgb(209, 218, 225)"
-                            size="large"
-                            color="rgb(209, 218, 225)"
-                            placement="top"
-                            class="report-item-animation"
-                        >
-                            <el-card
-                            @mouseenter="showHoverContent(item.reportId)"
-                            @mouseleave="hideHoverContent()"
-                            >
-                            <h4>{{ item.title }}</h4>
-                            <p>{{ item.contains }}</p>
-                            </el-card>
-                        </el-timeline-item>
-                    </el-timeline>
-                </el-scrollbar>
-            <!-- <el-card v-if="hoverContent.show" class="timeline-detail">
-                <h1>{{ timeTree[hoverContent.id - 1].eventTitle }}</h1>
-                <h3>{{ timeTree[hoverContent.id - 1].eventContains }}</h3>
-                <h3>{{ timeTree[hoverContent.id - 1].eventTime }}</h3>
-            </el-card> -->
+                <new-reported-posts style="height: 60vh;margin-top: 2vh;"/>
             </el-card>
         </el-col>
         <el-col :span="8" style="margin-top: 2vh;">
             <el-card style="height: 25vh;">
-                <h3 style="height: 2vh;margin-top: 0;">
+                <h3 style="height: 5vh;margin-top: 0;">
                     工作台
                 </h3>
                 <el-container class="set-horizonal" style="height: 20vh;padding-top: 3vh;padding-left: 3vw;">
@@ -146,8 +84,9 @@ export default{
                     :rows="8"
                     type="textarea"
                     placeholder="请输入公告"
+                    style="margin-top: 2vh;"
                 />
-                <el-button type="primary" style="margin-top: 1vh;">
+                <el-button type="primary" style="margin-top: 2vh;">
                     发布公告
                 </el-button>
             </el-card>
@@ -155,7 +94,7 @@ export default{
     </el-row>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .set-vertical{
     display: flex;
     flex-direction: column;
@@ -183,29 +122,6 @@ export default{
   100% {
     transform: translateY(0);
     opacity: 1;
-  }
-}
-
-.report-item-animation {
-    margin-left: 0;
-  opacity: 0; /* 初始时设置不可见 */
-  transform: translateY(20px); /* 初始位置在下方 */
-
-  /* 使用过渡实现渐变显示和位置移动动画 */
-  transition: opacity 5s ease, transform 5s ease;
-
-  /* 使用 @keyframes 定义动画 */
-  animation: reportItemShow 3s ease forwards;
-}
-
-@keyframes reportItemShow {
-  from {
-    opacity: 0; /* 初始不可见 */
-    transform: translateY(20px); /* 初始位置在下方 */
-  }
-  to {
-    opacity: 1; /* 最终可见 */
-    transform: translateY(0); /* 最终位置在原始位置 */
   }
 }
 
