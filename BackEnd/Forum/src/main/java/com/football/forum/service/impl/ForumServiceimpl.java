@@ -4,8 +4,6 @@ import com.football.common.utils.UserContext;
 import com.football.forum.mapper.ForumMapper;
 import com.football.forum.model.*;
 import com.football.forum.service.intf.ForumService;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,7 +34,34 @@ public class ForumServiceimpl implements ForumService {
         Boolean iscollect = forumMapper.getifcollect(postid,userid);
         System.out.println(isliked);
         System.out.println(iscollect);
-        PostInfo postInfo = new PostInfo(post,commentInfos,user,isliked,iscollect);
-        return postInfo;
+        return new PostInfo(post,commentInfos,user,isliked,iscollect);
+    }
+
+    @Override
+    public void newpost(Post post){
+        Long userid = UserContext.getUser();
+        forumMapper.newPost(post,userid);
+    }
+
+    @Override
+    public void likepost(Long postid){
+        Long userid = UserContext.getUser();
+        if(forumMapper.checklike(postid,userid)){
+            forumMapper.removelike(postid,userid);
+            System.out.println("已存在点赞记录");
+        }else {
+            forumMapper.likePost(postid, userid);
+        }
+    }
+
+    @Override
+    public void collectpost(Long postid){
+        Long userid = UserContext.getUser();
+        if(forumMapper.checkcollect(postid,userid)){
+            forumMapper.removecollect(postid,userid);
+            System.out.println("已存在点赞记录");
+        }else {
+            forumMapper.collectPost(postid, userid);
+        }
     }
 }

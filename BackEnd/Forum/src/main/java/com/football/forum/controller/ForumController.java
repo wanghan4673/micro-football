@@ -28,7 +28,25 @@ public class ForumController {
         return Result.success(forumService.getPosts(page,size,keyword,timeQ));
     }
 
-    @GetMapping("/{id}")
+    @PostMapping("/post")
+    public Result newPost(@RequestBody Post post){
+        forumService.newpost(post);
+        return Result.success();
+    }
+
+    @PutMapping("/post/like")
+    public Result likePost(@RequestParam() Long postid){
+        forumService.likepost(postid);
+        return Result.success();
+    }
+
+    @PutMapping("/post/collect")
+    public Result collectPost(@RequestParam() Long postid){
+        forumService.collectpost(postid);
+        return Result.success();
+    }
+
+    @GetMapping("/post/{id}")
     public Result getPost(@PathVariable("id") Integer postid){
         PostInfo postInfo = forumService.getPost(postid);
         return Result.success(postInfo);

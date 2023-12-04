@@ -5,9 +5,7 @@ import com.football.forum.model.CommentInfo;
 import com.football.forum.model.Post;
 import com.football.forum.model.User;
 import com.github.pagehelper.PageHelper;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -94,6 +92,47 @@ public interface ForumMapper {
     """)
     Boolean getifcollect(@Param("postid") Integer postid,@Param("userid") Long userid);
 
+
+    @Insert("""
+    INSERT INTO post (content, title, tags,userid) VALUES (#{post.content}, #{post.title}, #{post.tags},#{userid})
+    """)
+    void newPost(Post post,Long userid);
+
+    @Select("""
+        SELECT COUNT(*) FROM likes
+        WHERE
+            postid = #{postid} AND userid = #{userid}
+    """)
+    Boolean checklike(Long postid,Long userid);
+    @Insert("""
+        INSERT INTO likes (postid,userid) VALUES (#{postid},#{userid})
+    """)
+    void likePost(Long postid,Long userid);
+
+    @Delete("""
+        DELETE FROM likes
+        WHERE
+            postid = #{postid} AND userid =#{userid}
+    """)
+    void removelike(Long postid,Long userid);
+
+    @Select("""
+        SELECT COUNT(*) FROM collect
+        WHERE
+            postid = #{postid} AND userid = #{userid}
+    """)
+    Boolean checkcollect(Long postid,Long userid);
+    @Insert("""
+        INSERT INTO collect (postid,userid) VALUES (#{postid},#{userid})
+    """)
+    void collectPost(Long postid,Long userid);
+
+    @Delete("""
+        DELETE FROM collect
+        WHERE
+            postid = #{postid} AND userid =#{userid}
+    """)
+    void removecollect(Long postid,Long userid);
 }
 
 //<script>

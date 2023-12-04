@@ -3,10 +3,7 @@ package com.football.forum.service.intf;
 import com.football.forum.model.Post;
 import com.football.forum.model.PostInfo;
 import com.football.forum.model.Posts;
-import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 
 @Service
@@ -14,4 +11,10 @@ public interface ForumService {
     Posts getPosts(int page, int size, String keyword,Boolean timeQ);
 
     PostInfo getPost(Integer postid);
+
+    void newpost(Post post);
+
+    void likepost(Long postid);
+
+    void collectpost(Long postid);
 }
