@@ -1,5 +1,8 @@
 <template>
     <div class="signin-layout">
+        <div class="back-container">
+            <BackButton />
+        </div>
         <div class="signin-container">
             <div class="bg-box"
                 :class="{ 'slide-to-left': isRegister, 'slide-to-right': !isRegister, 'left-bg': isRegister, 'right-bg': !isRegister }">
@@ -72,6 +75,7 @@
 import { ref, reactive } from 'vue'
 import axios from 'axios'
 import { ElMessage, type FormRules } from 'element-plus'
+import BackButton from '../../components/BackButton.vue'
 
 interface RuleForm {
     username: string
