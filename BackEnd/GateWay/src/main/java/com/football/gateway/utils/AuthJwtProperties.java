@@ -12,4 +12,5 @@ import java.util.List;
 public class AuthJwtProperties {
     private List<String> includePaths;
     private List<String> excludePaths;
+    private List<String> bothPaths;
 }

@@ -39,6 +39,14 @@ public class LoginGlobalFilter implements GlobalFilter, Ordered {
         }
         // 获取请求头中的token
         List<String> header = request.getHeaders().get("token");// return list
+        if(pathBothJudge(request.getPath().toString())){
+            // 路径在登录/不登录均需要处理的路径范围内(这个范围内的请求没有token也可以 有token也可以)
+            if(header == null || header.isEmpty() || header.get(0).isEmpty()){
+                // 未登录 可放行
+                log.info("not login");
+                return chain.filter(exchange);
+            }
+        }
         String token = null;
         if (header != null && !header.isEmpty()) {
             // 请求头内有token 开始解析
@@ -64,6 +72,15 @@ public class LoginGlobalFilter implements GlobalFilter, Ordered {
 
     private boolean pathExclude(String path) {
         for (String excludePath : authJwtProperties.getExcludePaths()) {
+            if (antPathMatcher.match(excludePath, path)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean pathBothJudge(String path){
+        for (String excludePath : authJwtProperties.getBothPaths()) {
             if (antPathMatcher.match(excludePath, path)) {
                 return true;
             }

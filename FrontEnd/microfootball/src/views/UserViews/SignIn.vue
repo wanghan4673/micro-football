@@ -76,6 +76,7 @@ import { ref, reactive } from 'vue'
 import axios from 'axios'
 import { ElMessage, type FormRules } from 'element-plus'
 import BackButton from '../../components/BackButton.vue'
+import { gotoPath } from '../../assets/api'
 
 interface RuleForm {
     username: string
@@ -124,13 +125,21 @@ const login = async () => {
             account: loginForm.value.account,
             password: loginForm.value.password
         })
+        if (response.data.code == 1) {
+            console.log("登录成功")
+            ElMessage({
+                message: '登录成功',
+                type: 'success',
+            })
+            localStorage.setItem('token', response.data.data)  // 将token存在浏览器缓存中
+            gotoPath('/')
+        }
     } catch (error) {
         ElMessage({
             message: '登录请求发送失败',
             type: 'error',
         })
     }
-    console.log("login response: ", response)
 }
 </script>
 
