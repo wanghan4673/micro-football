@@ -19,4 +19,6 @@ public interface UserService {
     boolean checkIn(Long userId);
 
     List<String> getCheckDays(Long userId);
+
+    User getNameAndAvatar(Long userId);
 }

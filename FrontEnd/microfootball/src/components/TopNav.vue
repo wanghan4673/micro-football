@@ -74,43 +74,30 @@ export default {
     methods: {
         async JudgeAccount() {
             const token = localStorage.getItem('token');
-            if (token == null) {
-                this.islog = false;
-                return;
-            }
             let response
             try {
-                const headers = {
-                    Authorization: `Bearer ${token}`,
-                };
-                response = await axios.post('/api/User/profile', {}, { headers })
-            } catch (err) {
-                console.log(err);
-                if (err.response.data.result == 'fail') {
-                    ElMessage({
-                        message: err.response.data.msg,
-                        grouping: false,
-                        type: 'error',
-                    })
-                } else {
-                    ElMessage({
-                        message: '未知错误',
-                        grouping: false,
-                        type: 'error',
-                    })
-                    return
+                const response = await axios.get('/api/user/loginStatus', {
+                    headers: {
+                        'token': token
+                    }
+                })
+                if(response.data.code == 1 && response.data.data != null){
+                    this.islog = true;
+                    this.userName = response.data.data.name;
+                    this.avatarurl = response.data.data.avatar;
                 }
-                return
-            }
-            console.log(response);
-            //有账号
-            if (response.data.ok == 'yes') {
-                this.islog = true;
-                this.userName = response.data.value.username;
-                this.avatarurl = response.data.value.avatar;
-            }
-            else {
-                this.islog = false;
+                else if(response.data.code == 1 && response.data.data == null){
+                    this.islog = false;
+                }
+            } catch (err) {
+                if(err.response && err.response.status === 401){
+                    // token非法 登录状态异常
+                    ElMessage({
+                        message: 'token非法,登录状态异常',
+                        grouping: false,
+                        type: 'error',
+                    })
+                }
             }
         },
         redirectToLogin(isAdmin) {
@@ -129,7 +116,7 @@ export default {
         redirectToForum() {
             //跳转到论坛页面的逻辑
             this.$router.push('/forum')
-        }, 
+        },
         redirectToIM() {
             //跳转到聊天页面的逻辑
             this.$router.push('/IM')

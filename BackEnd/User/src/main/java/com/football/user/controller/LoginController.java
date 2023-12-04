@@ -1,5 +1,6 @@
 package com.football.user.controller;
 
+import com.football.common.utils.UserContext;
 import com.football.user.model.Result;
 import com.football.user.model.User;
 import com.football.user.service.intf.UserService;
@@ -7,9 +8,7 @@ import com.football.user.utils.JwtUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,11 +16,12 @@ import java.util.Map;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/user")
 public class LoginController {
     // 登录 JWT令牌生成
     private final UserService userService;
     private final JwtUtils jwtUtils;
-    @PostMapping("/user/login")
+    @PostMapping("/login")
     public Result login(@RequestBody User user) {
         log.info("----------登录:{}----------", user);
         User login_user = userService.login(user);
@@ -35,5 +35,18 @@ public class LoginController {
         }
         return Result.error("用户名或密码错误");
         // 如果为null证明数据库中没有此用户
+    }
+    @GetMapping("/loginStatus")
+    public Result loginStatus(){
+        // 首页的导航栏判断是否登录 如果登录获取头像和用户名
+        Long userId = UserContext.getUser();
+        log.info("----------判断登录:{}----------", userId);
+        if(userId == null){
+            return Result.success();
+        }
+        else{
+            User user = userService.getNameAndAvatar(userId);
+            return Result.success(user);
+        }
     }
 }

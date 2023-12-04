@@ -62,4 +62,9 @@ public class UserServiceImpl implements UserService {
         }
         return checkDays;
     }
+
+    @Override
+    public User getNameAndAvatar(Long userId) {
+        return userMapper.getNameAndAvatar(userId);
+    }
 }
