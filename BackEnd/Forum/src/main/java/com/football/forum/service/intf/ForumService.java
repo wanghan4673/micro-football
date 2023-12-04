@@ -16,5 +16,7 @@ public interface ForumService {
 
     void likepost(Long postid);
 
-    void collectpost(Long postid);
+    void collectpost(Long followerid);
+
+    void follow(Long followerid);
 }

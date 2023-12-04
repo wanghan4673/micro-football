@@ -46,6 +46,12 @@ public class ForumController {
         return Result.success();
     }
 
+    @PutMapping("/post/follow")
+    public Result follow(@RequestParam() Long followerid){
+        forumService.follow(followerid);
+        return Result.success();
+    }
+
     @GetMapping("/post/{id}")
     public Result getPost(@PathVariable("id") Integer postid){
         PostInfo postInfo = forumService.getPost(postid);

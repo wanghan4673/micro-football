@@ -133,6 +133,24 @@ public interface ForumMapper {
             postid = #{postid} AND userid =#{userid}
     """)
     void removecollect(Long postid,Long userid);
+
+    @Select("""
+        SELECT COUNT(*) FROM follow
+        WHERE
+            followerid = #{followerid} AND fansid = #{userid}
+    """)
+    Boolean checkcfollow(Long followerid,Long userid);
+    @Insert("""
+        INSERT INTO follow (followerid,fansid) VALUES (#{followerid},#{userid})
+    """)
+    void follow(Long followerid,Long userid);
+
+    @Delete("""
+        DELETE FROM follow
+        WHERE
+            followerid = #{followerid} AND fansid =#{userid}
+    """)
+    void removefollow(Long followerid,Long userid);
 }
 
 //<script>

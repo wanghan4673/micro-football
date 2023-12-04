@@ -48,7 +48,6 @@ public class ForumServiceimpl implements ForumService {
         Long userid = UserContext.getUser();
         if(forumMapper.checklike(postid,userid)){
             forumMapper.removelike(postid,userid);
-            System.out.println("已存在点赞记录");
         }else {
             forumMapper.likePost(postid, userid);
         }
@@ -59,9 +58,17 @@ public class ForumServiceimpl implements ForumService {
         Long userid = UserContext.getUser();
         if(forumMapper.checkcollect(postid,userid)){
             forumMapper.removecollect(postid,userid);
-            System.out.println("已存在点赞记录");
         }else {
             forumMapper.collectPost(postid, userid);
+        }
+    }
+    @Override
+    public void follow(Long followerid){
+        Long userid = UserContext.getUser();
+        if(forumMapper.checkcfollow(followerid,userid)){
+            forumMapper.removefollow(followerid,userid);
+        }else {
+            forumMapper.follow(followerid, userid);
         }
     }
 }
