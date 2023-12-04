@@ -16,6 +16,10 @@ spring:
           uri: lb://forum-service
           predicates:
             - Path=/forum/**
+        - id: administrator-service
+          uri: lb://administrator-service
+          predicates:
+            - Path=/admin/**
 jwt:
   token:
     signKey: superusers  # 密钥
@@ -26,3 +30,4 @@ jwt:
       - /user/register  # 注册
       - /test
       - /forum
+      - /admin
