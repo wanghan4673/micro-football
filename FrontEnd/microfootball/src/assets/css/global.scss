@@ -6,10 +6,17 @@
     overflow: hidden;
 }
 
-.center-box{
+.center-box {
     /*水平垂直居中*/
     position: relative;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+}
+
+.back-container {
+    /* 存放回退按钮 放在左上方 */
+    position: absolute;
+    top: 0;
+    left: 0;
 }

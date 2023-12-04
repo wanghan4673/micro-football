@@ -20,7 +20,7 @@ public class JwtUtils {
     // 生成JWT令牌并返回
     public String createJwt(Map<String, Object> claims) {
         return Jwts.builder()
-                .addClaims(claims)  // 第二部分
+                .setClaims(claims)  // 第二部分
                 .signWith(SignatureAlgorithm.HS256, signKey)  // 算法与密钥
                 .setExpiration(new Date(System.currentTimeMillis() + expire))  // 过期时间
                 .compact();
