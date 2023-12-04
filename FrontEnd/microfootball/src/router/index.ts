@@ -4,14 +4,21 @@ import { topNavStore } from '@/stores/topNav'
 
 const routes = [
   {
+    // 首页
     path: '/',
     name: 'home',
     component: HomeView
   },
   {
+    // 登录注册
     path: '/signin',
     name: 'signin',
     component: () => import('../views/UserViews/SignIn.vue')
+  },
+  {
+    path: '/personal',
+    name: 'personal',
+    component: () => import('../views/UserViews/Personal.vue')
   },
   {
     path: '/forum',

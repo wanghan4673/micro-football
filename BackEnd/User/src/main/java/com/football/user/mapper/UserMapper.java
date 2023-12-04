@@ -35,4 +35,7 @@ public interface UserMapper {
 
     @Select("select name,avatar from user where _id=#{userId}")
     User getNameAndAvatar(Long userId);
+
+    @Insert("INSERT INTO user(name,account,password) VALUES (#{name},#{account},#{password})")
+    void insertUser(String name, String account, String password);
 }

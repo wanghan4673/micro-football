@@ -21,22 +21,30 @@ public class UserServiceImpl implements UserService {
     public User login(User user) {
         return userMapper.getUserByAccAndPas(user);
     }
-
+    @Override
+    public boolean register(User user) {
+        String account = user.getAccount();
+        String name = user.getName();
+        String password = user.getPassword();
+        try{
+            userMapper.insertUser(name,account,password);
+            return true;
+        } catch(Exception e){
+            return false;
+        }
+    }
     @Override
     public Integer getScore(Long userId) {
         return userMapper.getScore(userId);
     }
-
     @Override
     public List<Map<String, Integer>> getFollowCount(Long userId) {
         return userMapper.getFollowCount(userId);
     }
-
     @Override
     public boolean updateUser(Long userId, String name, String signature, String email) {
         return userMapper.updateUser(userId,name,signature,email);
     }
-
     @Override
     @Transactional
     public boolean checkIn(Long userId) {
@@ -48,7 +56,6 @@ public class UserServiceImpl implements UserService {
             return false;
         }
     }
-
     @Override
     public List<String> getCheckDays(Long userId) {
         // 数据库的类型为timestamp
@@ -62,9 +69,9 @@ public class UserServiceImpl implements UserService {
         }
         return checkDays;
     }
-
     @Override
     public User getNameAndAvatar(Long userId) {
         return userMapper.getNameAndAvatar(userId);
     }
+
 }

@@ -5,7 +5,7 @@ export const topNavStore = defineStore('topNav', {
     state: () => {
         return {
             topNavStatus: true,
-            adminNavStatus:false,
+            adminNavStatus: false,
         }
     },
     actions: {
@@ -13,7 +13,7 @@ export const topNavStore = defineStore('topNav', {
             this.topNavStatus = true
             this.adminNavStatus = false
         },
-        showAdminNav(){
+        showAdminNav() {
             this.topNavStatus = false
             this.adminNavStatus = true
         },
