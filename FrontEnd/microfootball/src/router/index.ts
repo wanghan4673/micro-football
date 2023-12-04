@@ -84,11 +84,7 @@ router.beforeEach((to, from, next) => {
   const topNav = topNavStore()
   const isAdmin = to.query.isAdmin
   if (to.name === 'signin') {
-    if (isAdmin === '0') {
       topNav.bothNotShow()
-    } else if (isAdmin === '1') {
-      topNav.showAdminNav()
-    }
   } else if (to.name === 'adminHome' || to.name === 'userManage' || to.name === 'forumManage' || to.name === 'newsManage' || to.name === 'announceManage'){
     topNav.showAdminNav()
   } else {

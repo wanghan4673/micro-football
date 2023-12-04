@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ReportedPostInfo {
+public class PostReportInfo {
     private Integer id;
     private String reason;
     private LocalDateTime time;
