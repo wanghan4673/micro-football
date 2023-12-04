@@ -32,4 +32,7 @@ public interface UserMapper {
 
     @Select("select time from attendance where userid=#{userId}")
     List<Timestamp> getCheckTimes(Long userId);
+
+    @Select("select name,avatar from user where _id=#{userId}")
+    User getNameAndAvatar(Long userId);
 }

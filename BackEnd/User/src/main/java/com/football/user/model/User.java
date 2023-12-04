@@ -15,4 +15,5 @@ public class User {
     Integer score;  // 积分
     Integer follow;  // 关注人数
     Integer fans;  // 粉丝数
+    String avatar;  // 图片路径
 }

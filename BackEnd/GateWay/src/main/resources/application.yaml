@@ -20,9 +20,11 @@ jwt:
   token:
     signKey: superusers  # 密钥
   auth:
-    excludePaths:
+    excludePaths:  # 无需登录的请求路径
       - /search/**  # 搜索不需要检查JWT令牌
       - /user/login  # 登录
       - /user/register  # 注册
       - /test
       - /forum
+    bothPaths:  # 登录和未登录都需要校验的请求路径
+      - /user/loginStatus
