@@ -36,6 +36,16 @@ public class LoginController {
         return Result.error("用户名或密码错误");
         // 如果为null证明数据库中没有此用户
     }
+    @PostMapping("/register")
+    public Result register(@RequestBody User user){
+        log.info("----------注册:{}----------", user);
+        boolean register_result = userService.register(user);
+        if(register_result){
+            return login(user);
+        } else{
+            return Result.error("注册失败");
+        }
+    }
     @GetMapping("/loginStatus")
     public Result loginStatus(){
         // 首页的导航栏判断是否登录 如果登录获取头像和用户名

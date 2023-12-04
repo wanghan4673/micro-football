@@ -43,6 +43,7 @@
 <script>
 import axios from 'axios';
 import { ElMessage } from 'element-plus';
+// import { loginStore } from '../stores/login';
 export default {
     data() {
         return {
@@ -81,16 +82,16 @@ export default {
                         'token': token
                     }
                 })
-                if(response.data.code == 1 && response.data.data != null){
+                if (response.data.code == 1 && response.data.data != null) {
                     this.islog = true;
                     this.userName = response.data.data.name;
                     this.avatarurl = response.data.data.avatar;
                 }
-                else if(response.data.code == 1 && response.data.data == null){
+                else if (response.data.code == 1 && response.data.data == null) {
                     this.islog = false;
                 }
             } catch (err) {
-                if(err.response && err.response.status === 401){
+                if (err.response && err.response.status === 401) {
                     // token非法 登录状态异常
                     ElMessage({
                         message: 'token非法,登录状态异常',
@@ -101,17 +102,17 @@ export default {
             }
         },
         redirectToLogin(isAdmin) {
-            // 跳转到登录页面的逻辑
-            this.$router.push({
-                path: '/signin',
-                query: {
-                    isAdmin: isAdmin
-                }
-            });
-        },
-        redirectToRegister() {
-            // 跳转到注册页面的逻辑
-            this.$router.push('/signup');
+            // if (isAdmin) {
+            //     const store = loginStore()
+            //     store.adminLogin()
+            // } else {
+            //     const store = loginStore()
+            //     store.userLogin()
+            // }
+            // 跳转到用户登录页面的逻辑
+            if(isAdmin == 0){
+                this.$router.push('/signin')
+            }
         },
         redirectToForum() {
             //跳转到论坛页面的逻辑
@@ -122,7 +123,7 @@ export default {
             this.$router.push('/IM')
         },
         redirectToMain() {
-            //跳转到首页页面的逻辑
+            //跳转到管理员首页页面的逻辑
             this.$router.push('/adminHome')
         },
         redirectToPersonal() {
@@ -146,7 +147,7 @@ export default {
             this.$router.push('/');
             setTimeout(() => {
                 window.location.reload(); // 刷新当前页面
-            }, 100); // 2000毫秒后刷新，你可以根据需要调整延迟时间
+            }, 100); // 2000毫秒后刷新
         }
     }
 };
