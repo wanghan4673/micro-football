@@ -196,7 +196,7 @@ const register = async () => {
 
 <style lang="scss">
 @import '../../assets/css/frame.scss';
-@import '../../assets/css/signin.scss';
+@import './UserCSS/signin.scss';
 
 .signin-container {
     @extend .center-box;

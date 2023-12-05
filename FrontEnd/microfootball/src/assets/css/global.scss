@@ -3,7 +3,6 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    overflow: hidden;
 }
 
 .center-box {
@@ -19,4 +18,11 @@
     position: absolute;
     top: 0;
     left: 0;
+}
+
+.grid-three-container{
+    /* 将页面分为三部分(左中右) */
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 3fr 1fr;
 }
