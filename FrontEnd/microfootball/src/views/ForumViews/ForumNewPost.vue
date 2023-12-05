@@ -1,11 +1,11 @@
 <template>
     <div id="QC-bg">
-        <div style="display: flex; margin-bottom: -20px;">
+        <div style="display: flex;">
             <el-icon @click="back" style="margin-top: 25px; margin-left: 10px;">
                 <Back />
             </el-icon>
             <div id="Box">
-                <p class="QC-title" style="font-size: larger;">新建帖子</p>
+                <p class="QC-title" style="font-size: larger; margin-top: 20px;">新建帖子</p>
             </div>
         </div>
         <div id="Box">

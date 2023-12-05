@@ -18,8 +18,7 @@ public interface ForumMapper {
         <where>
         <if test="keyword != null and keyword != ''">
         (title LIKE CONCAT('%', #{keyword}, '%') OR
-            content LIKE CONCAT('%', #{keyword}, '%') OR
-            useraccount LIKE CONCAT('%', #{keyword}, '%'))
+            content LIKE CONCAT('%', #{keyword}, '%'))
         </if>
         </where>
         </script>
@@ -33,8 +32,7 @@ public interface ForumMapper {
         <where>
         <if test="keyword != null and keyword != ''">
                 (title LIKE CONCAT('%', #{keyword}, '%') OR
-                content LIKE CONCAT('%', #{keyword}, '%') OR
-                useraccount LIKE CONCAT('%', #{keyword}, '%'))
+                content LIKE CONCAT('%', #{keyword}, '%'))
         </if>
         </where>
         <choose>
