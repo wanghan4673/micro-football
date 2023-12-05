@@ -29,7 +29,6 @@ const props = defineProps({
 }
 
 #PostItem {
-    
     display: flex;
     flex-direction: column;
     width: 50%;

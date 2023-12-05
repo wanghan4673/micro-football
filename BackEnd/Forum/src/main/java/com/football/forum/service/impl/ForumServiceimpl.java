@@ -15,12 +15,13 @@ public class ForumServiceimpl implements ForumService {
     private ForumMapper forumMapper;
 
     @Override
-    public Posts getPosts(int page, int size, String keyword,Boolean timeQ){
+    public Posts getPosts(int page, int size, String keyword,Boolean timeQ,String tag){
 //        PageHelper.startPage(1,2);
-        Long count = forumMapper.count(keyword);
+        Long count = forumMapper.count(keyword,tag);
         Integer start = (page-1)* size;
         if(start<0) start=0;
-        List<Post> posts = forumMapper.getPosts(start,size,keyword,timeQ);
+
+        List<Post> posts = forumMapper.getPosts(start,size,keyword,timeQ,tag);
         return new Posts(count,posts);
     }
 

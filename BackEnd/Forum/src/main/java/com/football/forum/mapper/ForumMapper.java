@@ -20,10 +20,13 @@ public interface ForumMapper {
         (title LIKE CONCAT('%', #{keyword}, '%') OR
             content LIKE CONCAT('%', #{keyword}, '%'))
         </if>
+        <if test="tag != null and tag != '' and tag!='全部赛事'">
+                AND tags LIKE CONCAT('%', #{tag}, '%')
+            </if>
         </where>
         </script>
         """)
-    Long count(@Param("keyword") String keyword);
+    Long count(@Param("keyword") String keyword,String tag);
 
 
     @Select("""
@@ -34,6 +37,9 @@ public interface ForumMapper {
                 (title LIKE CONCAT('%', #{keyword}, '%') OR
                 content LIKE CONCAT('%', #{keyword}, '%'))
         </if>
+            <if test="tag != null and tag != '' and tag!='全部赛事'">
+                AND tags LIKE CONCAT('%', #{tag}, '%')
+            </if>
         </where>
         <choose>
             <when test="timeQ">
@@ -46,7 +52,7 @@ public interface ForumMapper {
         LIMIT #{start},#{size}
         </script>
     """)
-    List<Post> getPosts(@Param("start") Integer start, @Param("size") Integer size, @Param("keyword") String keyword,@Param("timeQ") Boolean timeQ);
+    List<Post> getPosts(Integer start,Integer size,String keyword,Boolean timeQ,String tag);
 
     @Select("""
         <script>
@@ -154,4 +160,5 @@ public interface ForumMapper {
         INSERT INTO comment (userid,postid,comment) VALUES (#{userid},#{postid},#{comment})
     """)
     void insertComment(Integer postid,Long userid,String comment);
+
 }
