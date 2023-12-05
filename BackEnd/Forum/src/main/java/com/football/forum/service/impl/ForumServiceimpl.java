@@ -19,6 +19,7 @@ public class ForumServiceimpl implements ForumService {
 //        PageHelper.startPage(1,2);
         Long count = forumMapper.count(keyword);
         Integer start = (page-1)* size;
+        if(start<0) start=0;
         List<Post> posts = forumMapper.getPosts(start,size,keyword,timeQ);
         return new Posts(count,posts);
     }

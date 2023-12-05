@@ -7,6 +7,7 @@ export const useForumStore = defineStore('forum', {
             keyword: '',
             sorttype: 'like',
             chosedPost: null,
+            getPosts: false,
         }
     },
 })

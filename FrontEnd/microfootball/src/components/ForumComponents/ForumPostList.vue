@@ -2,60 +2,68 @@
     <div v-for="post in PostList" :key="post">
         <ForumPostItem :post="post" @click="toPost(post)"></ForumPostItem>
     </div>
-    <div style="display: flex;justify-content: center;">
+    <div style="display: flex;justify-content: center; margin: 20px;">
         <el-pagination @current-change="handleCurrentChange" background layout="prev, pager, next" :total=totalElements />
     </div>
 </template>
 
 <script setup>
 import ForumPostItem from "./ForumPostItem.vue"
-import {ref} from 'vue'
+import {ref,onMounted,watch} from 'vue'
 import { defineProps } from 'vue'
 import {useForumStore} from '../../stores/forum.ts'
-const forumstore = useForumStore()
+import { ElMessage } from 'element-plus'
+let forumstore = useForumStore()
 import { useRouter } from 'vue-router';
+import axios from 'axios'
 const router = useRouter()
 
 const toPost = (post) =>{
     forumstore.chosedPost = post
     router.push({
         path: '/forum/post',
-        // query: {
-        //     // _id: post._id
-        // },
+        query:{
+            id: post.id
+        }
     })
-}   
-let Post1 = {
-    title: "Post 1",
-    img: [require("@/assets/img/carousel2.png")],
-    content: "PostPost 1wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwPost 1wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwPost 1wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
-    comments: ['eawdwadawdadwadwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwdddddddddddddddddddaaaaaaaaaawwwwwwwwwwwwwsssssssssssssawee','ccc'],
 }
-let Post2 = {
-    title: "Post 2",
-    img: [require("@/assets/img/carousel2.png")],
-    content: "Post 2\nPost 2",
-    comments: ['eee','ccc'],
-}
-let Post3 = {
-    title: "Post 3",
-    img: [require("@/assets/img/carousel2.png")],
-    content: "Post 3\nPost 3",
-    comments: ['eee','ccc'],
-}
-let Post4 = {
-    title: "Post 4",
-    img: [require("@/assets/img/carousel2.png")],
-    content: "Post 4\nPost 4",
-    comments: ['eee','ccc'],
-}
-
-let PostList =ref([Post1,Post2,Post3,Post4,Post1,Post2,Post3,Post4,Post1,Post2,Post3,Post4,Post1,Post2,Post3,Post4])
+let PostList =ref([])
 let totalElements = ref(PostList.value.length)
-
+let page = 0
+onMounted(()=>{
+    loadPosts();
+})
+watch(()=>forumstore.getPosts,(newValue,oldValue)=>{
+    loadPosts();
+})
+watch(()=>forumstore.sorttype,(newValue,oldValue)=>{
+    loadPosts();
+})
 const handleCurrentChange = async (newPage) => {
-    PostList.value =[Post1,Post2,Post3]
+    page = newPage
+    loadPosts()
 }
+const loadPosts = async() =>{
+    PostList.value = []
+    let response
+    let timeQ = forumstore.sorttype=='like'?false:true
+    try{
+        response = await axios.get('/api/forum?page='+page+'&size=10&keyword='+forumstore.keyword+'&timeQ='+timeQ)
+        if(response.status == 200){
+            for(const post of response.data.data.posts){
+                PostList.value.push(post)
+            }
+            totalElements = response.data.data.count;
+        }
+    }catch(e){
+        console.log(e.message)
+        ElMessage({
+            message: "获取帖子失败",
+            type:"error"
+        })
+    }
+}
+
 </script>
 
 <style lang="scss" scoped>

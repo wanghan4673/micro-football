@@ -21,9 +21,9 @@ public class ForumController {
     private ForumService forumService;
 
     @GetMapping()
-    public Result GetPosts(@RequestParam(defaultValue = "0") Integer page,
-                           @RequestParam(defaultValue = "10") Integer size,
-                           @RequestParam(required = false) String keyword,
+    public Result GetPosts(@RequestParam(defaultValue = "0",required = false) Integer page,
+                           @RequestParam(defaultValue = "10",required = false) Integer size,
+                           @RequestParam(defaultValue = "",required = false) String keyword,
                            @RequestParam(defaultValue = "true",required = false) Boolean timeQ
     ) {
         return Result.success(forumService.getPosts(page,size,keyword,timeQ));
