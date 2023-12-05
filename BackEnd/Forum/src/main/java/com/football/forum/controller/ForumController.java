@@ -1,6 +1,7 @@
 package com.football.forum.controller;
 
 import com.football.common.utils.UserContext;
+import com.football.forum.model.Comment;
 import com.football.forum.model.Post;
 import com.football.forum.model.PostInfo;
 import com.football.forum.model.Result;
@@ -49,6 +50,12 @@ public class ForumController {
     @PutMapping("/post/follow")
     public Result follow(@RequestParam() Long followerid){
         forumService.follow(followerid);
+        return Result.success();
+    }
+
+    @PutMapping("/post/comment")
+    public Result comment(@RequestBody() Comment comment){
+        forumService.comment(comment.getPostid(),comment.getComment());
         return Result.success();
     }
 

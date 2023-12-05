@@ -63,6 +63,12 @@ public class ForumServiceimpl implements ForumService {
         }
     }
     @Override
+    public void comment(Integer postid,String comment){
+        Long userid = UserContext.getUser();
+        forumMapper.insertComment(postid,userid,comment);
+    }
+
+    @Override
     public void follow(Long followerid){
         Long userid = UserContext.getUser();
         if(forumMapper.checkcfollow(followerid,userid)){

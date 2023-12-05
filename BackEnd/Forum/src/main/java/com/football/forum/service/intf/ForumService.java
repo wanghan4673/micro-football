@@ -19,4 +19,6 @@ public interface ForumService {
     void collectpost(Long followerid);
 
     void follow(Long followerid);
+
+    void comment(Integer postid,String comment);
 }
