@@ -10,6 +10,7 @@ spring:
     url: jdbc:mysql://1.15.170.195:3306/administrator
     username: administrator
     password: 3K36za337n32DcBe
+
   mail: # 设置发送者邮箱
     host: smtp.qq.com
     username: 2226026498@qq.com
