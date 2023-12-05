@@ -1,10 +1,14 @@
 <script>
 import NewUsersChart from '@/components/AdminComponents/NewUsersChart.vue';
 import NewReportedPosts from '@/components/AdminComponents/NewReportedPosts.vue';
+import AddAnnouncement from '@/components/AdminComponents/AddAnnouncement.vue';
+import WorkBench from '@/components/AdminComponents/WorkBench.vue';
 export default{
     components:{
         NewUsersChart,
         NewReportedPosts,
+        AddAnnouncement,
+        WorkBench,
     },
     data(){
         return{
@@ -52,58 +56,13 @@ export default{
             </el-card>
         </el-col>
         <el-col :span="8" style="margin-top: 2vh;">
-            <el-card style="height: 25vh;">
-                <h3 style="height: 5vh;margin-top: 0;">
-                    工作台
-                </h3>
-                <el-container class="set-horizonal" style="height: 20vh;padding-top: 3vh;padding-left: 3vw;">
-                    <el-container class="set-vertical workboard">
-                        <el-icon size="3em" color="red"><User /></el-icon>
-                        <h5>用户管理</h5>
-                    </el-container>
-                    <el-container class="set-vertical workboard">
-                        <el-icon size="3em" color="blue"><ChatLineRound /></el-icon>
-                        <h5>论坛管理</h5>
-                    </el-container>
-                    <el-container class="set-vertical workboard">
-                        <el-icon size="3em" color="green"><Timer /></el-icon>
-                        <h5>新闻管理</h5>
-                    </el-container>
-                    <el-container class="set-vertical workboard">
-                        <el-icon size="3em" color="brown"><Monitor /></el-icon>
-                        <h5>公告管理</h5>
-                    </el-container>
-                </el-container>
-            </el-card>
-            <el-card style="margin-top: 2vh;height: 45vh;">
-                <h3>
-                    发布公告
-                </h3>
-                <el-input
-                    v-model="announcement"
-                    :rows="8"
-                    type="textarea"
-                    placeholder="请输入公告"
-                    style="margin-top: 2vh;"
-                />
-                <el-button type="primary" style="margin-top: 2vh;">
-                    发布公告
-                </el-button>
-            </el-card>
+            <work-bench style="height: 25vh;"/>
+            <add-announcement :inputRows="8" style="margin-top: 2vh;height: 45vh;"/>
         </el-col>
     </el-row>
 </template>
 
 <style scoped>
-.set-vertical{
-    display: flex;
-    flex-direction: column;
-}
-.set-horizonal{
-    display: flex;
-    flex-direction: row;
-}
-
 .welcome-text {
     margin-left: 42vw;
     height: 10vh;
@@ -123,9 +82,5 @@ export default{
     transform: translateY(0);
     opacity: 1;
   }
-}
-
-.workboard{
-    cursor: pointer;
 }
 </style>

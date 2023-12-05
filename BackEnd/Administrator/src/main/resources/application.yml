@@ -16,5 +16,10 @@ mybatis:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
     map-underscore-to-camel-case: true
 
+jwt:
+  token:
+    signKey: superusers
+    expire: 3600000
+
 server:
   port: 8085

@@ -30,6 +30,6 @@ jwt:
       - /user/register  # 注册
       - /test
       - /forum
-      - /admin
+      - /admin/**
     bothPaths:  # 登录和未登录都需要校验的请求路径
       - /user/loginStatus
