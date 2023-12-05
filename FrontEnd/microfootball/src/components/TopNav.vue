@@ -1,5 +1,5 @@
 <template>
-    <el-header>
+    <el-header style="height: 10vh;">
         <div class="nav-container">
             <div class="nav-left">
                 <div class="nav-logo">
@@ -159,7 +159,6 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 60px;
     width: 100%;
     /* padding: 0 20px; */
     background-color: #fff;

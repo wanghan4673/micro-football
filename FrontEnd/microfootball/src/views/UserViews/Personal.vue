@@ -34,6 +34,6 @@ import BackWave from './UserDetail/BackWave.vue'
 
 </script>
 
-<style>
+<style lang="scss">
 @import '../../assets/css/frame.scss';
 </style>

@@ -9,6 +9,7 @@
   "dependencies": {
     "@tencentcloud/chat-uikit-vue": "^1.4.5",
     "@wangeditor/editor": "^5.1.23",
+    "ant-design-vue": "^4.0.7",
     "axios": "^1.6.2",
     "element-plus": "^2.4.2",
     "pinia": "^2.1.7",
