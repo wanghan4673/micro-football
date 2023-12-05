@@ -151,15 +151,9 @@ public interface ForumMapper {
             followerid = #{followerid} AND fansid =#{userid}
     """)
     void removefollow(Long followerid,Long userid);
-}
 
-//<script>
-//            SELECT * FROM post
-//<where>
-//<if test="keyword != null and keyword != ''">
-//        (title LIKE CONCAT('%', #{keyword}, '%') OR
-//        content LIKE CONCAT('%', #{keyword}, '%') OR
-//        useraccount LIKE CONCAT('%', #{keyword}, '%'))
-//</if>
-//</where>
-//</script>
+    @Insert("""
+        INSERT INTO comment (userid,postid,comment) VALUES (#{userid},#{postid},#{comment})
+    """)
+    void insertComment(Integer postid,Long userid,String comment);
+}
