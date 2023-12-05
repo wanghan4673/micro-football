@@ -38,7 +38,7 @@
                         </el-form>
                     </div>
                     <div class="button-box">
-                        <el-button type="primary" class="register-button">注册</el-button>
+                        <el-button type="primary" class="register-button" @click="register()">注册</el-button>
                     </div>
                     <div class="button-box">
                         <el-button class="jump-button" type="text" @click="changeScene">已有账号?点此登录</el-button>
@@ -133,10 +133,61 @@ const login = async () => {
             })
             localStorage.setItem('token', response.data.data)  // 将token存在浏览器缓存中
             gotoPath('/')
+        } else {
+            ElMessage({
+                message: '用户名或密码错误,请重新登录!',
+                type: 'error',
+            })
+            setTimeout(() => {
+                window.location.reload(); // 刷新当前页面
+            }, 1000);
+            return
         }
     } catch (error) {
         ElMessage({
             message: '登录请求发送失败',
+            type: 'error',
+        })
+    }
+}
+
+const register = async () => {
+    if (registerForm.value.password !== registerForm.value.confirmPassword) {
+        ElMessage({
+            message: '两次密码不一致',
+            type: 'error',
+        })
+        return
+    }
+    let response
+    try {
+        response = await axios.post('/api/user/register', {
+            name: registerForm.value.username,
+            account: registerForm.value.account,
+            password: registerForm.value.password
+        })
+        if(response.data.code == 1){
+            console.log("注册成功")
+            ElMessage({
+                message: '注册成功!',
+                type: 'success',
+            })
+            console.log(response)
+            localStorage.setItem('token', response.data.data)
+            gotoPath('/')
+        } else {
+            ElMessage({
+                message: '用户已存在!',
+                type: 'error',
+            })
+            setTimeout(() => {
+                window.location.reload(); // 刷新当前页面
+            }, 1000);
+            return
+        }
+    } catch (error) {
+        ElMessage({
+            message: '注册请求发送失败',
             type: 'error',
         })
     }

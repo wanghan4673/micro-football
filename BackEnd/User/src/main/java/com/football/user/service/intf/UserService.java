@@ -21,4 +21,6 @@ public interface UserService {
     List<String> getCheckDays(Long userId);
 
     User getNameAndAvatar(Long userId);
+
+    boolean register(User user);
 }
