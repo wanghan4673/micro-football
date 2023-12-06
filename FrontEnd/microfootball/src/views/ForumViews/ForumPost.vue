@@ -10,6 +10,10 @@
 
     <div id="QC-bg">
         <div id="Box" v-if="post.content">
+            <div style="width: 100%;word-wrap: break-word; margin-top: 5px;margin-bottom:5px ; ">
+                <img :src="poster.avatar" alt="">
+                <span> {{ poster.name }}</span>
+            </div>
             <div style="width: 100%;word-wrap: break-word">
                 <p v-html="post.content"></p>
             </div>
@@ -20,28 +24,32 @@
                 <img :src="img" alt="图片加载失败" style="max-width: 60%;" />
             </div>
         </div>
-        <!-- <div class="approval-collect">
-            <el-icon>
+        <div style="display: flex; gap:20px;margin:20px;">
+            <el-icon :size="20" :color="isliked ? '#d57eb7' : ''" @click="likeclick">
                 <CircleCheck />
             </el-icon>
-            <span class="post-approval">{{ post_approval[index] }}</span>
-            <el-icon>
+            <span style="font-size: 20px; margin-top: -4px;">{{ post.likes }}</span>
+            <el-icon :size="20" :color="iscollected ? '#d57eb7' : ''" @click="collectclick">
                 <Star />
             </el-icon>
-            <span>{{ post_collect[index] }}</span>
-        </div> -->
+            <span style="font-size: 20px;margin-top: -4px;">{{ post.collect }}</span>
+        </div>
     </div>
     <p style="font-size: large; font-weight: 400; margin: 20px;margin-left: 50px;">评论 {{ comments ? comments.length : 0 }}</p>
-    <div id="QC-bg">
-        <div id="Box" style="height: 7vh;padding-top: 20px;"  v-for="(comment,index) of comments" :key="index">
+    <div id="QC-bg" v-if="comments!=[]">
+        <div id="Box" style="height: auto;padding-top: 20px;"  v-for="(comment,index) of comments" :key="index">
             <div style="width: 100%; display:flex; justify-content:space-between">
-                <div style="max-width:70% ; word-wrap: break-word;">{{ comment.comment }}</div>
+                <div style="max-width:70% ; word-wrap: break-word; overflow: auto;">{{ comment.comment }}</div>
                 <div style="max-width: 25%; display: flex;">
-                    <img :src="comment.avatar" alt="头像">
+                    <img :src="comment.avatar" alt="">
                     <p>{{ comment.name }}</p>
                 </div>
             </div>
         </div>
+    </div>
+    <div id="newcomment">
+        <el-input v-model="newcomment" placeholder="发布评论" style="height: 100%;width: 60%;"></el-input>
+        <el-button color="#5a9feacc" @click="commentclick">发布评论</el-button>
     </div>
 </template>
 
@@ -61,6 +69,9 @@ let postid = route.query.id;
 let post = ref({ title: null, content: null, img: null })
 let comments = ref([])
 let poster = ref(null)
+let isliked = ref(false)
+let iscollected = ref(false)
+let newcomment = ref("")
 onMounted(() => {
     loadPost(postid)
 })
@@ -79,11 +90,95 @@ const loadPost = async (postid) => {
             post.value = response.data.data.post
             comments.value = response.data.data.commentInfos
             poster.value = response.data.data.user
+            isliked.value = response.data.data.isliked
+            iscollected.value = response.data.data.iscollected
         }
     } catch (error) {
         console.log(error)
         ElMessage({
-            message: "获取失败",
+            message: "获取失败，请先登录",
+            type: "error"
+        })
+    }
+}
+
+const likeclick = async () =>{
+    let response
+    let token = localStorage.getItem('token')
+    try {
+        response = await axios.put("/api/forum/post/like?postid="+postid,{
+            headers: {
+                'token': `${token}`,
+            }
+        });
+        if(response.status==200){
+            if(isliked.value){
+                isliked.value=false;
+                post.value.likes--;
+            }else{
+                isliked.value=true;
+                post.value.likes++;
+            }
+        }
+    } catch (error) {
+        console.log(error)
+        ElMessage({
+            message: isliked?"取消点赞失败":"点赞失败",
+            type: "error"
+        })
+    }
+}
+const collectclick = async () =>{
+    let response
+    let token = localStorage.getItem('token')
+    try {
+        response = await axios.put("/api/forum/post/collect?postid="+postid,{
+            headers: {
+                'token': `${token}`,
+            }
+        });
+        if(response.status==200){
+            if(iscollected.value){
+                iscollected.value=false;
+                post.value.collect--;
+            }else{
+                iscollected.value=true;
+                post.value.collect++;
+            }
+        }
+    } catch (error) {
+        console.log(error)
+        ElMessage({
+            message: iscollected?"取消收藏失败":"收藏失败",
+            type: "error"
+        })
+    }
+}
+const commentclick = async () =>{
+    let response
+    let token = localStorage.getItem('token')
+    try {
+        response = await axios.put("/api/forum/post/comment",{
+            "postid":postid,
+	        "comment":newcomment.value,
+        },
+        {
+            headers: {
+                'Content-Type': 'application/json',
+                'token': `${token}`,
+            }
+        });
+        if(response.status==200){
+            ElMessage({
+            message: "评论成功",
+            type: "success"
+        })
+            loadPost(postid)
+        }
+    } catch (error) {
+        console.log(error)
+        ElMessage({
+            message: "评论失败",
             type: "error"
         })
     }
@@ -108,8 +203,8 @@ const loadPost = async (postid) => {
     margin-left: 50px;
     padding-left: 30px;
     margin-bottom: 20px;
-    padding-bottom: 50px;
     box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+    // border: 1px solid #000;
 }
 
 #Box {
@@ -118,10 +213,22 @@ const loadPost = async (postid) => {
     flex-direction: column;
     justify-content: flex-start;
     padding: 10px;
+    // background-color: #efefef80;
 }
 
 .QC-title {
     font-size: large;
     font-weight: bold;
+}
+#newcomment{
+    display: flex;
+    justify-content: flex-start;
+    width: 90%;
+    background-color: #fff;
+    max-width: 1200px;
+    // box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+    margin-left: 50px;
+    padding-left: 30px;
+    margin-bottom: 20px;
 }
 </style> 
