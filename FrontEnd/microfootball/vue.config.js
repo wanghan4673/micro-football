@@ -13,6 +13,9 @@ module.exports = defineConfig({
           '^/api': ''
         }
       }
+    },
+    client: {
+      overlay: false //去除uncatch runtime error
     }
   },
 })
