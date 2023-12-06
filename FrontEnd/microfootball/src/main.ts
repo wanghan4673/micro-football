@@ -14,17 +14,17 @@ import { TUICallKit } from '@tencentcloud/call-uikit-vue';
 
 const SDKAppID = 1600013711; // Your SDKAppID
 const secretKey = '8a1959745a1485707b6fa66ef37a20ccca6ad6e360834fc0b0a3c9c9efd916df'; //Your secretKey
-const userID = 'administrator'; // User ID
+const userID = '1'; // User ID
 
 
-// // init TUIKit
-// const TUIKit = TUICore.init({
-//   SDKAppID,
-// });
-// // TUIKit add TUIComponents
-// TUIKit.use(TUIComponents);
-// // TUIKit add TUICallKit
-// TUIKit.use(TUICallKit);
+// init TUIKit
+const TUIKit = TUICore.init({
+  SDKAppID,
+});
+// TUIKit add TUIComponents
+TUIKit.use(TUIComponents);
+// TUIKit add TUICallKit
+TUIKit.use(TUICallKit);
 
 
 // // login TUIKit
@@ -43,5 +43,5 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 const pinia = createPinia();
 pinia.use(piniaPluginPersistedstate);
 app.use(router).use(ElementPlus).use(Antd).use(pinia)
-// app.use(TUIKit)
+app.use(TUIKit)
 app.mount('#app')

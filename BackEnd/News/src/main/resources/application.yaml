@@ -1,0 +1,20 @@
+server:
+  port: 8088
+
+mybatis:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: true
+
+spring:
+  application:
+    name: news-service  #服务名称
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 110.40.206.206:8848  #nacos端口
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://110.40.206.206:3306/football-user?useSSL=false&serverTimezone=UTC
+    username: football-user
+    password: Z7xMRj85tyNAs8SC
