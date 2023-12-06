@@ -2,7 +2,7 @@
     <div id='PI-bg'>
         <div id="PostItem">
             <p class="post-title">{{ props.post.title }}</p>
-            <el-text line-clamp="4" class="post-contain">{{ props.post.content }}</el-text>
+            <el-text line-clamp="4" class="post-contain">{{ convertHtmlToText(props.post.content) }}</el-text>
         </div>
         <div id="ImageContainer" v-if="props.post.img">
             <img id="PostImg" :src="props.post.img[0]" />
@@ -14,6 +14,20 @@
 const props = defineProps({
     post: Object,
 });
+
+function convertHtmlToText(htmlString) {
+    // 创建一个新的DOMParser实例
+    const parser = new DOMParser();
+    
+    // 使用DOMParser解析HTML字符串
+    const parsedDocument = parser.parseFromString(htmlString, 'text/html');
+    
+    // 获取解析后文档的文本内容
+    const plainText = parsedDocument.body.textContent || "";
+    
+    return plainText;
+}
+
 </script>
   
 <style lang="scss" scoped>
@@ -31,7 +45,7 @@ const props = defineProps({
 #PostItem {
     display: flex;
     flex-direction: column;
-    width: 50%;
+    width: auto;
     word-wrap: break-word;
     padding: 10px;
 }

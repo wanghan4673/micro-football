@@ -16,6 +16,10 @@ spring:
           uri: lb://forum-service
           predicates:
             - Path=/forum/**
+        - id: forum-service
+          uri: lb://forum-service
+          predicates:
+            - Path=/upload/**
         - id: administrator-service
           uri: lb://administrator-service
           predicates:
@@ -28,7 +32,7 @@ jwt:
       - /search/**  # 搜索不需要检查JWT令牌
       - /user/login  # 登录
       - /user/register  # 注册
-      - /forum
+      - /forum #获取帖子概述
       - /admin/login/getCode # 管理员获取验证码
       - /admin/login/checkCode  # 校验验证码
     bothPaths:  # 登录和未登录都需要校验的请求路径

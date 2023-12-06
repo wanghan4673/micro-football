@@ -13,6 +13,14 @@
             <el-input type="text" v-model="store.drafts.title" clearable />
         </div>
         <div id="Box">
+            <p class="QC-title">标签</p>
+            <div class="tag-box">
+                <button class="tag" v-for="tag in taglist" :key="tag" @click="chosetag(tag)" :class="{ 'selected-tag': tags.includes(tag) }">
+                    {{ tag }}
+                </button>
+            </div>
+        </div>
+        <div id="Box">
             <p class="QC-title">内容</p>
             <WangEditer />
         </div>
@@ -28,7 +36,7 @@
             <!-- </div> -->
         </div>
         <div id="Box">
-            <button class="submitbutton" type="button" @click="addQuestion" style="width: 10%;">提交</button>
+            <button class="submitbutton" type="button" @click="addQuestion" style="width: 10vw;">提交</button>
         </div>
     </div>
 </template>
@@ -46,6 +54,19 @@ import router from '@/router';
 const store = useGeneralStore()
 import { ElMessage } from 'element-plus'
 import axios from 'axios';
+
+let taglist = ref(['英超','西甲','意甲','德甲','法甲','中超','同济']);
+const tags = ref([]);
+
+const chosetag = (tag) =>{
+    if (tags.value.includes(tag)) {
+    // 如果标签已存在于tags列表中，移除它
+    tags.value = tags.value.filter((t) => t !== tag);
+  } else {
+    // 否则添加标签到tags列表中
+    tags.value.push(tag);
+  }
+}
 
 const back = () => {
     router.back();
@@ -77,14 +98,33 @@ const uploadFile = async (file) => {
 }
 
 const addQuestion = async () => {
+    let response
+    let tagstring = ref("")
+    let token = localStorage.getItem('token')
+    for(const tag of tags.value){
+        tagstring.value+= tag
+    }
     try {
-        ElMessage({
-            message: "还没写",
+        response = await axios.post('/api/forum/post',{
+            "content": store.drafts.content,
+            "title": store.drafts.title,
+            "tags": tagstring.value
+        },{
+            headers: {
+                'token': `${token}`,
+                'Content-Type': 'application/json',
+            }
+        })
+        if(response.status == 200) {
+            ElMessage({
+            message: "发帖成功",
             type: "success"
         });
+        router.push('/forum')
+        }
     } catch (err) {
         ElMessage({
-            message: "提交题目失败",
+            message: "发帖失败",
             type: "error"
         });
         console.log(err);
@@ -95,6 +135,28 @@ const addQuestion = async () => {
 
 <style scoped>
 
+.tag-box{
+    display: flex;
+    justify-content: flex-start;
+    gap:2vw
+}
+.tag {
+    padding: 8px; /* 可以根据需要调整内边距 */
+    border-radius: 4px; /* 可以根据需要调整边框半径，使其看起来更像色块 */
+    color: #000; /* 文字颜色，根据需要调整 */
+    text-align: center; /* 文字居中 */
+    width: auto; /* 根据需要调整宽度 */
+    background-color: #cce8f3;
+    border: none; 
+}
+.tag:hover{
+    color: #fff;
+    background-color: #358CC1;
+}
+.selected-tag {
+    color: #fff;
+  background-color: #358cc1; /* 修改选中状态下的背景颜色 */
+}
 #Box {
     width: 100%;
     display: flex;
@@ -102,6 +164,7 @@ const addQuestion = async () => {
     justify-content: flex-start;
     padding-left: 20px;
     margin-bottom: 30px;
+    
 }
 
 #QC-bg {
@@ -121,6 +184,7 @@ const addQuestion = async () => {
 .QC-title {
     font-size: large;
     font-weight: bold;
+    margin-bottom: 10px;
 }
 
 .el-input {

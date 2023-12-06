@@ -20,12 +20,12 @@ const editor = ref(null);
 onMounted(() => {
   const e = new wangEditor(`#demo1`);
   e.config.onchange = (newHtml) => {
-    store.drafts.text = newHtml;
+    store.drafts.content = newHtml;
   };
   // 创建编辑器
   e.create();
   // 设置编辑器的初始内容
-  e.txt.html(store.drafts.text || ''); // 确保不为 null 或 undefined
+  e.txt.html(store.drafts.content || ''); // 确保不为 null 或 undefined
   editor.value = e;
 });
 
