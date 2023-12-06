@@ -18,6 +18,7 @@
         <module>Forum</module>
         <module>Common</module>
         <module>Administrator</module>
+        <module>Player</module>
     </modules>  <!-- add -->
     <version>0.0.1-SNAPSHOT</version>
     <name>BackEnd</name>

@@ -23,7 +23,6 @@ public class AdminLoginController {
     @Autowired
     private JwtUtils jwtUtils;
     // 登录
-    // 4.生成token
     @PostMapping("/login/getCode")
     public Result loginGetCode(@RequestBody Administrator admin) {
         log.info("----------管理员获取验证码----------"+admin);
@@ -32,7 +31,7 @@ public class AdminLoginController {
         if (adminId == null)
             return Result.error("这不是管理员邮箱!");
         else {
-            // 2.生成4位随机验证码 并保存到数据库(暂时未实现:保存时间为5分钟)
+            // 2.生成4位随机验证码 并保存到数据库
             String code = generateRandomCode();
             boolean addCode = adminLoginService.addCode(code,adminId);
             if(!addCode)
@@ -56,6 +55,7 @@ public class AdminLoginController {
         if(adminId == null)
             return Result.error("验证码不正确或超出有效时间!");
         else{
+            // 5.生成token并下发
             Map<String,Object> claims = new HashMap<>();
             claims.put("id",adminId);
             String jwt = jwtUtils.createJwt(claims);
