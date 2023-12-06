@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: player-service  #服务名称
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 110.40.206.206:8848  #nacos端口
+
+
+server:
+  port: 8083

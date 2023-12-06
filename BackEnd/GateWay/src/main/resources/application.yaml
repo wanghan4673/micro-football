@@ -24,6 +24,10 @@ spring:
           uri: lb://administrator-service
           predicates:
             - Path=/admin/**
+        - id: player-service
+          uri: lb://player-service
+          predicates:
+            - Path=/player/**
 jwt:
   token:
     signKey: superusers  # 密钥
@@ -35,5 +39,6 @@ jwt:
       - /forum #获取帖子概述
       - /admin/login/getCode # 管理员获取验证码
       - /admin/login/checkCode  # 校验验证码
+      - /player/**
     bothPaths:  # 登录和未登录都需要校验的请求路径
       - /user/loginStatus
