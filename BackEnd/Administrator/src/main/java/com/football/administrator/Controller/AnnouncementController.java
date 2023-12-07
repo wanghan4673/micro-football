@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @Slf4j
-@RequestMapping("/admin")
+@RequestMapping("/admin/announcement")
 public class AnnouncementController {
     @Autowired
     AnnouncementService announcementservice;
