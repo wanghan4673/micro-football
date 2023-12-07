@@ -15,6 +15,6 @@ spring:
         server-addr: 110.40.206.206:8848  #nacos端口
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://110.40.206.206:3306/football-user?useSSL=false&serverTimezone=UTC
-    username: football-user
-    password: Z7xMRj85tyNAs8SC
+    url: jdbc:mysql://101.43.38.150/football_news
+    username: football_News
+    password: 183022
