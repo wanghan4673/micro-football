@@ -12,47 +12,46 @@ import java.util.List;
 
 @Mapper
 public interface ForumMapper {
-    @Select("""
-        <script>
-        SELECT count(*) FROM post
-        <where>
-        <if test="keyword != null and keyword != ''">
-        (title LIKE CONCAT('%', #{keyword}, '%') OR
-            content LIKE CONCAT('%', #{keyword}, '%'))
-        </if>
-        <if test="tag != null and tag != '' and tag!='全部赛事'">
-                AND tags LIKE CONCAT('%', #{tag}, '%')
-            </if>
-        </where>
-        </script>
-        """)
-    Long count(@Param("keyword") String keyword,String tag);
+//    @Select("""
+//        <script>
+//        SELECT count(*) FROM post
+//        <where>
+//        <if test="keyword != null and keyword != ''">
+//        (title LIKE CONCAT('%', #{keyword}, '%') OR
+//            content LIKE CONCAT('%', #{keyword}, '%'))
+//        </if>
+//        <if test="tag != null and tag != '' and tag!='全部赛事'">
+//                AND tags LIKE CONCAT('%', #{tag}, '%')
+//            </if>
+//        </where>
+//        </script>
+//        """)
+//    Long count(@Param("keyword") String keyword,String tag);
 
-
-    @Select("""
-        <script>
-        SELECT * FROM post
-        <where>
-        <if test="keyword != null and keyword != ''">
-                (title LIKE CONCAT('%', #{keyword}, '%') OR
-                content LIKE CONCAT('%', #{keyword}, '%'))
-        </if>
-            <if test="tag != null and tag != '' and tag!='全部赛事'">
-                AND tags LIKE CONCAT('%', #{tag}, '%')
-            </if>
-        </where>
-        <choose>
-            <when test="timeQ">
-                ORDER BY time DESC
-            </when>
-            <otherwise>
-               ORDER BY (likes * 1 + collect * 5 + comments * 3) DESC
-            </otherwise>
-        </choose>
-        LIMIT #{start},#{size}
-        </script>
-    """)
-    List<Post> getPosts(Integer start,Integer size,String keyword,Boolean timeQ,String tag);
+//    @Select("""
+//        <script>
+//        SELECT * FROM post
+//        <where>
+//        <if test="keyword != null and keyword != ''">
+//                (title LIKE CONCAT('%', #{keyword}, '%') OR
+//                content LIKE CONCAT('%', #{keyword}, '%'))
+//        </if>
+//            <if test="tag != null and tag != '' and tag!='全部赛事'">
+//                AND tags LIKE CONCAT('%', #{tag}, '%')
+//            </if>
+//        </where>
+//        <choose>
+//            <when test="timeQ">
+//                ORDER BY time DESC
+//            </when>
+//            <otherwise>
+//               ORDER BY (likes * 1 + collect * 5 + comments * 3) DESC
+//            </otherwise>
+//        </choose>
+//        LIMIT #{start},#{size}
+//        </script>
+//    """)
+//    List<Post> getPosts(Integer start,Integer size,String keyword,Boolean timeQ,String tag);
 
     @Select("""
         <script>
@@ -161,4 +160,6 @@ public interface ForumMapper {
     """)
     void insertComment(Integer postid,Long userid,String comment);
 
+    @Select("SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_NAME = 'post' AND TABLE_SCHEMA = DATABASE();")
+    int getMaxId();
 }

@@ -24,10 +24,9 @@ public class ForumController {
     public Result GetPosts(@RequestParam(defaultValue = "0",required = false) Integer page,
                            @RequestParam(defaultValue = "10",required = false) Integer size,
                            @RequestParam(defaultValue = "",required = false) String keyword,
-                           @RequestParam(defaultValue = "true",required = false) Boolean timeQ,
                            @RequestParam(defaultValue = "",required = false) String tag
     ) {
-        return Result.success(forumService.getPosts(page,size,keyword,timeQ,tag));
+        return Result.success(forumService.getPosts(page,size,keyword,tag));
     }
 
     @PostMapping("/post")

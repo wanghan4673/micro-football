@@ -56,6 +56,7 @@ public class LoginController {
         }
         else{
             User user = userService.getNameAndAvatar(userId);
+            log.info("new"+user);
             return Result.success(user);
         }
     }
