@@ -45,5 +45,6 @@ jwt:
       - /admin/login/checkCode  # 校验验证码
       - /player/**
       - /news/**
+      - /admin/**
     bothPaths:  # 登录和未登录都需要校验的请求路径
       - /user/loginStatus
