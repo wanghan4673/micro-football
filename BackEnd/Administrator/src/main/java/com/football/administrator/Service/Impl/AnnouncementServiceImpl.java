@@ -27,7 +27,7 @@ public class AnnouncementServiceImpl implements AnnouncementService {
     }
 
     @Override
-    public List<AnnouncementDTO> getAnnouncementList(Integer id) {
+    public List<AnnouncementDTO> getAnnouncementList(Long id) {
         return announcementmapper.getAnnouncementList(id);
     }
 }

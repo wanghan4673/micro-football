@@ -24,9 +24,8 @@ public class SystemInfoController {
     }
 
     @PostMapping("/postNewUser")
-    public Result postNewUser(){
+    public void postNewUser(){
         systemInfoService.postNewUser();
-        return Result.success();
     }
 
     @PostMapping("/postNewNews")

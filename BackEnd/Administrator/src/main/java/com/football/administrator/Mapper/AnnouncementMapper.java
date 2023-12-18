@@ -14,5 +14,5 @@ public interface AnnouncementMapper {
     void postAnnouncement(String title, String detail, LocalDateTime time,Integer receiver);
 
     @Select("SELECT * FROM announcement WHERE receiver = #{id}")
-    List<AnnouncementDTO> getAnnouncementList(Integer id);
+    List<AnnouncementDTO> getAnnouncementList(Long id);
 }

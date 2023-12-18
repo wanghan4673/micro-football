@@ -29,17 +29,17 @@ public class AnnouncementController {
     }
 
     @GetMapping("/getAnnouncementList")
-    public Result getAnnouncementList(@RequestParam("id") Integer id){
-        return Result.success(announcementservice.getAnnouncementList(id));
+    public Result getAnnouncementList(){
+        return Result.success(announcementservice.getAnnouncementList(0L));
     }
 
     @GetMapping("/getAnnouncementForUser")
-    public List<AnnouncementDTO> getAnnouncementListForUser(@RequestParam("id") Integer id){
+    public List<AnnouncementDTO> getAnnouncementListForUser(@RequestParam("id") Long id){
         return announcementservice.getAnnouncementList(id);
     }
 
     @GetMapping("/testClient")
     public List<AnnouncementDTO> testClient(@RequestParam("id") Long id){
-        return announcementClient.getAnnouncementById(1);
+        return announcementClient.getAnnouncementById(1L);
     }
 }

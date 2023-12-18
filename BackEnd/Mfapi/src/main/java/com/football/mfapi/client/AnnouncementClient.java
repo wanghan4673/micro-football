@@ -10,5 +10,5 @@ import java.util.List;
 @FeignClient("administrator-service")
 public interface AnnouncementClient {
     @GetMapping("/admin/announcement/getAnnouncementForUser")
-    List<AnnouncementDTO> getAnnouncementById(@RequestParam("id") Integer id);
+    List<AnnouncementDTO> getAnnouncementById(@RequestParam("id") Long id);
 }

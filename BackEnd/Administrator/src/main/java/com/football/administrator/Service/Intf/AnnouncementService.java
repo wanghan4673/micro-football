@@ -7,5 +7,5 @@ import java.util.List;
 public interface AnnouncementService {
     void postAnnouncement(String title, String detail,Integer receiver);
 
-    List<AnnouncementDTO> getAnnouncementList(Integer id);
+    List<AnnouncementDTO> getAnnouncementList(Long id);
 }
