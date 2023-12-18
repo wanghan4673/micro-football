@@ -2,6 +2,7 @@ package com.football.administrator.Service.Impl;
 
 import com.football.administrator.Mapper.SystemInfoMapper;
 import com.football.administrator.Service.Intf.SystemInfoService;
+import com.football.administrator.model.SystemInfo;
 import org.apache.ibatis.annotations.Insert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -61,5 +62,10 @@ public class SystemInfoServiceImpl implements SystemInfoService {
             systemInfoMapper.addNewRow(time);
             systemInfoMapper.postNewAnnounce(time);
         }
+    }
+
+    @Override
+    public SystemInfo getSysInfo() {
+        return systemInfoMapper.getSysInfo();
     }
 }
