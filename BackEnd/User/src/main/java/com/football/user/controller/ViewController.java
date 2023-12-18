@@ -1,10 +1,12 @@
 package com.football.user.controller;
 
 import com.football.common.utils.UserContext;
+import com.football.mfapi.client.AnnouncementClient;
 import com.football.user.model.MyPost;
 import com.football.user.model.Result;
 import com.football.user.model.User;
 import com.football.user.service.intf.UserService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,10 +19,12 @@ import java.util.Map;
 @Slf4j
 @RestController
 @RequestMapping("/user")
+@RequiredArgsConstructor
 public class ViewController {
     // 因用户操作 预览用户信息
     @Autowired
     private UserService userService;
+    private final AnnouncementClient announcementClient;
     @GetMapping("/score")
     public Result viewScore(){
         Long userId = UserContext.getUser();
@@ -74,5 +78,12 @@ public class ViewController {
         } else{
             return Result.error("获取粉丝列表失败");
         }
+    }
+
+    @GetMapping("/getNotify")
+    public Result viewNotify(){
+        Long userId = UserContext.getUser();
+        log.info("----------获取通知:{}----------", userId);
+        return Result.success(announcementClient.getAnnouncementById(userId));
     }
 }
