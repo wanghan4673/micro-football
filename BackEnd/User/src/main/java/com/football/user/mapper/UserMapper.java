@@ -1,5 +1,6 @@
 package com.football.user.mapper;
 
+import com.football.user.model.MyPost;
 import com.football.user.model.User;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -38,4 +39,34 @@ public interface UserMapper {
 
     @Insert("INSERT INTO user(name,account,password) VALUES (#{name},#{account},#{password})")
     void insertUser(String name, String account, String password);
+
+    @Select("select _id,title,content,likes,comments,collect from post where userid = #{userId} and isbanned = 0")
+    List<MyPost> getMyPosts(Long userId);
+
+    @Select("select followerid from follow where fansid = #{userId}")
+    List<Integer> getFollowerIds(Long userId);
+
+    @Select("""
+        <script>
+        select _id,name,signature from user where _id in 
+        <foreach item='id' collection='followerIds' open='(' separator=',' close=')'>
+        #{id}
+        </foreach>
+        </script>
+    """)
+    List<User> getFollowersByIds(List<Integer> followerIds);
+
+    @Select("select fansid from follow where followerid = #{userId}")
+    List<Integer> getFansIds(Long userId);
+
+    @Select("""
+        <script>
+        select _id,name,signature from user where _id in 
+        <foreach item='id' collection='fansIds' open='(' separator=',' close=')'>
+        #{id}
+        </foreach>
+        </script>
+    """
+    )
+    List<User> getFansByIds(List<Integer> fansIds);
 }

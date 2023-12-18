@@ -6,7 +6,6 @@ import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-@ComponentScan("org.springdoc.core")
 public class gatewayApplication {
     public static void main(String[] args) {
         SpringApplication.run(gatewayApplication.class, args);
