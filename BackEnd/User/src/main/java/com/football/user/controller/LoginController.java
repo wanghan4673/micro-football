@@ -26,6 +26,9 @@ public class LoginController {
         User login_user = userService.login(user);
         // 登录成功 生成令牌并下发令牌给前端
         if(login_user!=null){
+            if(login_user.getIsbanned()){
+                return Result.error("该用户已被封禁");
+            }
             Map<String, Object> claims = new HashMap<>();
             claims.put("id",login_user.getId());
             claims.put("account",login_user.getAccount());

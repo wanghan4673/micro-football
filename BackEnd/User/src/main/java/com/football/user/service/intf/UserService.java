@@ -1,5 +1,6 @@
 package com.football.user.service.intf;
 
+import com.football.user.model.MyPost;
 import com.football.user.model.User;
 import org.springframework.stereotype.Service;
 
@@ -23,4 +24,10 @@ public interface UserService {
     User getNameAndAvatar(Long userId);
 
     boolean register(User user);
+
+    List<MyPost> getMyPosts(Long userId);
+
+    List<User> getMyFollowers(Long userId);
+
+    List<User> getMyFans(Long userId);
 }

@@ -20,7 +20,7 @@ public class UpdateController {
                              @RequestParam(name="email",required = false)String email){
         // 还有一个参数是头像图片 暂时先不考虑
         Long userId = UserContext.getUser();
-        log.info("----------查看积分:{}----------", userId);
+        log.info("----------更新个人信息:{}----------", userId);
         boolean updateResult = userService.updateUser(userId,name,signature,email);
         if(updateResult){
             return Result.success();
