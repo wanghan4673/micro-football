@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface ForumService {
-    Posts getPosts(int page, int size, String keyword,Boolean timeQ,String tag);
+    Posts getPosts(int page, int size, String keyword,String tag);
 
     PostInfo getPost(Integer postid);
 

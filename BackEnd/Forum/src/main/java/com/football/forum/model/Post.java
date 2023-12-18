@@ -11,7 +11,7 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 public class Post {
     Integer id;  // 帖子id
-    Timestamp time;  // 发布时间
+    String time;  // 发布时间
     String content;  // 帖子内容
     Boolean isbanned;  // 是否封禁
     Integer likes;  // 点赞数
@@ -19,7 +19,7 @@ public class Post {
     Integer collect;  // 收藏数
     String title;  // 标题
     String tags; //tag
-    Integer userid; //用户id
+    Long userid; //用户id
 }
 
 
