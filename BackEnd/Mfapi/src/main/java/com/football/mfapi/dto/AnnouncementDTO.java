@@ -1,4 +1,4 @@
-package com.football.administrator.model;
+package com.football.mfapi.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Announcement {
+public class AnnouncementDTO {
     private Integer id;
     private String detail;
     private String title;

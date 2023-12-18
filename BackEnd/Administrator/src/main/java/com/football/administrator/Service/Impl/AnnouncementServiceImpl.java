@@ -19,15 +19,15 @@ public class AnnouncementServiceImpl implements AnnouncementService {
     SystemInfoMapper systemInfoMapper;
 
     @Override
-    public void postAnnouncement(String title, String detail) {
+    public void postAnnouncement(String title, String detail,Integer receiver) {
         LocalDateTime time = LocalDateTime.now();
         LocalDate DateTime = LocalDate.now();
         systemInfoMapper.postNewAnnounce(DateTime);
-        announcementmapper.postAnnouncement(title,detail,time);
+        announcementmapper.postAnnouncement(title,detail,time,receiver);
     }
 
     @Override
-    public List<Announcement> getAnnouncementList() {
-        return announcementmapper.getAnnouncementList();
+    public List<Announcement> getAnnouncementList(Integer id) {
+        return announcementmapper.getAnnouncementList(id);
     }
 }

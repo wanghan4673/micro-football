@@ -10,9 +10,9 @@ import java.util.List;
 
 @Mapper
 public interface AnnouncementMapper {
-    @Insert("INSERT INTO announcement (title,detail,time) VALUES (#{title},#{detail},#{time})")
-    void postAnnouncement(String title, String detail, LocalDateTime time);
+    @Insert("INSERT INTO announcement (title,detail,time,receiver) VALUES (#{title},#{detail},#{time}, #{receiver})")
+    void postAnnouncement(String title, String detail, LocalDateTime time,Integer receiver);
 
-    @Select("SELECT * FROM announcement")
-    List<Announcement> getAnnouncementList();
+    @Select("SELECT * FROM announcement WHERE receiver = #{id}")
+    List<Announcement> getAnnouncementList(Integer id);
 }
