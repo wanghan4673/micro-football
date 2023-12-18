@@ -14,5 +14,5 @@ public class AnnouncementDTO {
     private String detail;
     private String title;
     private LocalDateTime time;
-    private Integer receiver;
+    private Long receiver;
 }

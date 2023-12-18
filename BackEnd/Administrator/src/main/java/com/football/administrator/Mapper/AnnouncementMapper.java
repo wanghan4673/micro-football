@@ -1,6 +1,6 @@
 package com.football.administrator.Mapper;
 
-import com.football.administrator.model.Announcement;
+import com.football.mfapi.dto.AnnouncementDTO;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -14,5 +14,5 @@ public interface AnnouncementMapper {
     void postAnnouncement(String title, String detail, LocalDateTime time,Integer receiver);
 
     @Select("SELECT * FROM announcement WHERE receiver = #{id}")
-    List<Announcement> getAnnouncementList(Integer id);
+    List<AnnouncementDTO> getAnnouncementList(Integer id);
 }

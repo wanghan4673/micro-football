@@ -3,7 +3,7 @@ package com.football.administrator.Service.Impl;
 import com.football.administrator.Mapper.AnnouncementMapper;
 import com.football.administrator.Mapper.SystemInfoMapper;
 import com.football.administrator.Service.Intf.AnnouncementService;
-import com.football.administrator.model.Announcement;
+import com.football.mfapi.dto.AnnouncementDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +27,7 @@ public class AnnouncementServiceImpl implements AnnouncementService {
     }
 
     @Override
-    public List<Announcement> getAnnouncementList(Integer id) {
+    public List<AnnouncementDTO> getAnnouncementList(Integer id) {
         return announcementmapper.getAnnouncementList(id);
     }
 }

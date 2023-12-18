@@ -3,10 +3,13 @@ package com.football.administrator.Controller;
 import com.football.administrator.Service.Intf.AnnouncementService;
 import com.football.administrator.model.Result;
 import com.football.mfapi.client.AnnouncementClient;
+import com.football.mfapi.dto.AnnouncementDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @Slf4j
@@ -30,8 +33,13 @@ public class AnnouncementController {
         return Result.success(announcementservice.getAnnouncementList(id));
     }
 
+    @GetMapping("/getAnnouncementForUser")
+    public List<AnnouncementDTO> getAnnouncementListForUser(@RequestParam("id") Integer id){
+        return announcementservice.getAnnouncementList(id);
+    }
+
     @GetMapping("/testClient")
-    public com.football.mfapi.dto.Result testClient(@RequestParam("id") Integer id){
+    public List<AnnouncementDTO> testClient(@RequestParam("id") Long id){
         return announcementClient.getAnnouncementById(1);
     }
 }
