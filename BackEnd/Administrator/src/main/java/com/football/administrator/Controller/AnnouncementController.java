@@ -38,8 +38,5 @@ public class AnnouncementController {
         return announcementservice.getAnnouncementList(id);
     }
 
-    @GetMapping("/testClient")
-    public List<AnnouncementDTO> testClient(@RequestParam("id") Long id){
-        return announcementClient.getAnnouncementById(1L);
-    }
+
 }

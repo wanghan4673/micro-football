@@ -32,6 +32,9 @@ spring:
           uri: lb://news-service
           predicates:
             - Path=/news/**
+
+  main:
+    allow-bean-definition-overriding=true:
 jwt:
   token:
     signKey: superusers  # 密钥
