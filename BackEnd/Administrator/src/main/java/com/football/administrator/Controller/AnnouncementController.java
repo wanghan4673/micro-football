@@ -1,6 +1,7 @@
 package com.football.administrator.Controller;
 
 import com.football.administrator.Service.Intf.AnnouncementService;
+import com.football.administrator.Service.Intf.SystemInfoService;
 import com.football.administrator.model.Result;
 import com.football.mfapi.client.AnnouncementClient;
 import com.football.mfapi.dto.AnnouncementDTO;
@@ -18,6 +19,8 @@ import java.util.List;
 public class AnnouncementController {
     @Autowired
     AnnouncementService announcementservice;
+    @Autowired
+    SystemInfoService systemInfoService;
     private final AnnouncementClient announcementClient;
 
     @PostMapping("/postAnnouncement")
@@ -25,6 +28,7 @@ public class AnnouncementController {
                                    @RequestParam("detail") String detail,
                                    @RequestParam("receiver") Integer receiver){
         announcementservice.postAnnouncement(title,detail,receiver);
+        systemInfoService.postNewAnnounce();
         return Result.success();
     }
 
@@ -38,5 +42,8 @@ public class AnnouncementController {
         return announcementservice.getAnnouncementList(id);
     }
 
-
+    @GetMapping("/test")
+    public List<AnnouncementDTO> test(){
+        return announcementClient.getAnnouncementById(0L);
+    }
 }

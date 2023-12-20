@@ -37,6 +37,7 @@ export default {
             const formData = new FormData()
             formData.append('title', this.newTitle);
             formData.append('detail',this.newDetail);
+            formData.append('receiver', 0);
             try {
                 const response = await axios.post('/api/admin/announcement/postAnnouncement', formData, {
                     headers: {
@@ -46,6 +47,9 @@ export default {
                 console.log(response)
                 if (response.status == 200) {
                     ElMessage.success("成功发布公告")
+                    setTimeout(() => {
+                        window.location.reload(); // 刷新当前页面
+                    }, 1000);
                 }
             } catch (e) {
                 console.log(e)

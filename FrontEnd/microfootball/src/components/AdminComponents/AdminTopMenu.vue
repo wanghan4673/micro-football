@@ -15,7 +15,7 @@
             </el-menu>
         </el-container>
         <el-container style="width: 30vw;">
-            <h4 style="margin-left: 20vw;">退出管理员系统</h4>
+            <h4 style="margin-left: 20vw;" @click="directToSubsystem(5)">退出管理员系统</h4>
         </el-container>
     </div>
 </template>
@@ -39,6 +39,8 @@ export default{
                 this.$router.push('/newsManage');
             }else if(mode==4){
                 this.$router.push('/announceManage');
+            }else if(mode==5){
+                this.$router.push('/');
             }
         }
     }
