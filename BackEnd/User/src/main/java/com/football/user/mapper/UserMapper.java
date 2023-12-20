@@ -69,4 +69,10 @@ public interface UserMapper {
     """
     )
     List<User> getFansByIds(List<Integer> fansIds);
+
+    @Select("select account from user where _id = #{userId} and password = #{oriPassword}")
+    String getUserByIdAndPs(Long userId, String oriPassword);
+
+    @Update("UPDATE user SET password = #{newPassword} WHERE _id=#{userId}")
+    boolean updatePassword(Long userId, String newPassword);
 }
