@@ -4,7 +4,7 @@ import com.football.administrator.model.PostReportInfo;
 
 import java.util.List;
 
-public interface PostReportInfoService {
+public interface AdminForumService {
     void postReport(Integer reportedPostId, String reason, Integer reportUserId);
 
     List<PostReportInfo> getReportList();

@@ -11,7 +11,8 @@ spring:
     url: jdbc:mysql://110.40.206.206:3306/football-user?useSSL=false&serverTimezone=UTC
     username: football-user
     password: Z7xMRj85tyNAs8SC
-
+  main:
+    allow-bean-definition-overriding: true
 
 mybatis:
   configuration:

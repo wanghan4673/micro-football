@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SystemInfo {
-    private Integer id;
     private Integer newUserNum;
     private Integer newPostNum;
     private Integer newNewsNum;
