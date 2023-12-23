@@ -1,4 +1,4 @@
-package com.football.news.model;
+package com.football.news.model.Entity;
 
 import jakarta.persistence.*;
 
@@ -30,6 +30,16 @@ public class NewsEntity {
     @Basic
     @Column(name = "propertag")
     private String propertag;
+
+    public NewsEntity(Integer newsId, String title, Timestamp publishdatetime, String summary,String contains,String matchtag,String propertag){
+         this.newsId=newsId;
+         this.title=title;
+         this.publishdatetime=publishdatetime;
+         this.summary=summary;
+         this.contains=contains;
+         this.matchtag=matchtag;
+         this.propertag=propertag;
+    }
 
     public int getNewsId() {
         return newsId;
