@@ -1,11 +1,14 @@
 package com.football.news.service.impl;
 
 import com.football.news.mapper.NewsMapper;
-import com.football.news.model.NewsEntity;
-import com.football.news.model.NewsEntityInfo;
-import com.football.news.model.NewshavepictureEntity;
-import com.football.news.model.VideoEntity;
+import com.football.news.model.Entity.NewsEntity;
+import com.football.news.model.Info.NewsEntityInfo;
+import com.football.news.model.Info.NewsEntityInfo.*;
+import com.football.news.model.Entity.NewshavepictureEntity;
+import com.football.news.model.Entity.VideoEntity;
+import com.football.news.model.Info.SearcherNews;
 import com.football.news.service.intf.NewsService;
+import org.apache.ibatis.annotations.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -109,8 +112,9 @@ public class NewsServiceimpl implements NewsService {
     //搜索新闻
     @Override
     public List<NewsEntityInfo> searchNews(String searchItem){
-        List<NewsEntityInfo> newsWithPicList = new ArrayList<>();
-        return newsWithPicList;
+        //SearcherNews searchNewsSys=new SearcherNews();
+        //return searchNewsSys.search(searchItem, this.addPicForNews(newsMapper.getAllNews()));
+        return this.addPicForNews(newsMapper.search(searchItem));
     }
 
     //搜索视频

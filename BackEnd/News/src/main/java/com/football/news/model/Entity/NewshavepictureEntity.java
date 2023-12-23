@@ -1,21 +1,20 @@
-package com.football.news.model;
+package com.football.news.model.Entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
-import java.io.Serializable;
 import java.util.Objects;
 
-public class NewshavepictureEntityPK implements Serializable {
+@Entity
+@Table(name = "newshavepicture", schema = "football_news", catalog = "")
+@IdClass(NewshavepictureEntityPK.class)
+public class NewshavepictureEntity {
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
     @Column(name = "news_id")
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int newsId;
-    @Column(name = "pictureroute")
-    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @Column(name = "pictureroute")
     private String pictureroute;
 
     public int getNewsId() {
@@ -38,7 +37,7 @@ public class NewshavepictureEntityPK implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        NewshavepictureEntityPK that = (NewshavepictureEntityPK) o;
+        NewshavepictureEntity that = (NewshavepictureEntity) o;
         return newsId == that.newsId && Objects.equals(pictureroute, that.pictureroute);
     }
 

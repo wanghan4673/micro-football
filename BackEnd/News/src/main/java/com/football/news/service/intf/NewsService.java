@@ -1,8 +1,8 @@
 package com.football.news.service.intf;
 
-import com.football.news.model.NewsEntity;
-import com.football.news.model.NewsEntityInfo;
-import com.football.news.model.VideoEntity;
+import com.football.news.model.Entity.NewsEntity;
+import com.football.news.model.Info.NewsEntityInfo;
+import com.football.news.model.Entity.VideoEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
