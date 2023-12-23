@@ -30,4 +30,8 @@ public interface UserService {
     List<User> getMyFollowers(Long userId);
 
     List<User> getMyFans(Long userId);
+
+    String getUserByIdAndPs(Long userId, String oriPassword);
+
+    boolean updatePassword(Long userId, String newPassword);
 }
