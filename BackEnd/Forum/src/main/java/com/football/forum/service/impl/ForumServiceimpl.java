@@ -168,16 +168,6 @@ public class ForumServiceimpl implements ForumService {
             forumMapper.follow(followerid, userid);
         }
     }
-
-    @Override
-    public List<PostDTO> getAllPosts(){
-        return forumMapper.getAllPosts();
-    }
-
-    @Override
-    public  PostDTO getPostForAdmin(Integer postid){
-        return  forumMapper.getPostDTO(postid);
-    }
     private Posts handleResponse(SearchResponse<Post> response){
         log.info("----------------------entry es response------------------------");
         HitsMetadata<Post> hits = response.hits();

@@ -185,4 +185,11 @@ public interface ForumMapper {
 
     @Select("SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_NAME = 'post' AND TABLE_SCHEMA = DATABASE();")
     int getMaxId();
+
+    @Delete("""
+        DELETE FROM post
+        WHERE
+            _id = #{postid}
+    """)
+    Boolean deletePost(Integer postid);
 }

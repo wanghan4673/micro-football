@@ -28,11 +28,6 @@ public class ForumController {
         return Result.success(forumService.getPosts(page,size,keyword,tag));
     }
 
-    @GetMapping("/posts")
-    public List<PostDTO> GetAllPosts(){
-        return forumService.getAllPosts();
-    }
-
     @PostMapping("/post")
     public Result newPost(@RequestBody Post post){
         forumService.newpost(post);
@@ -68,11 +63,7 @@ public class ForumController {
         PostInfo postInfo = forumService.getPost(postid);
         return Result.success(postInfo);
     }
-    @GetMapping("/post")
-    public PostDTO getPostForAdmin(@RequestParam("id") Integer postid){
-        return forumService.getPostForAdmin(postid);
-    }
-    
+
     @PostMapping("/report")
     public Result report(@RequestParam("reporterName") String reporterName,
                          @RequestParam("reason") String reason,
