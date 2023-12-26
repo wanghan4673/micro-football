@@ -9,12 +9,10 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PostReportInfo {
+public class ForumReport {
     private Integer id;
+    private Integer postId;
     private String reason;
     private LocalDateTime time;
-    private Integer reportUserId;
-    private String reportUserName;
-    private Integer reportedPostId;
-    private String reportedPostName;
+    private String reporterName;
 }

@@ -15,11 +15,11 @@ public class AdminForumController {
 
     @PostMapping("/postReport")
     public Result postReport(
-            @RequestParam("reportedPostId") Integer reportedPostId,
+            @RequestParam("reporterName") String reporterName,
             @RequestParam("reason") String reason,
-            @RequestParam("reportUserId") Integer reportUserId
+            @RequestParam("postId") Integer postId
     ){
-        adminForumService.postReport(reportedPostId,reason,reportUserId);
+        adminForumService.postReport(reporterName,reason,postId);
         return Result.success();
     }
 
@@ -30,6 +30,7 @@ public class AdminForumController {
 
     @DeleteMapping("/deleteReport")
     public Integer deleteReport(@RequestParam("id") Integer id){
+        adminForumService.deleteReport(id);
         return id;
     }
 }
