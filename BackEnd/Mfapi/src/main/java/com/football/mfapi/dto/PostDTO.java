@@ -19,5 +19,3 @@ public class PostDTO {
     String tags; //tag
     Long userid; //用户id
 }
-
-

@@ -1,13 +1,13 @@
 package com.football.forum.controller;
 
-import com.football.common.utils.UserContext;
 import com.football.forum.model.*;
 import com.football.forum.service.intf.ForumService;
+import com.football.mfapi.client.ForumClient;
+import com.football.mfapi.dto.PostDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.awt.print.Pageable;
 import java.util.List;
 
 @RestController
@@ -24,6 +24,11 @@ public class ForumController {
                            @RequestParam(defaultValue = "",required = false) String tag
     ) {
         return Result.success(forumService.getPosts(page,size,keyword,tag));
+    }
+
+    @GetMapping("/posts")
+    public List<PostDTO> GetAllPosts(){
+        return forumService.getAllPosts();
     }
 
     @PostMapping("/post")

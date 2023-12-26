@@ -4,6 +4,7 @@ import com.football.forum.model.Comment;
 import com.football.forum.model.CommentInfo;
 import com.football.forum.model.Post;
 import com.football.forum.model.User;
+import com.football.mfapi.dto.PostDTO;
 import com.github.pagehelper.PageHelper;
 import org.apache.ibatis.annotations.*;
 
@@ -63,6 +64,13 @@ public interface ForumMapper {
         </script>
      """)
     Post getPost(@Param("postid") Integer postid);
+
+    @Select("""
+        <script>
+        SELECT * FROM post
+        </script>
+     """)
+    List<PostDTO> getAllPosts();
 
     @Select("""
         SELECT comment.comment,comment.time,comment.userid,user.name,user.avatar

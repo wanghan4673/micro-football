@@ -12,6 +12,7 @@ import com.football.common.utils.UserContext;
 import com.football.forum.mapper.ForumMapper;
 import com.football.forum.model.*;
 import com.football.forum.service.intf.ForumService;
+import com.football.mfapi.dto.PostDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -173,6 +174,11 @@ public class ForumServiceimpl implements ForumService {
         Long userid = UserContext.getUser();
         report.setUsername(forumMapper.getUser(Math.toIntExact(userid)).getName());
         return report;
+    }
+
+    @Override
+    public List<PostDTO> getAllPosts(){
+        return forumMapper.getAllPosts();
     }
     private Posts handleResponse(SearchResponse<Post> response){
         log.info("----------------------entry es response------------------------");
