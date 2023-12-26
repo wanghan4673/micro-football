@@ -40,7 +40,7 @@ public interface UserMapper {
     @Insert("INSERT INTO user(name,account,password) VALUES (#{name},#{account},#{password})")
     void insertUser(String name, String account, String password);
 
-    @Select("select _id,title,content,likes,comments,collect from post where userid = #{userId} and isbanned = 0")
+    @Select("select _id,title,content,likes,time,collect from post where userid = #{userId} and isbanned = 0")
     List<MyPost> getMyPosts(Long userId);
 
     @Select("select followerid from follow where fansid = #{userId}")

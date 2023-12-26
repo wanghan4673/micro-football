@@ -16,6 +16,7 @@ public class MyPost {
     Integer collect;  // 收藏数
     String title;  // 标题
     Long userid; //用户id
+    String time;  // 发布时间
 }
 
 

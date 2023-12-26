@@ -8,25 +8,51 @@
                 <div class="post-content">{{ post.content }}</div>
                 <div class="post-time">{{ post.time }}</div>
             </div>
+            <el-empty v-if="posts.length === 0" description="你还没有发过帖子,去论坛发帖吧!" />
         </el-scrollbar>
     </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import { ElMessage } from 'element-plus'
+import axios from 'axios'
 
-const posts = ref<{ id: number; title: string; content: string; time: string; }[]>([
-    { id: 1, title: 'Post 1', content: 'Content for post 1', time: '2023-01-01' },
-    { id: 2, title: 'Post 2', content: 'Content for post 2', time: '2023-01-02' },
-    { id: 3, title: 'Post 3', content: 'Content for post 3', time: '2023-01-03' },
-    { id: 4, title: 'Post 4', content: 'Content for post 4', time: '2023-01-04' },
-    { id: 5, title: 'Post 5', content: 'Content for post 5', time: '2023-01-05' },
-    { id: 6, title: 'Post 6', content: 'Content for post 6', time: '2023-01-06' },
-    { id: 7, title: 'Post 7', content: 'Content for post 7', time: '2023-01-07' },
-    { id: 8, title: 'Post 8', content: 'Content for post 8', time: '2023-01-08' },
-    { id: 9, title: 'Post 9', content: 'Content for post 9', time: '2023-01-09' },
-    { id: 10, title: 'Post 10', content: 'Content for post 10', time: '2023-01-10' }
-])
+const posts = ref<{ id: number; title: string; content: string; time: string; }[]>([])
+
+onMounted(() => {
+    getMyPosts();
+})
+
+const getMyPosts = async () => {
+    const token = localStorage.getItem('token')
+    try {
+        const response = await axios.get('/api/user/getMyPosts', {
+            headers: {
+                'token': token,
+            }
+        })
+        if (response.data.code == 1) {
+            posts.value = response.data.data.map((item: { id: number; title: string; content: string; time: string }) => ({
+                id: item.id,
+                title: item.title,
+                content: item.content,
+                time: item.time.split(' ')[0]
+            }))
+
+        } else {
+            ElMessage({
+                message: '获取帖子失败!',
+                type: 'error',
+            })
+        }
+    } catch (error) {
+        ElMessage({
+            message: '获取我的帖子请求发送失败',
+            type: 'error',
+        })
+    }
+}
 
 const toPost = (id: number) => {
 
@@ -65,7 +91,7 @@ const isLastPost = (index: number) => {
         flex: 1;
     }
 
-    .post-time{
+    .post-time {
         align-self: flex-end;
         margin-right: 0.2rem;
     }

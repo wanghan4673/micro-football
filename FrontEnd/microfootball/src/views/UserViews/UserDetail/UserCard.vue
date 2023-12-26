@@ -17,13 +17,13 @@
         </div>
         <div class="user-right-box">
             <div class="number-detail" style="cursor: pointer;" @click="toMyFollow()">
-                关注数:1
+                关注数: {{ followNum }}
             </div>
             <div class="number-detail" style="cursor: pointer;" @click="toMyFans()">
-                粉丝数:1
+                粉丝数: {{ fansNum }}
             </div>
             <div class="number-detail">
-                积分总量:1
+                积分总量: {{ score }}
             </div>
             <div class="edit-profile-button" @click="toEditProfile()">
                 修改个人资料
@@ -33,12 +33,84 @@
 </template>
 
 <script setup lang="ts">
+import { ref, onMounted,defineEmits } from 'vue'
+import { ElMessage } from 'element-plus'
+import axios from 'axios'
+
+const score = ref<number>(0)
+const followNum = ref<number>(0)
+const fansNum = ref<number>(0)
+const edmitEvents = defineEmits(['son-click'])  // 向父组件传值
+const isPost = ref(true)
+const isFans = ref(false)
+const isFollow = ref(false)
+
+
+onMounted(()=>{
+    getScore()
+    getNums()
+})
+
+const getScore = async () => {
+    const token = localStorage.getItem('token')
+    try{
+        const response = await axios.get('/api/user/score',{
+            headers: {
+                'token': token,
+            }
+        })
+        if (response.data.code == 1) {
+            score.value = response.data.data
+        } else {
+            ElMessage({
+                message: '获取积分失败!',
+                type: 'error',
+            })
+        }
+    } catch (error) {
+        ElMessage({
+            message: '获取积分请求发送失败',
+            type: 'error',
+        })
+    }
+}
+
+const getNums = async () => {
+    const token = localStorage.getItem('token')
+    try{
+        const response = await axios.get('/api/user/followCount',{
+            headers: {
+                'token': token,
+            }
+        })
+        if (response.data.code == 1) {
+            followNum.value = response.data.data[0]?.follow || 0
+            fansNum.value = response.data.data[0]?.fans || 0
+        } else {
+            ElMessage({
+                message: '获取关注数失败!',
+                type: 'error',
+            })
+        }
+    } catch (error) {
+        ElMessage({
+            message: '获取关注数请求发送失败',
+            type: 'error',
+        })
+    }
+}
 
 const toMyFollow = () => {
-
+    isFans.value = false
+    isFollow.value = true
+    isPost.value = false
+    edmitEvents('son-click',isPost.value,isFans.value,isFollow.value)
 }
 const toMyFans = () => {
-
+    isFans.value = true
+    isFollow.value = false
+    isPost.value = false
+    edmitEvents('son-click',isPost.value,isFans.value,isFollow.value)
 }
 const toEditProfile = () => {
 
@@ -52,7 +124,7 @@ const toEditProfile = () => {
     // 名片
     @extend .grid-three-container;
     height: 20vh;
-    background-color: #00ffff;
+    background-color: #c4e7fe;
     border-radius: 1rem;
 }
 

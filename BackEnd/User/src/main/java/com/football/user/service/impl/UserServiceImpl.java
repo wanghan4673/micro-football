@@ -114,11 +114,13 @@ public class UserServiceImpl implements UserService {
         List<Timestamp> checkTimes = userMapper.getCheckTimes(userId);
         // 获取所有时间戳后将其转换为YYYY-MM-DD格式
         List<String> checkDays = new ArrayList<>();
+        log.info("123"+checkTimes);
         for (Timestamp checkTime : checkTimes) {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             String checkDay = sdf.format(new Date(checkTime.getTime()));
             checkDays.add(checkDay);
         }
+        log.info("456"+checkDays);
         return checkDays;
     }
 
