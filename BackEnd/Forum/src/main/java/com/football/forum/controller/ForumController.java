@@ -64,7 +64,7 @@ public class ForumController {
 
     @PostMapping("/report")
     public Result report(@RequestBody()Report report){
-        ReportInfo result = forumService.report(report);
-        return  Result.success(result);
+        report = forumService.report(report);
+        return  Result.success(report);
     }
 }

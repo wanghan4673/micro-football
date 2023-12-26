@@ -12,9 +12,5 @@ import java.sql.Timestamp;
 public class Report {
     String content;
     Integer postid;
-     Timestamp time;
-     String reply;
-     String status;
-     Integer userid;
-    Integer reporterid;
+    String username;
 }

@@ -19,5 +19,5 @@ public interface ForumService {
     void follow(Long followerid);
 
     void comment(Integer postid,String comment);
-    ReportInfo report(Report report);
+    Report report(Report report);
 }

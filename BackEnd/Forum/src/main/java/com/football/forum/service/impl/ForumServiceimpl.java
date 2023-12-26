@@ -169,23 +169,10 @@ public class ForumServiceimpl implements ForumService {
     }
 
     @Override
-    public ReportInfo report(Report report){
+    public Report report(Report report){
         Long userid = UserContext.getUser();
-        ReportInfo reportInfo = new ReportInfo();
-        //获取被举报帖子
-        reportInfo.setPost(forumMapper.getPost(report.getPostid()));
-        //获取被举报发帖人
-        reportInfo.setPoster(forumMapper.getPoster(report.getPostid()));
-        //获取举报人
-        reportInfo.setReporter(forumMapper.getUser(Math.toIntExact(userid)));
-
-        report.setReporterid(Math.toIntExact(userid));
-        report.setTime(new Timestamp(System.currentTimeMillis()));
-        report.setUserid(reportInfo.getPoster().getId());
-        //获取举报信息
-        reportInfo.setReport(report);
-//        report.userid =
-        return reportInfo;
+        report.setUsername(forumMapper.getUser(Math.toIntExact(userid)).getName());
+        return report;
     }
     private Posts handleResponse(SearchResponse<Post> response){
         log.info("----------------------entry es response------------------------");
