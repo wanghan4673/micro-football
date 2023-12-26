@@ -2,6 +2,7 @@ package com.football.forum.controller;
 
 import com.football.forum.model.*;
 import com.football.forum.service.intf.ForumService;
+import com.football.mfapi.client.AdminForumClient;
 import com.football.mfapi.client.ForumClient;
 import com.football.mfapi.dto.PostDTO;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +17,8 @@ import java.util.List;
 public class ForumController {
     @Autowired
     private ForumService forumService;
-
+    @Autowired
+    private AdminForumClient adminForumClient;
     @GetMapping()
     public Result GetPosts(@RequestParam(defaultValue = "1",required = false) Integer page,
                            @RequestParam(defaultValue = "10",required = false) Integer size,
@@ -66,10 +68,16 @@ public class ForumController {
         PostInfo postInfo = forumService.getPost(postid);
         return Result.success(postInfo);
     }
-
+    @GetMapping("/post")
+    public PostDTO getPostForAdmin(@RequestParam("id") Integer postid){
+        return forumService.getPostForAdmin(postid);
+    }
+    
     @PostMapping("/report")
-    public Result report(@RequestBody()Report report){
-        report = forumService.report(report);
-        return  Result.success(report);
+    public Result report(@RequestParam("reporterName") String reporterName,
+                         @RequestParam("reason") String reason,
+                         @RequestParam("postId") Integer postId){
+        adminForumClient.postReport(reporterName,reason,postId);
+        return  Result.success();
     }
 }

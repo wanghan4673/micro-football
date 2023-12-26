@@ -11,6 +11,7 @@ import java.util.List;
 public interface ForumService {
     Posts getPosts(int page, int size, String keyword,String tag);
     List<PostDTO> getAllPosts();
+    PostDTO getPostForAdmin(Integer postid);
     PostInfo getPost(Integer postid);
 
     void newpost(Post post);
@@ -22,5 +23,4 @@ public interface ForumService {
     void follow(Long followerid);
 
     void comment(Integer postid,String comment);
-    Report report(Report report);
 }

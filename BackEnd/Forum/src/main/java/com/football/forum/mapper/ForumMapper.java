@@ -73,6 +73,13 @@ public interface ForumMapper {
     List<PostDTO> getAllPosts();
 
     @Select("""
+        <script>
+        SELECT * FROM post
+        WHERE _id = #{postid}
+        </script>
+     """)
+    PostDTO getPostDTO(Integer postid);
+    @Select("""
         SELECT comment.comment,comment.time,comment.userid,user.name,user.avatar
         FROM comment join user ON comment.userid = user._id
         WHERE

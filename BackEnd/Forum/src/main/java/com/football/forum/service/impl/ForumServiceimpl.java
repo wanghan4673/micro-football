@@ -170,15 +170,13 @@ public class ForumServiceimpl implements ForumService {
     }
 
     @Override
-    public Report report(Report report){
-        Long userid = UserContext.getUser();
-        report.setUsername(forumMapper.getUser(Math.toIntExact(userid)).getName());
-        return report;
+    public List<PostDTO> getAllPosts(){
+        return forumMapper.getAllPosts();
     }
 
     @Override
-    public List<PostDTO> getAllPosts(){
-        return forumMapper.getAllPosts();
+    public  PostDTO getPostForAdmin(Integer postid){
+        return  forumMapper.getPostDTO(postid);
     }
     private Posts handleResponse(SearchResponse<Post> response){
         log.info("----------------------entry es response------------------------");
