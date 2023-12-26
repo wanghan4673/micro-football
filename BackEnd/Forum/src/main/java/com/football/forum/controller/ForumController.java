@@ -18,7 +18,7 @@ public class ForumController {
     private ForumService forumService;
 
     @GetMapping()
-    public Result GetPosts(@RequestParam(defaultValue = "0",required = false) Integer page,
+    public Result GetPosts(@RequestParam(defaultValue = "1",required = false) Integer page,
                            @RequestParam(defaultValue = "10",required = false) Integer size,
                            @RequestParam(defaultValue = "",required = false) String keyword,
                            @RequestParam(defaultValue = "",required = false) String tag
