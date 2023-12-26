@@ -29,7 +29,7 @@ const toPost = (post) =>{
 }
 let PostList =ref([])
 let totalElements = ref(PostList.value.length)
-let page = 0
+let page = 1
 onMounted(()=>{
     loadPosts();
 })
@@ -43,16 +43,16 @@ watch(()=>forumstore.sorttag,(newValue,oldValue)=>{
     loadPosts();
 })
 const handleCurrentChange = async (newPage) => {
-    page = newPage
+    page = newPage + 1
     loadPosts()
 }
 const loadPosts = async() =>{
     PostList.value = []
     totalElements=0
     let response
-    let timeQ = forumstore.sorttype=='like'?false:true
+    // let timeQ = forumstore.sorttype=='like'?false:true
     try{
-        response = await axios.get('/api/forum?page='+page+'&size=10&keyword='+forumstore.keyword+'&timeQ='+timeQ+'&tag='+forumstore.sorttag)
+        response = await axios.get('/api/forum?page='+page+'&size=10&keyword='+forumstore.keyword+'&tag='+forumstore.sorttag)
         if(response.status == 200){
             for(const post of response.data.data.posts){
                 PostList.value.push(post)

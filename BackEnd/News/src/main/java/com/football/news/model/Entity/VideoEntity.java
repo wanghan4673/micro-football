@@ -1,4 +1,4 @@
-package com.football.news.model;
+package com.football.news.model.Entity;
 
 import jakarta.persistence.*;
 

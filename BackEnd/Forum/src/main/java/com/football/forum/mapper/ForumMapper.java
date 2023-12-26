@@ -82,6 +82,14 @@ public interface ForumMapper {
     User getPoster(@Param("postid") Integer postid);
 
     @Select("""
+        SELECT *
+        FROM user
+        WHERE
+            _id = #{userid}
+    """)
+    User getUser(@Param("userid") Integer userid);
+
+    @Select("""
         SELECT COUNT(*) > 0
         FROM likes
         WHERE postid = #{postid} AND userid = #{userid}

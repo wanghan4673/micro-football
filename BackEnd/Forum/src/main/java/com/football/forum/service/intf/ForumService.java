@@ -1,8 +1,6 @@
 package com.football.forum.service.intf;
 
-import com.football.forum.model.Post;
-import com.football.forum.model.PostInfo;
-import com.football.forum.model.Posts;
+import com.football.forum.model.*;
 import org.springframework.stereotype.Service;
 
 
@@ -21,4 +19,5 @@ public interface ForumService {
     void follow(Long followerid);
 
     void comment(Integer postid,String comment);
+    ReportInfo report(Report report);
 }

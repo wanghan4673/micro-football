@@ -1,10 +1,7 @@
 package com.football.forum.controller;
 
 import com.football.common.utils.UserContext;
-import com.football.forum.model.Comment;
-import com.football.forum.model.Post;
-import com.football.forum.model.PostInfo;
-import com.football.forum.model.Result;
+import com.football.forum.model.*;
 import com.football.forum.service.intf.ForumService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +18,7 @@ public class ForumController {
     private ForumService forumService;
 
     @GetMapping()
-    public Result GetPosts(@RequestParam(defaultValue = "0",required = false) Integer page,
+    public Result GetPosts(@RequestParam(defaultValue = "1",required = false) Integer page,
                            @RequestParam(defaultValue = "10",required = false) Integer size,
                            @RequestParam(defaultValue = "",required = false) String keyword,
                            @RequestParam(defaultValue = "",required = false) String tag
@@ -35,25 +32,25 @@ public class ForumController {
         return Result.success();
     }
 
-    @PutMapping("/post/like")
+    @PostMapping("/post/like")
     public Result likePost(@RequestParam() Long postid){
         forumService.likepost(postid);
         return Result.success();
     }
 
-    @PutMapping("/post/collect")
+    @PostMapping("/post/collect")
     public Result collectPost(@RequestParam() Long postid){
         forumService.collectpost(postid);
         return Result.success();
     }
 
-    @PutMapping("/post/follow")
+    @PostMapping("/post/follow")
     public Result follow(@RequestParam() Long followerid){
         forumService.follow(followerid);
         return Result.success();
     }
 
-    @PutMapping("/post/comment")
+    @PostMapping("/post/comment")
     public Result comment(@RequestBody() Comment comment){
         forumService.comment(comment.getPostid(),comment.getComment());
         return Result.success();
@@ -63,5 +60,11 @@ public class ForumController {
     public Result getPost(@PathVariable("id") Integer postid){
         PostInfo postInfo = forumService.getPost(postid);
         return Result.success(postInfo);
+    }
+
+    @PostMapping("/report")
+    public Result report(@RequestBody()Report report){
+        ReportInfo result = forumService.report(report);
+        return  Result.success(result);
     }
 }

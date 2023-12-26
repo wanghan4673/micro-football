@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Mapper
-public interface PostReportInfoMapper {
+public interface AdminForumMapper {
     @Insert("INSERT INTO post_report_info (reported_post_id, reason, report_user_id, time) " +
             "VALUES (#{reportedPostId},#{reason},#{reportUserId},#{time})")
     void postReport(Integer reportedPostId, String reason, Integer reportUserId, LocalDateTime time);
