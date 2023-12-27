@@ -26,11 +26,11 @@ public class ViewController {
     private UserService userService;
     private final AnnouncementClient announcementClient;
     @GetMapping("/score")
-    public Result viewScore(){
+    public Result viewUserCard(){
         Long userId = UserContext.getUser();
-        log.info("----------查看积分:{}----------", userId);
-        Integer score = userService.getScore(userId);
-        return Result.success(score);
+        log.info("----------查看个人信息(用户名 个性签名及积分):{}----------", userId);
+        User user = userService.getUserCard(userId);
+        return Result.success(user);
     }
     @GetMapping("/followCount")
     public Result viewFollowCount(){

@@ -2,10 +2,16 @@
 <template>
     <div class="user-fans-box">
         <el-scrollbar max-height="70vh">
-            <div v-for="fan, index in fans" :key="fan.id" class="follow-card"
+            <div class="back-myPost-button">
+                <el-icon class="back-myPost-icon" @click="toMyPost()">
+                    <Close />
+                </el-icon>
+            </div>
+            <div v-for="fan, index in fans" :key="fan.id" class="fan-card"
                 :style="{ marginBottom: isLastFan(index) ? '0' : '0.5rem' }">
                 <div class="fan-name">{{ fan.name }}</div>
                 <div class="fan-signature">{{ fan.signature }}</div>
+                <el-divider v-if="!isLastFan(index)" />
             </div>
             <el-empty v-if="fans.length === 0" description="你还没有关注用户哦" />
         </el-scrollbar>
@@ -13,11 +19,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, defineEmits } from 'vue'
 import { ElMessage } from 'element-plus'
 import axios from 'axios'
+import { gotoPath } from '@/assets/api';
 
 const fans = ref<{ id: number; name: string; signature: string }[]>([])
+const edmitEvents = defineEmits(['son-click'])  // 向父组件传值
 
 onMounted(() => {
     getMyFans()
@@ -37,7 +45,7 @@ const getMyFans = async () => {
                 name: item.name,
                 signature: item.signature
             }))
-            console.log("fans: "+fans)
+            console.log("fans: " + fans)
         } else {
             ElMessage({
                 message: '获取粉丝列表失败!',
@@ -55,13 +63,49 @@ const getMyFans = async () => {
 const isLastFan = (index: number) => {
     return index === fans.value.length - 1;
 }
+
+const toMyPost = () => {
+    const isPost = ref(true)
+    const isFans = ref(false)
+    const isFollow = ref(false)
+    edmitEvents('son-click', isPost.value, isFans.value, isFollow.value)
+}
 </script>
 
 <style lang="scss">
+.back-myPost-button {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+    .back-myPost-icon {
+        cursor: pointer;
+        font-size: 3vh;
+    }
+}
+
 .user-fans-box {
     height: 70vh;
     border-top-right-radius: 2vh;
     border-top-left-radius: 2vh;
-    background-color: #e8e8e8;
+    background: linear-gradient(to bottom, #ffffff, #e8e8e8);
+}
+
+.fan-card {
+    height: 10vh;
+    display: flex;
+    flex-direction: column;
+
+    .fan-name {
+        display: flex;
+        align-items: start;
+        font-size: 1.3rem;
+        margin-bottom: 1vh;
+    }
+
+    .fan-signature {
+        width: 95%;
+        align-self: center;
+    }
 }
 </style>

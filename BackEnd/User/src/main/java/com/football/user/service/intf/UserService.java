@@ -11,7 +11,7 @@ import java.util.Map;
 public interface UserService {
     User login(User user);
 
-    Integer getScore(Long userId);
+    User getUserCard(Long userId);
 
     List<Map<String, Integer>> getFollowCount(Long userId);
 
@@ -34,4 +34,6 @@ public interface UserService {
     String getUserByIdAndPs(Long userId, String oriPassword);
 
     boolean updatePassword(Long userId, String newPassword);
+
+    boolean deleteFollow(Long userId, Long deleteId);
 }

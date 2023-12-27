@@ -12,8 +12,8 @@
             </div>
             <div class="change-container">
                 <MyPost v-if="viewPost" />
-                <MyFans v-if="viewFans" />
-                <MyFollow v-if="viewFollow" />
+                <MyFans @son-click="changeFromCard" v-if="viewFans" />
+                <MyFollow @son-click="changeFromCard" v-if="viewFollow" />
             </div>
         </div>
         <div class="user-right-container">

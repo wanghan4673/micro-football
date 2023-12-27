@@ -2,10 +2,7 @@ package com.football.user.mapper;
 
 import com.football.user.model.MyPost;
 import com.football.user.model.User;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -16,8 +13,8 @@ public interface UserMapper {
     @Select("select * from user where account = #{account} and password = #{password}")
     User getUserByAccAndPas(User user);
 
-    @Select("select score from user where _id = #{userId}")
-    Integer getScore(Long userId);
+    @Select("select name,signature,score from user where _id = #{userId}")
+    User getUserCard(Long userId);
 
     @Select("select follow,fans from user where _id = #{userId}")
     List<Map<String, Integer>> getFollowCount(Long userId);
@@ -40,33 +37,33 @@ public interface UserMapper {
     @Insert("INSERT INTO user(name,account,password) VALUES (#{name},#{account},#{password})")
     void insertUser(String name, String account, String password);
 
-    @Select("select _id,title,content,likes,time,collect from post where userid = #{userId} and isbanned = 0")
+    @Select("select _id,title,content,likes,time,collect from post where userid = #{userId}")
     List<MyPost> getMyPosts(Long userId);
 
     @Select("select followerid from follow where fansid = #{userId}")
     List<Integer> getFollowerIds(Long userId);
 
     @Select("""
-        <script>
-        select _id,name,signature from user where _id in 
-        <foreach item='id' collection='followerIds' open='(' separator=',' close=')'>
-        #{id}
-        </foreach>
-        </script>
-    """)
+                <script>
+                select _id,name,signature from user where _id in 
+                <foreach item='id' collection='followerIds' open='(' separator=',' close=')'>
+                #{id}
+                </foreach>
+                </script>
+            """)
     List<User> getFollowersByIds(List<Integer> followerIds);
 
     @Select("select fansid from follow where followerid = #{userId}")
     List<Integer> getFansIds(Long userId);
 
     @Select("""
-        <script>
-        select _id,name,signature from user where _id in 
-        <foreach item='id' collection='fansIds' open='(' separator=',' close=')'>
-        #{id}
-        </foreach>
-        </script>
-    """
+                <script>
+                select _id,name,signature from user where _id in 
+                <foreach item='id' collection='fansIds' open='(' separator=',' close=')'>
+                #{id}
+                </foreach>
+                </script>
+            """
     )
     List<User> getFansByIds(List<Integer> fansIds);
 
@@ -75,4 +72,10 @@ public interface UserMapper {
 
     @Update("UPDATE user SET password = #{newPassword} WHERE _id=#{userId}")
     boolean updatePassword(Long userId, String newPassword);
+
+    @Delete("DELETE FROM follow WHERE fansid = #{userId} AND followerid = #{deleteId}")
+    boolean deleteFollow(Long userId, Long deleteId);
+
+    @Update("UPDATE user SET follow = follow - 1 WHERE _id = #{userId}")
+    boolean minusUserFollowNum(Long userId);
 }

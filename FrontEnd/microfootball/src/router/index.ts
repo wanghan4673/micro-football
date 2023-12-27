@@ -18,7 +18,14 @@ const routes = [
   {
     path: '/personal',
     name: 'personal',
-    component: () => import('../views/UserViews/Personal.vue')
+    component: () => import('../views/UserViews/Personal.vue'),
+    // children:[
+    //   {
+    //     path:'/myPost',
+    //     name:'myPost',
+    //     component: () => import('../views/UserViews/UserDetail/MyPost.vue'),
+    //   }
+    // ]
   },
   {
     path: '/forum',

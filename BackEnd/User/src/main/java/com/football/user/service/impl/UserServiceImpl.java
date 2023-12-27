@@ -82,8 +82,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Integer getScore(Long userId) {
-        return userMapper.getScore(userId);
+    @Transactional
+    public boolean deleteFollow(Long userId, Long deleteId) {
+        return userMapper.deleteFollow(userId,deleteId)&&userMapper.minusUserFollowNum(userId);
+    }
+
+    @Override
+    public User getUserCard(Long userId) {
+        return userMapper.getUserCard(userId);
     }
 
     @Override

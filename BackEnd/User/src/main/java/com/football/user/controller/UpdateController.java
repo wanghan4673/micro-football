@@ -23,6 +23,7 @@ public class UpdateController {
         // 还有一个参数是头像图片 暂时先不考虑
         Long userId = UserContext.getUser();
         log.info("----------更新个人信息:{}----------", userId);
+        log.info(name+signature+email);
         boolean updateResult = userService.updateUser(userId, name, signature, email);
         if (updateResult) {
             return Result.success();
@@ -49,16 +50,28 @@ public class UpdateController {
         Long userId = UserContext.getUser();
         log.info("----------修改密码:{},{}----------", userId, passwords.getOriPassword());
         String psCorrect = userService.getUserByIdAndPs(userId, passwords.getOriPassword());
-        if (psCorrect!=null) {
+        if (psCorrect != null) {
             // 存在用户且密码正确
             boolean changeResult = userService.updatePassword(userId, passwords.getNewPassword());
-            if(changeResult){
+            if (changeResult) {
                 return Result.success();
-            } else{
+            } else {
                 return Result.error("修改密码失败");
             }
-        } else{
+        } else {
             return Result.error("原密码错误");
+        }
+    }
+
+    @DeleteMapping("/deleteFollow/{deleteId}")
+    public Result deleteFollow(@PathVariable Long deleteId) {
+        Long userId = UserContext.getUser();
+        log.info("----------取消关注:{},{}----------", userId, deleteId);
+        boolean deleteResult = userService.deleteFollow(userId,deleteId);
+        if(deleteResult){
+            return Result.success();
+        } else{
+            return Result.error("取消关注失败");
         }
     }
 }
