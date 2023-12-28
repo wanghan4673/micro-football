@@ -41,13 +41,13 @@ public class ForumController {
     }
 
     @PostMapping("/post/like")
-    public Result likePost(@RequestParam() Long postid){
+    public Result likePost(@RequestParam("postid") Long postid){
         forumService.likepost(postid);
         return Result.success();
     }
 
     @PostMapping("/post/collect")
-    public Result collectPost(@RequestParam() Long postid){
+    public Result collectPost(@RequestParam("postid") Long postid){
         forumService.collectpost(postid);
         return Result.success();
     }

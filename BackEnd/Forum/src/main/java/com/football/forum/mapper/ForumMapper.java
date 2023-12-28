@@ -79,6 +79,14 @@ public interface ForumMapper {
         </script>
      """)
     PostDTO getPostDTO(Integer postid);
+
+    @Select("""
+        <script>
+        SELECT postimg.img FROM postimg
+        WHERE postid = #{postid}
+        </script>
+     """)
+    String[] getPostImg(Integer postid);
     @Select("""
         SELECT comment.comment,comment.time,comment.userid,user.name,user.avatar
         FROM comment join user ON comment.userid = user._id
@@ -184,7 +192,7 @@ public interface ForumMapper {
     void insertComment(Integer postid,Long userid,String comment);
 
     @Insert("""
-        INSERT INTO postimg (postid,url) VALUES (#{postid},#{url})
+        INSERT INTO postimg (postid,img) VALUES (#{postid},#{url})
     """)
     void newpostimg(Integer postid,String url);
 

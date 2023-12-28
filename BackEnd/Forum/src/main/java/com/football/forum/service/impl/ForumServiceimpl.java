@@ -12,15 +12,18 @@ import com.football.common.utils.UserContext;
 import com.football.forum.mapper.ForumMapper;
 import com.football.forum.model.*;
 import com.football.forum.service.intf.ForumService;
-import com.football.mfapi.dto.PostDTO;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.*;
 import org.springframework.stereotype.Service;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
+import com.qcloud.cos.COSClient;
+import com.qcloud.cos.ClientConfig;
+import com.qcloud.cos.auth.BasicCOSCredentials;
+import com.qcloud.cos.auth.COSCredentials;
+import com.qcloud.cos.model.PutObjectRequest;
+import com.qcloud.cos.model.PutObjectResult;
+import com.qcloud.cos.region.Region;
 
 import java.io.File;
 import java.io.IOException;
@@ -108,6 +111,7 @@ public class ForumServiceimpl implements ForumService {
         Long userid = UserContext.getUser();
         System.out.println(userid);
         Post post = forumMapper.getPost(postid);
+        post.setImg(forumMapper.getPostImg(postid));
 //        System.out.println(post.toString());
         List<CommentInfo> commentInfos = forumMapper.getComments(postid);
         User user = forumMapper.getPoster(postid);
@@ -175,45 +179,41 @@ public class ForumServiceimpl implements ForumService {
             forumMapper.follow(followerid, userid);
         }
     }
+
+    @Autowired
+    private TencentProperties tencentProperties;
     @Override
     public String uploadFile(Integer postid, MultipartFile file) throws IOException {
+
+
         String originalFilename = file.getOriginalFilename();
         //构建新的文件名
         String newFileName= UUID.randomUUID() +originalFilename.substring(originalFilename.lastIndexOf("."));
 
         // 将 MultipartFile 转换为 File
-        File tempFile = convertMultipartFileToFile(file);
+        File tempFile = convertMultiPartToFile(file);
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+        // 上传文件到COS
+        PutObjectRequest putObjectRequest = new PutObjectRequest(tencentProperties.getBucket(), newFileName, tempFile);
+        COSCredentials cred = new BasicCOSCredentials(tencentProperties.getSecretId(), tencentProperties.getSecretKey());
+        Region region = new Region(tencentProperties.getRegion());
+        ClientConfig clientConfig = new ClientConfig(region);
+        COSClient cosClient = new COSClient(cred, clientConfig);
+        PutObjectResult putObjectResult = cosClient.putObject(putObjectRequest);
+        String fileUrl = tencentProperties.getCosUrl() + "/" + newFileName;
+        cosClient.shutdown();
 
-        // 构建请求体，这里需要根据实际情况填入multipart form data
-        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-        body.add("key",newFileName);
-        body.add("file",tempFile);
+        forumMapper.newpostimg(postid,fileUrl);
+        // 删除临时文件
+        FileUtils.deleteQuietly(tempFile);
 
-        HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
-        // 根据腾讯云的地址构建请求URL
-        String url = "https://football-1316860845.cos.ap-shanghai.myqcloud.com";
-        // 发起请求
-        RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, requestEntity, String.class);
-        // 处理响应
-        HttpStatusCode statusCode = response.getStatusCode();
-        String responseBody = response.getBody();
-
-        System.out.println(responseBody);
-        System.out.println(newFileName);
-
-        return url+newFileName;
+        return fileUrl;
     }
-    public File convertMultipartFileToFile(MultipartFile multipartFile) throws IOException {
-        // 创建一个临时文件
-        File tempFile = File.createTempFile("upload_", multipartFile.getOriginalFilename());
-
-        // 将MultipartFile的内容写入临时文件
-        multipartFile.transferTo(tempFile);
-
+    private File convertMultiPartToFile(MultipartFile file) throws IOException {
+        File tempFile = File.createTempFile("temp", null);
+        try (InputStream inputStream = file.getInputStream()) {
+            FileUtils.copyInputStreamToFile(inputStream, tempFile);
+        }
         return tempFile;
     }
     @Override
