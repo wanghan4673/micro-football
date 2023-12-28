@@ -32,7 +32,7 @@ public class AdminForumController {
         return Result.success(adminForumService.getReportList());
     }
 
-    @DeleteMapping("/deleteReport")
+    @PostMapping("/deleteReport")
     public Result deleteReport(@RequestParam("id") Integer id){
         adminForumService.deleteReport(id);
         return Result.success();
