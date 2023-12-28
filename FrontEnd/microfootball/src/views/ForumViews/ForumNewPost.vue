@@ -140,6 +140,11 @@ const addpostimg = (postid) =>{
     for(const img of store.drafts.img){
         uploadFile(img,postid)
     }
+    store.drafts.img = []
+    store.drafts.title = ""
+    store.drafts.content =""
+    
+    router.push('/forum')
 }
 </script>
 

@@ -9,6 +9,9 @@ export const useGeneralStore = defineStore('general', {
         content:'',
         img:[],
       },
+      user:{
+        username: '',
+      }
     }
   },
 })
