@@ -26,7 +26,7 @@ public class AnnouncementController {
     @PostMapping("/postAnnouncement")
     public Result postAnnouncement(@RequestParam("title") String title,
                                    @RequestParam("detail") String detail,
-                                   @RequestParam("receiver") Integer receiver){
+                                   @RequestParam("receiver") Long receiver){
         announcementservice.postAnnouncement(title,detail,receiver);
         systemInfoService.postNewAnnounce();
         return Result.success();
@@ -39,6 +39,7 @@ public class AnnouncementController {
 
     @GetMapping("/getAnnouncementForUser")
     public List<AnnouncementDTO> getAnnouncementListForUser(@RequestParam("id") Long id){
+        List<AnnouncementDTO> allAnnouncement = announcementservice.getAnnouncementList(id).addAll(announcementservice.getAnnouncementList(0L))
         return announcementservice.getAnnouncementList(id);
     }
 

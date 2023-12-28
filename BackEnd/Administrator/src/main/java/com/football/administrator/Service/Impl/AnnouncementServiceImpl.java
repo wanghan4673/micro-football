@@ -19,7 +19,7 @@ public class AnnouncementServiceImpl implements AnnouncementService {
     SystemInfoMapper systemInfoMapper;
 
     @Override
-    public void postAnnouncement(String title, String detail,Integer receiver) {
+    public void postAnnouncement(String title, String detail,Long receiver) {
         LocalDateTime time = LocalDateTime.now();
         LocalDate DateTime = LocalDate.now();
         systemInfoMapper.postNewAnnounce(DateTime);

@@ -1,22 +1,16 @@
 <template>
     <el-container style="height: 80vh;margin-top: 5vh;" class="set-horizonal">
         <el-container style="margin-left: 5vw;width: 55vw;" class="set-vertical">
-            <el-card style="height: 40vh;">
-                <el-input v-model="keyword" placeholder="根据关键词搜索用户" clearable style="width: 20vw;">
-                    <template #prefix>
-                    <el-icon class="el-input__icon"><search /></el-icon>
-                    </template>
-                </el-input>
-                <el-button type="primary" style="margin-left: 2vw;">搜索</el-button>
+            <el-switch
+                v-model="viewUserBanned"
+                style="--el-switch-on-color: #ff4949; --el-switch-off-color: #13ce66"
+                active-text="被封禁帖子列表"
+                inactive-text="论坛帖子列表"
+            />
+            <el-card v-if="viewUserBanned == true" style="height: 74vh;margin-top: 2vh;">
                 <h3 style="margin-top: 2vh;">被封禁用户列表</h3>
             </el-card>
-            <el-card style="height: 40vh;margin-top: 2vh;">
-                <el-input v-model="keyword" placeholder="根据关键词搜索用户" clearable style="width: 20vw;">
-                    <template #prefix>
-                    <el-icon class="el-input__icon"><search /></el-icon>
-                    </template>
-                </el-input>
-                <el-button type="primary" style="margin-left: 2vw;">搜索</el-button>
+            <el-card v-if="viewUserBanned == false" style="height: 74vh;margin-top: 2vh;">
                 <h3 style="margin-top: 2vh;">正常用户列表</h3>
             </el-card>
         </el-container>

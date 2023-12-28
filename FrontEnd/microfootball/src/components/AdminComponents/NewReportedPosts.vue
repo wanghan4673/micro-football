@@ -11,44 +11,29 @@
                 placement="top"
                 class="report-item-animation"
             >
-                <el-card
-                @mouseenter="showHoverContent(item.reportId)"
-                @mouseleave="hideHoverContent()"
-                >
-                <!-- <h4>{{ item.reportName }}</h4> -->
-                <p>{{ item.reason }}</p>
+                <el-card @click="showDetail(item.postId)">
+                    <p>举报理由：{{ item.reason }}</p>
+                    <p>举报人：{{ item.reporterName }}</p>
+                    <el-container style="margin-top: 1vh;">
+                        <el-button type="primary" size="small" @click="delReport(item.id)">取消举报</el-button>
+                        <el-button type="primary" size="small" @click="confirmReport()">删除帖子</el-button>
+                    </el-container>
                 </el-card>
             </el-timeline-item>
         </el-timeline>
     </el-scrollbar>
-    <!-- <el-card v-if="hoverContent.show" class="timeline-detail">
-        <h1>{{ timeTree[hoverContent.id - 1].eventTitle }}</h1>
-        <h3>{{ timeTree[hoverContent.id - 1].eventContains }}</h3>
-        <h3>{{ timeTree[hoverContent.id - 1].eventTime }}</h3>
-    </el-card> -->
 </template>
 
 <script>
 import axios from "axios"
+import { ElMessage } from 'element-plus';
 export default {
     data(){
         return{
             reports: [],
-            hoverContent: {
-                show: false,
-                id: -1,
-            },
         }
     },
     methods:{
-        showHoverContent(id) {
-            this.hoverContent.show = true;
-            this.hoverContent.id = id;
-        },
-        hideHoverContent() {
-            this.hoverContent.show = false;
-            this.hoverContent.id = -1;
-        },
         async getReport(){
             const adminToken = localStorage.getItem('adminToken');
             try {
@@ -58,7 +43,6 @@ export default {
                         'token': adminToken
                     },
                 });
-                console.log(response)
                 if (response.status == 200) {
                     this.reports = response.data.data;
                 }
@@ -68,6 +52,29 @@ export default {
         },
         async init(){
             this.getReport()
+        },
+        showDetail(id){
+            const showDetailId = id
+            this.$emit('showDetailId', showDetailId);
+        },
+        async delReport(id){
+            const adminToken = localStorage.getItem('adminToken');
+             const formData = new FormData()
+            formData.append('id', id);
+            try {
+                const response = await axios.get('/api/admin/forum/deleteReport',formData ,{
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                        'token': adminToken
+                    },
+                });
+                console.log(response)
+                if (response.status == 200) {
+                    ElMessage.success("删除举报成功")
+                }
+            } catch (e) {
+                console.log(e)
+            }
         }
     },
     mounted(){
