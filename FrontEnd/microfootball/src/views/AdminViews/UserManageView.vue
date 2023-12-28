@@ -45,10 +45,10 @@
             </el-card>
         </el-container>
         <el-container class="set-vertical" style="margin-right: 5vw;width: 30vw;margin-left: 2vw;">
-            <new-users-chart style="height: 50vh;margin-top: 6vh;"/>
-            <el-card style="margin-top: 2vh;height: 32vh;">
+            <new-users-chart style="height: 73vh;margin-top: 6vh;"/>
+            <!-- <el-card style="margin-top: 2vh;height: 32vh;">
                 <h3>可疑用户</h3>
-            </el-card>
+            </el-card> -->
         </el-container>
     </el-container>
 </template>
@@ -121,6 +121,7 @@ export default{
                 if (response.status == 200) {
                     ElMessage.success("解封成功")
                     this.reportedUsers.splice(index,1);
+                    this.getAllUsers()
                 }
             } catch (e) {
                 console.log(e)
@@ -140,6 +141,7 @@ export default{
                 if (response.status == 200) {
                     ElMessage.success("封禁成功")
                     this.allUsers[index].isbanned = true
+                    this.getReportedUser()
                 }
             } catch (e) {
                 console.log(e)

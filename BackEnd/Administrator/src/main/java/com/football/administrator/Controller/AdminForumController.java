@@ -41,9 +41,8 @@ public class AdminForumController {
     @PostMapping("/confirmReport")
     public Result confirmReport(@RequestParam("id") Integer id){
         adminForumService.deleteReport(id);
-        //此处调用论坛接口
-        forumClient.deletePost(id);
-        return Result.success();
+        //此处调用论坛
+        return Result.success(forumClient.deletePost(id));
     }
 
     @GetMapping("/getAllPost")
