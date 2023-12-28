@@ -2,6 +2,7 @@ package com.football.user.controller;
 
 import com.football.common.utils.UserContext;
 import com.football.mfapi.client.AnnouncementClient;
+import com.football.user.model.AdminUsers;
 import com.football.user.model.MyPost;
 import com.football.user.model.Result;
 import com.football.user.model.User;
@@ -85,5 +86,13 @@ public class ViewController {
         Long userId = UserContext.getUser();
         log.info("----------获取通知:{}----------", userId);
         return Result.success(announcementClient.getAnnouncementById(userId));
+    }
+
+    @GetMapping("/getAllUsers")
+    public List<AdminUsers> getAllUsers(){
+        log.info("----------获取所有用户(为管理员准备)----------");
+        List<AdminUsers> adminUsers = userService.getAllUsers();
+        log.info(adminUsers.toString());
+        return adminUsers;
     }
 }

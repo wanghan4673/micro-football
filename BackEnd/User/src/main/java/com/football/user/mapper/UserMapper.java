@@ -1,5 +1,6 @@
 package com.football.user.mapper;
 
+import com.football.user.model.AdminUsers;
 import com.football.user.model.MyPost;
 import com.football.user.model.User;
 import org.apache.ibatis.annotations.*;
@@ -78,4 +79,10 @@ public interface UserMapper {
 
     @Update("UPDATE user SET follow = follow - 1 WHERE _id = #{userId}")
     boolean minusUserFollowNum(Long userId);
+
+    @Select("select _id,name,score,follow,fans,createdate from user")
+    List<AdminUsers> getAllUsers();
+
+    @Update("UPDATE user SET isbanned = CASE WHEN isbanned = 1 THEN 0 ELSE 1 END WHERE _id = #{id}")
+    boolean updateBanStatus(Long id);
 }

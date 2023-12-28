@@ -1,5 +1,6 @@
 package com.football.user.service.intf;
 
+import com.football.user.model.AdminUsers;
 import com.football.user.model.MyPost;
 import com.football.user.model.User;
 import org.springframework.stereotype.Service;
@@ -36,4 +37,8 @@ public interface UserService {
     boolean updatePassword(Long userId, String newPassword);
 
     boolean deleteFollow(Long userId, Long deleteId);
+
+    List<AdminUsers> getAllUsers();
+
+    boolean updateBanStatus(Long id);
 }
