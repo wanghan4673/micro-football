@@ -96,7 +96,7 @@ let newcomment = ref("")
 let reportreason = ref('')
 onMounted(() => {
     loadPost(postid)
-    console.log(post.value)
+    getUserProfile()
 })
 
 const loadPost = async (postid) => {
@@ -125,6 +125,20 @@ const loadPost = async (postid) => {
     }
 }
 
+const getUserProfile = async () => {
+    const token = localStorage.getItem('token')
+    try {
+        const response = await axios.get('/api/user/score', {
+            headers: {
+                'token': token,
+            }
+        })
+        if (response.data.code == 1) {
+            store.user.username.value = response.data.data.name
+        }
+    } catch (error) {
+    }
+}
 const handleSubmitClick = async () => {
     let response
     let token = localStorage.getItem('token')
