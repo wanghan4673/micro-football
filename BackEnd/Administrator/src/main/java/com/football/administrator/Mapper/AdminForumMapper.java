@@ -12,7 +12,7 @@ import java.util.List;
 @Mapper
 public interface AdminForumMapper {
 
-    @Select("SELECT * FROM post_report_info")
+    @Select("SELECT * FROM forum_report")
     List<ForumReport> getReportList();
 
     @Delete("DELETE FROM forum_report WHERE id = #{id}")

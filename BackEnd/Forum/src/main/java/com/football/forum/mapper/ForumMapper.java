@@ -183,6 +183,11 @@ public interface ForumMapper {
     """)
     void insertComment(Integer postid,Long userid,String comment);
 
+    @Insert("""
+        INSERT INTO postimg (postid,url) VALUES (#{postid},#{url})
+    """)
+    void newpostimg(Integer postid,String url);
+
     @Select("SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_NAME = 'post' AND TABLE_SCHEMA = DATABASE();")
     int getMaxId();
 

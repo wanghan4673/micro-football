@@ -55,7 +55,7 @@ export default {
                 if (response.data.code == 1) {
                     ElMessage({
                         message: '验证码已发送，有效时间五分钟',
-                        type: 'error',
+                        type: 'success',
                     })
                     this.isAble=false
                 }

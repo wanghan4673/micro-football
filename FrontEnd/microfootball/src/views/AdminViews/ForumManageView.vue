@@ -24,6 +24,22 @@
                 </el-input>
                 <el-button type="primary" style="margin-left: 2vw;">搜索</el-button>
                 <h3 style="margin-top: 2vh;">论坛帖子列表</h3>
+                <el-table :data="allPost" style="width: 100%">
+                    <el-table-column fixed prop="title" label="标题" width="150" />
+                    <el-table-column prop="content" label="内容" width="120" />
+                    <el-table-column prop="state" label="State" width="120" />
+                    <el-table-column prop="city" label="City" width="120" />
+                    <el-table-column prop="address" label="Address" width="600" />
+                    <el-table-column prop="zip" label="Zip" width="120" />
+                    <el-table-column fixed="right" label="Operations" width="120">
+                    <template #default>
+                        <el-button link type="primary" size="small" @click="handleClick"
+                        >Detail</el-button
+                        >
+                        <el-button link type="primary" size="small">Edit</el-button>
+                    </template>
+                    </el-table-column>
+                </el-table>
             </el-card>
         </el-container>
         <el-container class="set-vertical" style="margin-right: 5vw;width: 30vw;margin-left: 5vw;margin-top: 4vh;">
@@ -39,6 +55,7 @@
 <script>
 import NewPostsChart from '@/components/AdminComponents/NewPostsChart.vue'
 import NewReportedPosts from '@/components/AdminComponents/NewReportedPosts.vue'
+import axios from "axios"
 export default {
     components: {
         NewPostsChart,
@@ -47,11 +64,35 @@ export default {
     data() {
         return {
             viewUserBanned: false,
+            allPost:[],
         }
     },
     methods: {
-
-    }
+        async init(){
+            this.getAllPost()
+        },
+        async getAllPost(){
+            console.log(111222)
+            const adminToken = localStorage.getItem('adminToken');
+            try {
+                const response = await axios.get('/api/admin/forum/getAllPost', {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                        'token': adminToken
+                    },
+                });
+                console.log(response)
+                if (response.status == 200) {
+                    this.allPost = response.data.data;
+                }
+            } catch (e) {
+                console.log(e)
+            }
+        }
+    },
+    mounted(){
+        this.init()
+    },
 }
 </script>
 

@@ -1,5 +1,5 @@
 <template>
-    <el-header style="height: 10vh;">
+    <el-header style="">
         <div class="nav-container">
             <div class="nav-left">
                 <div class="nav-logo">

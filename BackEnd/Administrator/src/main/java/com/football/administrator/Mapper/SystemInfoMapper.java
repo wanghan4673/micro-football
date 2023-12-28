@@ -34,7 +34,7 @@ public interface SystemInfoMapper {
 
     @Select("SELECT *\n" +
             "FROM system_info\n" +
-            "ORDER BY id DESC\n" +
+            "ORDER BY date_time DESC\n" +
             "LIMIT 1;")
     SystemInfo getSysInfo();
 }

@@ -34,6 +34,7 @@ export default {
     },
     methods: {
         async postAnnouncement() {
+            const adminToken = localStorage.getItem('adminToken');
             const formData = new FormData()
             formData.append('title', this.newTitle);
             formData.append('detail',this.newDetail);
@@ -42,6 +43,7 @@ export default {
                 const response = await axios.post('/api/admin/announcement/postAnnouncement', formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data',
+                        'token':adminToken
                     },
                 });
                 console.log(response)

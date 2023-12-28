@@ -77,12 +77,14 @@ const convertFileToImageUrl = (file) => {
     }
     return '';
 };
-const uploadFile = async (file) => {
+const uploadFile = async (file,postid) => {
     const formData = new FormData()
+    let token = localStorage.getItem('token')
     formData.append('file', file);
     try {
-        const response = await axios.post(store.api + 'Question/upload', formData, {
+        const response = await axios.post('/api/forum/postimg?postid='+postid, formData, {
             headers: {
+                'token': `${token}`,
                 'Content-Type': 'multipart/form-data',
             },
         });
@@ -108,7 +110,7 @@ const addQuestion = async () => {
         response = await axios.post('/api/forum/post',{
             "content": store.drafts.content,
             "title": store.drafts.title,
-            "tags": tagstring.value
+            "tags": tagstring.value,
         },{
             headers: {
                 'token': `${token}`,
@@ -120,7 +122,10 @@ const addQuestion = async () => {
             message: "发帖成功",
             type: "success"
         });
-        router.push('/forum')
+        if(store.drafts.img == null)
+            router.push('/forum')
+        else
+            addpostimg(response.data.data.id)
         }
     } catch (err) {
         ElMessage({
@@ -128,6 +133,12 @@ const addQuestion = async () => {
             type: "error"
         });
         console.log(err);
+    }
+}
+
+const addpostimg = (postid) =>{
+    for(const img of store.drafts.img){
+        uploadFile(img,postid)
     }
 }
 </script>
