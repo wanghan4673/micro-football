@@ -7,9 +7,16 @@ import com.football.mfapi.client.ForumClient;
 import com.football.mfapi.dto.PostDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.*;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @Slf4j
@@ -30,8 +37,7 @@ public class ForumController {
 
     @PostMapping("/post")
     public Result newPost(@RequestBody Post post){
-        forumService.newpost(post);
-        return Result.success();
+        return Result.success(forumService.newpost(post));
     }
 
     @PostMapping("/post/like")
@@ -70,5 +76,12 @@ public class ForumController {
                          @RequestParam("postId") Integer postId){
         adminForumClient.postReport(reporterName,reason,postId);
         return  Result.success();
+    }
+
+    @PostMapping("/postimg")
+    public Result upload(@RequestParam("postid") Integer postid,
+                         MultipartFile file) throws IOException {
+        String filename = forumService.uploadFile(postid,file);
+        return Result.success(filename);
     }
 }

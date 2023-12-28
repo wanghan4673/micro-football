@@ -66,7 +66,7 @@ const back = () => {
     router.back(forumstore.chosedPost);
 }
 let postid = route.query.id;
-let post = ref({ title: null, content: null, img: null })
+let post = ref({ title: '', content: '', img: null })
 let comments = ref([])
 let poster = ref(null)
 let isliked = ref(false)
@@ -74,6 +74,7 @@ let iscollected = ref(false)
 let newcomment = ref("")
 onMounted(() => {
     loadPost(postid)
+    console.log(post.value)
 })
 
 const loadPost = async (postid) => {

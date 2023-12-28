@@ -15,15 +15,20 @@ import com.football.forum.service.intf.ForumService;
 import com.football.mfapi.dto.PostDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
 
 @Slf4j
 @Service
@@ -103,6 +108,7 @@ public class ForumServiceimpl implements ForumService {
         Long userid = UserContext.getUser();
         System.out.println(userid);
         Post post = forumMapper.getPost(postid);
+//        System.out.println(post.toString());
         List<CommentInfo> commentInfos = forumMapper.getComments(postid);
         User user = forumMapper.getPoster(postid);
         Boolean isliked = forumMapper.getiflike(postid, userid);
@@ -113,7 +119,7 @@ public class ForumServiceimpl implements ForumService {
     }
 
     @Override
-    public void newpost(Post post) {
+    public Post newpost(Post post) {
         Long userid = UserContext.getUser();
         try {
             Integer lastId = forumMapper.getMaxId();
@@ -131,6 +137,7 @@ public class ForumServiceimpl implements ForumService {
             log.error("Exception during importQues: {}", e.getMessage(), e);
         }
         forumMapper.newPost(post,userid);
+        return post;
     }
 
     @Override
@@ -168,6 +175,53 @@ public class ForumServiceimpl implements ForumService {
             forumMapper.follow(followerid, userid);
         }
     }
+    @Override
+    public String uploadFile(Integer postid, MultipartFile file) throws IOException {
+        String originalFilename = file.getOriginalFilename();
+        //构建新的文件名
+        String newFileName= UUID.randomUUID() +originalFilename.substring(originalFilename.lastIndexOf("."));
+
+        // 将 MultipartFile 转换为 File
+        File tempFile = convertMultipartFileToFile(file);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+        // 构建请求体，这里需要根据实际情况填入multipart form data
+        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+        body.add("key",newFileName);
+        body.add("file",tempFile);
+
+        HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
+        // 根据腾讯云的地址构建请求URL
+        String url = "https://football-1316860845.cos.ap-shanghai.myqcloud.com";
+        // 发起请求
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, requestEntity, String.class);
+        // 处理响应
+        HttpStatusCode statusCode = response.getStatusCode();
+        String responseBody = response.getBody();
+
+        System.out.println(responseBody);
+        System.out.println(newFileName);
+
+        return url+newFileName;
+    }
+    public File convertMultipartFileToFile(MultipartFile multipartFile) throws IOException {
+        // 创建一个临时文件
+        File tempFile = File.createTempFile("upload_", multipartFile.getOriginalFilename());
+
+        // 将MultipartFile的内容写入临时文件
+        multipartFile.transferTo(tempFile);
+
+        return tempFile;
+    }
+    @Override
+    public void newpostimg(Integer postid, String url){
+        System.out.println(url);
+        forumMapper.newpostimg(postid,url);
+    }
+
     private Posts handleResponse(SearchResponse<Post> response){
         log.info("----------------------entry es response------------------------");
         HitsMetadata<Post> hits = response.hits();
