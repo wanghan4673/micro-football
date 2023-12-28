@@ -12,6 +12,9 @@ public interface UserClient {
     @GetMapping("/user/getAllUsers")
     List<UserDTO> getAllUsers();
 
+    @GetMapping("/user/getBannedUsers")
+    List<UserDTO> getBannedUsers();
+
     @GetMapping("/user/updateBanStatus")
     Boolean updateBanStatus(@RequestParam("id") Long id);
 }

@@ -12,7 +12,7 @@ import java.util.Map;
 public interface UserService {
     User login(User user);
 
-    User getUserCard(Long userId);
+    User getUserInfo(Long userId);
 
     List<Map<String, Integer>> getFollowCount(Long userId);
 
@@ -41,4 +41,6 @@ public interface UserService {
     List<AdminUsers> getAllUsers();
 
     boolean updateBanStatus(Long id);
+
+    List<AdminUsers> getBannedUsers();
 }

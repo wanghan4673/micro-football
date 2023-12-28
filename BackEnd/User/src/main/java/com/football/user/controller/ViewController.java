@@ -26,11 +26,11 @@ public class ViewController {
     @Autowired
     private UserService userService;
     private final AnnouncementClient announcementClient;
-    @GetMapping("/score")
-    public Result viewUserCard(){
+    @GetMapping("/userInfo")
+    public Result viewUserInfo(){
         Long userId = UserContext.getUser();
         log.info("----------查看个人信息(用户名 个性签名及积分):{}----------", userId);
-        User user = userService.getUserCard(userId);
+        User user = userService.getUserInfo(userId);
         return Result.success(user);
     }
     @GetMapping("/followCount")
@@ -92,6 +92,14 @@ public class ViewController {
     public List<AdminUsers> getAllUsers(){
         log.info("----------获取所有用户(为管理员准备)----------");
         List<AdminUsers> adminUsers = userService.getAllUsers();
+        log.info(adminUsers.toString());
+        return adminUsers;
+    }
+
+    @GetMapping("/getBannedUsers")
+    public List<AdminUsers> getBannedUsers(){
+        log.info("----------获取被举报用户(为管理员准备)----------");
+        List<AdminUsers> adminUsers = userService.getBannedUsers();
         log.info(adminUsers.toString());
         return adminUsers;
     }

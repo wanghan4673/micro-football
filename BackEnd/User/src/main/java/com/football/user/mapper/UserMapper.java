@@ -15,7 +15,7 @@ public interface UserMapper {
     User getUserByAccAndPas(User user);
 
     @Select("select name,signature,score from user where _id = #{userId}")
-    User getUserCard(Long userId);
+    User getUserInfo(Long userId);
 
     @Select("select follow,fans from user where _id = #{userId}")
     List<Map<String, Integer>> getFollowCount(Long userId);
@@ -80,8 +80,11 @@ public interface UserMapper {
     @Update("UPDATE user SET follow = follow - 1 WHERE _id = #{userId}")
     boolean minusUserFollowNum(Long userId);
 
-    @Select("select _id,name,score,follow,fans,createdate from user")
+    @Select("select _id,name,score,follow,fans,createdate,isbanned from user")
     List<AdminUsers> getAllUsers();
+
+    @Select("select _id,name,score,follow,fans,createdate,isbanned from user where isbanned = 1")
+    List<AdminUsers> getBannedUsers();
 
     @Update("UPDATE user SET isbanned = CASE WHEN isbanned = 1 THEN 0 ELSE 1 END WHERE _id = #{id}")
     boolean updateBanStatus(Long id);

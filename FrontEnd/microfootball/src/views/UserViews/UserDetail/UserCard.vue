@@ -97,7 +97,7 @@ onMounted(() => {
 const getUserCard = async () => {
     const token = localStorage.getItem('token')
     try {
-        const response = await axios.get('/api/user/score', {
+        const response = await axios.get('/api/user/userInfo', {
             headers: {
                 'token': token,
             }

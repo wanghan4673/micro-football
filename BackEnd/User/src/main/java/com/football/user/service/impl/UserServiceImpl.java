@@ -94,13 +94,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<AdminUsers> getBannedUsers() {
+        return userMapper.getBannedUsers();
+    }
+
+    @Override
     public boolean updateBanStatus(Long id) {
         return userMapper.updateBanStatus(id);
     }
 
     @Override
-    public User getUserCard(Long userId) {
-        return userMapper.getUserCard(userId);
+    public User getUserInfo(Long userId) {
+        return userMapper.getUserInfo(userId);
     }
 
     @Override
