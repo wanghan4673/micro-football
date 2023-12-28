@@ -33,8 +33,6 @@ spring:
           predicates:
             - Path=/news/**
 
-  main:
-    allow-bean-definition-overriding=true:
 jwt:
   token:
     signKey: superusers  # 密钥
@@ -44,8 +42,8 @@ jwt:
       - /user/login  # 登录
       - /user/register  # 注册
       - /forum #获取帖子概述
-      - /forum/posts #管理员获取全部帖子
-      - /forum/post
+#      - /forum/posts #管理员获取全部帖子
+#      - /forum/post
       - /admin/login/getCode # 管理员获取验证码
       - /admin/login/checkCode  # 校验验证码
       - /player/**

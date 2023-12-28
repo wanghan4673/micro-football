@@ -1,6 +1,7 @@
 package com.football.user.service.impl;
 
 import com.football.user.mapper.UserMapper;
+import com.football.user.model.AdminUsers;
 import com.football.user.model.MyPost;
 import com.football.user.model.User;
 import com.football.user.service.intf.UserService;
@@ -85,6 +86,16 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public boolean deleteFollow(Long userId, Long deleteId) {
         return userMapper.deleteFollow(userId,deleteId)&&userMapper.minusUserFollowNum(userId);
+    }
+
+    @Override
+    public List<AdminUsers> getAllUsers() {
+        return userMapper.getAllUsers();
+    }
+
+    @Override
+    public boolean updateBanStatus(Long id) {
+        return userMapper.updateBanStatus(id);
     }
 
     @Override

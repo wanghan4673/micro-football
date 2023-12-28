@@ -74,4 +74,10 @@ public class UpdateController {
             return Result.error("取消关注失败");
         }
     }
+
+    @GetMapping("/updateBanStatus")
+    public boolean updateBanStatus(@RequestParam("id") Long id){
+        log.info("----------更新违禁状态:{}----------", id);
+        return userService.updateBanStatus(id);
+    }
 }

@@ -12,10 +12,10 @@ module.exports = defineConfig({
         pathRewrite: {  //路径重置
           '^/api': ''
         }
-      }
-    },
-    client: {
-      overlay: false //去除uncatch runtime error
+      },
+      // client: {
+      //   overlay: false //去除uncatch runtime error
+      // }
     }
   },
 })
