@@ -15,8 +15,8 @@
                 @mouseenter="showHoverContent(item.reportId)"
                 @mouseleave="hideHoverContent()"
                 >
-                <h4>{{ item.title }}</h4>
-                <p>{{ item.contains }}</p>
+                <!-- <h4>{{ item.reportName }}</h4> -->
+                <p>{{ item.reason }}</p>
                 </el-card>
             </el-timeline-item>
         </el-timeline>
@@ -29,35 +29,11 @@
 </template>
 
 <script>
+import axios from "axios"
 export default {
     data(){
         return{
-            reports: [
-                {
-                    reportId: 1,
-                    title: "不符合常规",
-                    contains: "违法违规",
-                    time: "2222-22-20",
-                },
-                {
-                    reportId: 1,
-                    title: "不符合常规",
-                    contains: "违法违规",
-                    time: "2222-22-21",
-                },
-                {
-                    reportId: 1,
-                    title: "不符合常规",
-                    contains: "违法违规",
-                    time: "2222-22-22",
-                },
-                {
-                    reportId: 1,
-                    title: "不符合常规",
-                    contains: "违法违规",
-                    time: "2222-22-23",
-                },
-            ],
+            reports: [],
             hoverContent: {
                 show: false,
                 id: -1,
@@ -66,7 +42,6 @@ export default {
     },
     methods:{
         showHoverContent(id) {
-            console.log("showHoverContent" + id);
             this.hoverContent.show = true;
             this.hoverContent.id = id;
         },
@@ -74,6 +49,29 @@ export default {
             this.hoverContent.show = false;
             this.hoverContent.id = -1;
         },
+        async getReport(){
+            const adminToken = localStorage.getItem('adminToken');
+            try {
+                const response = await axios.get('/api/admin/forum/getReportList', {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                        'token': adminToken
+                    },
+                });
+                console.log(response)
+                if (response.status == 200) {
+                    this.reports = response.data.data;
+                }
+            } catch (e) {
+                console.log(e)
+            }
+        },
+        async init(){
+            this.getReport()
+        }
+    },
+    mounted(){
+        this.init()
     }
 }
 </script>
