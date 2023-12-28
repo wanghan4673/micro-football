@@ -17,8 +17,10 @@
 import { ref, onMounted } from 'vue'
 import { ElMessage } from 'element-plus'
 import axios from 'axios'
+import { useRouter } from 'vue-router'
 
 const posts = ref<{ id: number; title: string; content: string; time: string; }[]>([])
+const router = useRouter()
 
 onMounted(() => {
     getMyPosts();
@@ -55,7 +57,12 @@ const getMyPosts = async () => {
 }
 
 const toPost = (id: number) => {
-
+    router.push({
+        path:'/forum/post',
+        query:{
+            id: id
+        }
+    })
 }
 
 const isLastPost = (index: number) => {
@@ -76,7 +83,7 @@ const isLastPost = (index: number) => {
     height: 20vh;
     display: flex;
     flex-direction: column;
-    background-color: #ffffff;
+    background-color: #f7f7f7;
 
     .post-title {
         display: flex;

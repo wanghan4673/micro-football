@@ -1,6 +1,7 @@
 package com.football.forum.service.impl;
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
+import co.elastic.clients.elasticsearch.core.DeleteResponse;
 import com.football.forum.mapper.ForumMapper;
 import com.football.forum.service.intf.ForumAdminService;
 import com.football.mfapi.dto.PostDTO;
@@ -17,16 +18,25 @@ public class ForumAdminServiceimpl implements ForumAdminService {
     private ForumMapper forumMapper;
     @Autowired
     private ElasticsearchClient client;
+
     @Override
-    public List<PostDTO> getAllPosts(){
+    public List<PostDTO> getAllPosts() {
         return forumMapper.getAllPosts();
     }
 
     @Override
-    public  PostDTO getPostForAdmin(Integer postid){
-        return  forumMapper.getPostDTO(postid);
+    public PostDTO getPostForAdmin(Integer postid) {
+        return forumMapper.getPostDTO(postid);
     }
 
     @Override
-    public Boolean deletePost(Integer postid){return  forumMapper.deletePost(postid);}
+    public Boolean deletePost(Integer postid) {
+        try{
+            DeleteResponse response = client.delete(e -> e.index("footballpost").id(String.valueOf(postid)));
+            return forumMapper.deletePost(postid);
+        } catch (Exception e) {
+            log.error("Exception during importQues: {}", e.getMessage(), e);
+            return false;
+        }
+    }
 }
