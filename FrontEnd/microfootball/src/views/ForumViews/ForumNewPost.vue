@@ -48,10 +48,12 @@ import WangEditer from '@/components/ForumComponents/WangEditer.vue';
 import '../../assets/css/forumbuttoncss.css'
 // import QuestionContent from './QuestionContent.vue';
 // import QuestionPreview from './QuestionPreview.vue';
-import { useGeneralStore } from '@/stores/general';
+import { useGeneralStore } from '@/stores/general'
+import { useForumStore } from '../../stores/forum.ts'
 import UploadFiles from '../../components/ForumComponents/UploadFiles.vue';
 import router from '@/router';
 const store = useGeneralStore()
+const forumstore = useForumStore()
 import { ElMessage } from 'element-plus'
 import axios from 'axios';
 
@@ -106,6 +108,14 @@ const addQuestion = async () => {
     for(const tag of tags.value){
         tagstring.value+= tag
     }
+    if(store.drafts.content=="" && store.drafts.title == "" && tagstring.value == "")
+    {
+        ElMessage({
+            message: "内容不能为空",
+            type: "warning",
+        });
+        return;
+    }
     try {
         response = await axios.post('/api/forum/post',{
             "content": store.drafts.content,
@@ -144,7 +154,7 @@ const addpostimg = (postid) =>{
     store.drafts.title = ""
     store.drafts.content =""
     
-    router.push('/forum')
+    // router.push('/forum/post?id='+postid)
 }
 </script>
 

@@ -1,12 +1,12 @@
 <template>
     <div id='PI-bg'>
         <div id="PostItem">
-            <p class="post-title">{{ props.post.title }}</p>
-            <el-text line-clamp="4" class="post-contain">{{ convertHtmlToText(props.post.content) }}</el-text>
+            <p class="post-title" v-html="stripContentHTML(props.post.title)"></p>
+            <el-text line-clamp="4" class="post-contain" v-html = "stripContentHTML(props.post.content)"></el-text>
         </div>
-        <div id="ImageContainer" v-if="props.post.img">
+        <!-- <div id="ImageContainer" v-if="props.post.img">
             <img id="PostImg" :src="props.post.img[0]" />
-        </div>
+        </div> -->
     </div>
 </template>
   
@@ -25,7 +25,22 @@ function convertHtmlToText(htmlString) {
     // 获取解析后文档的文本内容
     const plainText = parsedDocument.body.textContent || "";
     
-    return plainText;
+    return stripContentHTML(plainText);
+}
+
+const stripContentHTML = (html) => {
+    const strippedHTML = html.replace(/<(?!\/?font)[^>]*>/g, '');
+    // 检查是否有高亮字段
+    const match = strippedHTML.match(/<font color='#fc5531'>(.*?)<\/font>/);
+    if (match) {
+        // 如果有高亮字段，则返回高亮字段及其前后文本
+        const start = Math.max(match.index - 20, 0); // 取前20个字符
+        const end = Math.max(match.index + match[0].length + 20, strippedHTML.length); // 取后20个字符
+        return strippedHTML.substring(start, end);
+    } else {
+        // 如果没有高亮字段，直接返回整个内容
+        return strippedHTML;
+    }
 }
 
 </script>

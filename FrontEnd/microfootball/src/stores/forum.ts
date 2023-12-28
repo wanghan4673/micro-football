@@ -9,7 +9,8 @@ export const useForumStore = defineStore('forum', {
             sorttag: '',
             chosedPost: null,
             getPosts: false,
-            chosedPage: 1
+            chosedPage: 1,
+            newedpost: false
         }
     },
 })

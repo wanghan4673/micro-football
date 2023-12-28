@@ -36,6 +36,7 @@ let totalElements = ref(PostList.value.length)
 onMounted(() => {
     loadPosts();
 })
+
 watch(() => forumstore.getPosts, (newValue, oldValue) => {
     loadPosts();
 })
@@ -56,7 +57,7 @@ const loadPosts = async () => {
         if (response.status == 200) {
             PostList.value = []
             totalElements = 0
-            // console.log(response)
+            console.log(response)
             for (const post of response.data.data.posts) {
                 PostList.value.push(post)
             }
