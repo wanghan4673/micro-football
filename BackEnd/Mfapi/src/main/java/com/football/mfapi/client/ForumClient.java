@@ -18,6 +18,6 @@ public interface ForumClient {
     @GetMapping("/forum/post")
     PostDTO getPostForAdmin(@RequestParam("id") Integer postid);
 
-    @DeleteMapping("/post")
+    @DeleteMapping("/forum/post")
     Boolean deletePost(@RequestParam("id") Integer postid);
 }

@@ -15,8 +15,8 @@
                     <p>举报理由：{{ item.reason }}</p>
                     <p>举报人：{{ item.reporterName }}</p>
                     <el-container style="margin-top: 1vh;">
-                        <el-button type="primary" size="small" @click="delReport(item.id)">取消举报</el-button>
-                        <el-button type="primary" size="small" @click="confirmReport()">删除帖子</el-button>
+                        <el-button type="primary" size="small" @click="delReport(item.id,index)">取消举报</el-button>
+                        <el-button type="primary" size="small" @click="confirm(item.id, index)">删除帖子</el-button>
                     </el-container>
                 </el-card>
             </el-timeline-item>
@@ -45,6 +45,7 @@ export default {
                 });
                 if (response.status == 200) {
                     this.reports = response.data.data;
+                    console.log(this.reports)
                 }
             } catch (e) {
                 console.log(e)
@@ -57,21 +58,43 @@ export default {
             const showDetailId = id
             this.$emit('showDetailId', showDetailId);
         },
-        async delReport(id){
+        async delReport(id,index){
             const adminToken = localStorage.getItem('adminToken');
             const delId = id;
             const formData = new FormData()
             formData.append('id', delId);
             try {
-                const response = await axios.delete('/api/admin/forum/deleteReport?id=${id}',{
+                const response = await axios.post('/api/admin/forum/deleteReport',formData,{
                     headers: {
                         'Content-Type': 'multipart/form-data',
                         'token': adminToken
                     },
                 });
-                console.log(response)
                 if (response.status == 200) {
                     ElMessage.success("删除举报成功")
+                    this.reports.splice(index,1)
+                }
+            } catch (e) {
+                console.log(e)
+            }
+        },
+        async confirm(id, index) {
+            const adminToken = localStorage.getItem('adminToken');
+            const delId = id;
+            const formData = new FormData()
+            formData.append('id', delId);
+            try {
+                const response = await axios.post('/api/admin/forum/confirmReport', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                        'token': adminToken
+                    },
+                });
+                if (response.status == 200) {
+                    ElMessage.success("删除帖子成功")
+                    setTimeout(() => {
+                        window.location.reload(); // 刷新当前页面
+                    }, 1000);
                 }
             } catch (e) {
                 console.log(e)

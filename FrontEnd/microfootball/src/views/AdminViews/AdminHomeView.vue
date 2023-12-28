@@ -40,12 +40,7 @@ export default{
     </el-row>
     <el-row style="height: 75vh;">
         <el-col :span="8" class="set-vertical" style="margin-top: 2vh;">
-            <new-users-chart style="margin-left: 5vw;height: 35vh;"/>
-            <el-card style="margin-left: 5vw;margin-top: 2vh;height: 35vh;">
-                <h3>
-                    饼图
-                </h3>
-            </el-card>
+            <add-announcement :inputRows="17" style="margin-left: 5vw;height: 72vh;"/>  
         </el-col>
         <el-col :span="8" style="margin-top: 2vh;">
             <el-card style="margin-left: 1vw;margin-right: 1vw;height: 72vh;">
@@ -57,7 +52,7 @@ export default{
         </el-col>
         <el-col :span="8" style="margin-top: 2vh;">
             <work-bench style="height: 25vh;"/>
-            <add-announcement :inputRows="8" style="margin-top: 2vh;height: 45vh;"/>
+            <new-users-chart style="height: 45vh;margin-top: 2vh;"/>   
         </el-col>
     </el-row>
 </template>

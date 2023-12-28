@@ -15,7 +15,9 @@
         <el-container class="set-vertical" style="margin-right: 5vw;width: 30vw;margin-left: 5vw;margin-top: 4vh;">
             <el-card style="height: 35vh;">
                 <h3>被举报帖子详情</h3>
-            
+                <h3>{{ reportedPost.title }}</h3>
+                <el-container><span v-html="reportedPost.content"></span></el-container>
+                <el-container>{{ reportedPost.time }}</el-container>
             </el-card>
             <el-card style="margin-top: 2vh;height: 38vh;">
                 <h4>待处理举报</h4>
@@ -38,6 +40,7 @@ export default {
         return {
             allPost:[],
             showDetailId:'',
+            reportedPost:{},
         }
     },
     methods: {
@@ -74,24 +77,25 @@ export default {
         },
         async getDetailId(value){
             this.showDetailId=value
-            // const adminToken = localStorage.getItem('adminToken');
-            // try {
-            //     const response = await axios.get('/api/admin/forum/getAllPost', {
-            //         headers: {
-            //             'Content-Type': 'multipart/form-data',
-            //             'token': adminToken
-            //         },
-            //     });
-            //     if (response.status == 200) {
-            //         this.allPost = response.data.data;
-            //     }
-            // } catch (e) {
-            //     console.log(e)
-            // }
+            const adminToken = localStorage.getItem('adminToken');
+            try {
+                const response = await axios.get('/api/admin/forum/singlePost?id='+this.showDetailId, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                        'token': adminToken
+                    },
+                });
+                console.log(response)
+                if (response.status == 200) {
+                    this.reportedPost = response.data.data;
+                }
+            } catch (e) {
+                console.log(e)
+            }
         }
     },
     mounted(){
-        //this.init()
+        this.init()
     },
 }
 </script>

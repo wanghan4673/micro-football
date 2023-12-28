@@ -38,8 +38,21 @@ public class AdminForumController {
         return Result.success();
     }
 
+    @PostMapping("/confirmReport")
+    public Result confirmReport(@RequestParam("id") Integer id){
+        adminForumService.deleteReport(id);
+        //此处调用论坛接口
+        forumClient.deletePost(id);
+        return Result.success();
+    }
+
     @GetMapping("/getAllPost")
     public Result getAllPost(){
         return Result.success(forumClient.getAllPost());
+    }
+
+    @GetMapping("/singlePost")
+    public Result getSinglePost(@RequestParam("id") Integer id){
+        return Result.success(forumClient.getPostForAdmin(id));
     }
 }
