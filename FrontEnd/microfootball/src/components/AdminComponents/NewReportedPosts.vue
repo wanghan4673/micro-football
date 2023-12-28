@@ -59,7 +59,7 @@ export default {
         },
         async delReport(id){
             const adminToken = localStorage.getItem('adminToken');
-             const formData = new FormData()
+            const formData = new FormData()
             formData.append('id', id);
             try {
                 const response = await axios.get('/api/admin/forum/deleteReport',formData ,{

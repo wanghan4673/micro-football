@@ -74,25 +74,24 @@ export default {
         },
         async getDetailId(value){
             this.showDetailId=value
-            const adminToken = localStorage.getItem('adminToken');
-            try {
-                const response = await axios.get('/api/admin/forum/getAllPost', {
-                    headers: {
-                        'Content-Type': 'multipart/form-data',
-                        'token': adminToken
-                    },
-                });
-                console.log(response)
-                if (response.status == 200) {
-                    this.allPost = response.data.data;
-                }
-            } catch (e) {
-                console.log(e)
-            }
+            // const adminToken = localStorage.getItem('adminToken');
+            // try {
+            //     const response = await axios.get('/api/admin/forum/getAllPost', {
+            //         headers: {
+            //             'Content-Type': 'multipart/form-data',
+            //             'token': adminToken
+            //         },
+            //     });
+            //     if (response.status == 200) {
+            //         this.allPost = response.data.data;
+            //     }
+            // } catch (e) {
+            //     console.log(e)
+            // }
         }
     },
     mounted(){
-        this.init()
+        //this.init()
     },
 }
 </script>
