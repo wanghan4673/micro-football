@@ -78,7 +78,8 @@ import { ElMessage, type FormRules } from 'element-plus'
 import BackButton from '../../components/BackButton.vue'
 import { gotoPath } from '../../assets/api'
 import { sha256 } from 'js-sha256'
-
+import { useGeneralStore } from '@/stores/general'
+const store = useGeneralStore()
 interface RuleForm {
     username: string
     account: string
@@ -133,6 +134,7 @@ const login = async () => {
                 type: 'success',
             })
             localStorage.setItem('token', response.data.data)  // 将token存在浏览器缓存中
+            store.user.useraccount = loginForm.value.account
             gotoPath('/')
         } else {
             ElMessage({
@@ -167,7 +169,7 @@ const register = async () => {
             account: registerForm.value.account,
             password: sha256(registerForm.value.password)
         })
-        if(response.data.code == 1){
+        if (response.data.code == 1) {
             console.log("注册成功")
             ElMessage({
                 message: '注册成功!',

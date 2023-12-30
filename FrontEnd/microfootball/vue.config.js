@@ -2,7 +2,7 @@ const { defineConfig } = require('@vue/cli-service')
 module.exports = defineConfig({
   transpileDependencies: true,
   devServer: {
-    port:9000,
+    port: 9000,
     proxy: {
       '/api': {
         target: 'http://localhost:8080/',
@@ -13,9 +13,11 @@ module.exports = defineConfig({
           '^/api': ''
         }
       },
-      // client: {
-      //   overlay: false //去除uncatch runtime error
-      // }
+    },
+    client: {
+      overlay: false
     }
+
   },
+
 })

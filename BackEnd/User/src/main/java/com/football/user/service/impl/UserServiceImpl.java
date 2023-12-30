@@ -5,10 +5,15 @@ import com.football.user.model.AdminUsers;
 import com.football.user.model.MyPost;
 import com.football.user.model.User;
 import com.football.user.service.intf.UserService;
+import com.football.user.utils.TLSSigAPIv2;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -20,6 +25,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserMapper userMapper;
 
+    private TLSSigAPIv2 tlsSigAPIv2 = new TLSSigAPIv2(1600013711,"8a1959745a1485707b6fa66ef37a20ccca6ad6e360834fc0b0a3c9c9efd916df");
     @Override
     public User login(User user) {
         return userMapper.getUserByAccAndPas(user);
@@ -32,11 +38,39 @@ public class UserServiceImpl implements UserService {
         String password = user.getPassword();
         try {
             userMapper.insertUser(name, account, password);
+            createIMAccount(user);
             return true;
         } catch (Exception e) {
             return false;
         }
     }
+    @Autowired
+    private RestTemplate restTemplate;
+
+    private void createIMAccount(User user) {
+        Random rand = new Random();
+        long random = rand.nextInt() & 0xFFFFFFFFL;
+        String url = "https://console.tim.qq.com/v4/im_open_login_svc/account_import?sdkappid=1600013711&identifier=administrator&usersig="+ tlsSigAPIv2.genUserSig("administrator",5184000) +"&random="+random+"&contenttype=json";
+
+        // 构建请求体
+        Map<String, Object> requestBody = new HashMap<>();
+        requestBody.put("UserID", user.getAccount());
+        requestBody.put("Nick", user.getName());
+//        requestBody.put("FaceUrl", ""); // 根据实际情况修改
+
+        // 发送POST请求
+        ResponseEntity<String> response = restTemplate.postForEntity(url, requestBody, String.class);
+
+        // 检查响应状态码和内容
+        if (response.getStatusCode() == HttpStatus.OK) {
+            // 成功处理
+            System.out.println("账号导入成功");
+        } else {
+            // 错误处理
+            System.out.println("账号导入失败: " + response.getBody());
+        }
+    }
+
 
     @Override
     public List<MyPost> getMyPosts(Long userId) {

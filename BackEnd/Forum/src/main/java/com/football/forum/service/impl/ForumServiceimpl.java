@@ -12,6 +12,7 @@ import com.football.common.utils.UserContext;
 import com.football.forum.mapper.ForumMapper;
 import com.football.forum.model.*;
 import com.football.forum.service.intf.ForumService;
+import com.football.mfapi.client.SystemClient;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +41,8 @@ public class ForumServiceimpl implements ForumService {
     private ForumMapper forumMapper;
     @Autowired
     private ElasticsearchClient client;
-
+    @Autowired
+    private SystemClient systemClient;
     @Override
     public Posts getPosts(int page, int size, String keyword, String tag) {
 //        PageHelper.startPage(1,2);
@@ -141,6 +143,7 @@ public class ForumServiceimpl implements ForumService {
             log.error("Exception during importQues: {}", e.getMessage(), e);
         }
         forumMapper.newPost(post,userid);
+        systemClient.postNewPost();
         return post;
     }
 
