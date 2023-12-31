@@ -41,15 +41,23 @@ public class PlayerServiceImpl implements PlayerService {
             for(Map<String, Object> playerData : playersData) {
                 Map<String, Object> player = (Map<String, Object>) playerData.get("player");
                 PlayerSimpleInfo playerDto = new PlayerSimpleInfo();
-                playerDto.setId((Integer) player.get("id"));
-                playerDto.setName((String) player.get("name"));
-                playerDto.setFirstName((String) player.get("firstname"));
-                playerDto.setLastName((String) player.get("lastname"));
-                playerDto.setAge((Integer) player.get("age"));
-                playerDto.setHeight((String) player.get("height"));
-                playerDto.setWeight((String) player.get("weight"));
-                playerDto.setCountry((String) ((Map<String, Object>)player.get("birth")).get("country"));
-                playerDto.setPhoto((String) player.get("photo"));
+                playerDto.setId(player.get("id") != null ? (Integer) player.get("id") : null);
+                playerDto.setName(player.get("name") != null ? (String) player.get("name") : null);
+                playerDto.setFirstName(player.get("firstname") != null ? (String) player.get("firstname") : null);
+                playerDto.setLastName(player.get("lastname") != null ? (String) player.get("lastname") : null);
+                playerDto.setAge(player.get("age") != null ? (Integer) player.get("age") : null);
+                playerDto.setHeight(player.get("height") != null ? (String) player.get("height") : null);
+                playerDto.setWeight(player.get("weight") != null ? (String) player.get("weight") : null);
+
+                Map<String, Object> birthInfo = (Map<String, Object>) player.get("birth");
+                if (birthInfo != null) {
+                    playerDto.setCountry(birthInfo.get("country") != null ? (String) birthInfo.get("country") : null);
+                } else {
+                    playerDto.setCountry(null);
+                }
+
+                playerDto.setPhoto(player.get("photo") != null ? (String) player.get("photo") : null);
+
 
                 players.add(playerDto);
             }
