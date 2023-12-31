@@ -28,6 +28,9 @@
             <div class="edit-profile-button" @click="toEditProfile()">
                 修改个人资料
             </div>
+            <div class="change-password-button" @click="toChangePassword()">
+                修改密码
+            </div>
         </div>
         <el-dialog title="修改个人资料" v-model="editDialogVisible" width="30%" class="edit-user-box">
             <el-form :model="userCardForm" :rules="rules" label-width="80px">
@@ -46,6 +49,20 @@
                 <el-button type="primary" @click="submitEditForm">提交</el-button>
             </div>
         </el-dialog>
+        <el-dialog title="修改密码" v-model="changePwVisible" width="30%" class="edit-user-box">
+            <el-form :model="twoPwForm" :rules="pwRules" label-width="80px">
+                <el-form-item label="原密码" prop="originpassword">
+                    <el-input v-model="twoPwForm.originpassword"></el-input>
+                </el-form-item>
+                <el-form-item label="新密码" prop="newpassword">
+                    <el-input v-model="twoPwForm.newpassword"></el-input>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="changePwVisible = false">取消</el-button>
+                <el-button type="primary" @click="submitNewPassword">提交</el-button>
+            </div>
+        </el-dialog>
     </div>
 </template>
 
@@ -53,12 +70,18 @@
 import { ref, onMounted, defineEmits, reactive } from 'vue'
 import { ElMessage, type FormRules } from 'element-plus'
 import axios from 'axios'
+import { sha256 } from 'js-sha256';
 
 interface RuleForm {
     username: string
     usersignature: string
     useremail: string
 }
+interface pwRuleForm {
+    originpassword: string
+    newpassword: string
+}
+
 const name = ref<string>('')
 const signature = ref<string>('')
 const score = ref<number>(0)
@@ -68,13 +91,17 @@ const edmitEvents = defineEmits(['son-click'])  // 向父组件传值
 const isPost = ref(true)
 const isFans = ref(false)
 const isFollow = ref(false)
-const editDialogVisible = ref(false);
+const editDialogVisible = ref(false)
+const changePwVisible = ref(false)
 const userCardForm = ref({
     username: '',
     usersignature: '',
     useremail: '',
 })
-
+const twoPwForm = ref({
+    originpassword: '',
+    newpassword: '',
+})
 
 const rules = reactive<FormRules<RuleForm>>({
     username: [
@@ -86,6 +113,17 @@ const rules = reactive<FormRules<RuleForm>>({
     useremail: [
         { required: true, message: '请输入邮箱', trigger: 'blur' },
         { type: 'email', message: '邮箱格式不正确', trigger: ['blur', 'change'] }
+    ]
+})
+
+const pwRules = reactive<FormRules<pwRuleForm>>({
+    originpassword: [
+
+    ],
+    newpassword: [
+        { required: true, message: '请输入新密码', trigger: 'blur' },
+        { pattern: /^[a-zA-Z0-9]+$/, message: '密码只能由数字和字母组成', trigger: 'blur' },
+        { max: 12, message: '密码不可超过12位', trigger: 'blur' }
     ]
 })
 
@@ -161,6 +199,10 @@ const toEditProfile = () => {
     editDialogVisible.value = true;
 }
 
+const toChangePassword = () => {
+    changePwVisible.value = true;
+}
+
 const submitEditForm = async () => {
     const { username, usersignature, useremail } = userCardForm.value
     let formData = new FormData()
@@ -196,6 +238,39 @@ const submitEditForm = async () => {
     }
     editDialogVisible.value = false
 };
+
+const submitNewPassword = async () => {
+    const { originpassword, newpassword } = twoPwForm.value
+    const token = localStorage.getItem('token')
+    let response
+    try {
+        response = await axios.post('/api/user/changePassword', {
+            oriPassword: sha256(originpassword),
+            newPassword: sha256(newpassword)
+        }, {
+            headers: {
+                'token': token,
+            }
+        })
+        if(response.data.code === 1){
+            ElMessage({
+                message: '密码修改成功',
+                type: 'success',
+            })
+        } else {
+            ElMessage({
+                message: '密码修改失败,原密码错误!',
+                type: 'error',
+            })
+        }
+    } catch (error) {
+        ElMessage({
+            message: '修改密码发送失败',
+            type: 'error',
+        })
+    }
+    changePwVisible.value = false
+}
 </script>
 
 <style lang="scss">
@@ -255,7 +330,7 @@ const submitEditForm = async () => {
     font-size: 0.8rem;
 }
 
-.edit-profile-button {
+.edit-profile-button,.change-password-button {
     color: blue;
     font-size: 0.8rem;
     margin-top: 1rem;
