@@ -1,8 +1,6 @@
-package com.football.player.api;
+package com.football.player.Api;
 
 import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -11,9 +9,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
-import java.util.Map;
 
-public class searchTeamApi {
+public class SearchTeamApi {
+
+    private HashMap<String,Integer> gameTypeMap=new HashMap<>(){
+        {
+            put("英超", 59);
+            put("西甲", 107);
+            put("意甲",71);
+            put("德甲",78);
+            put("法甲",61);
+        }
+    };
     private final RestTemplate restTemplate=new RestTemplate();
     private final String api_key="130e3aed8e5e9780537823a7db871865";
     private final String url="https://v3.football.api-sports.io/teams";
