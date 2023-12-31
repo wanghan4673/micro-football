@@ -7,7 +7,6 @@ import com.football.user.service.intf.UserService;
 import com.football.user.utils.JwtUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -27,6 +26,9 @@ public class LoginController {
         User login_user = userService.login(user);
         // 登录成功 生成令牌并下发令牌给前端
         if(login_user!=null){
+            if(login_user.getIsbanned()){
+                return Result.error("该用户已被封禁");
+            }
             Map<String, Object> claims = new HashMap<>();
             claims.put("id",login_user.getId());
             claims.put("account",login_user.getAccount());
@@ -56,6 +58,7 @@ public class LoginController {
         }
         else{
             User user = userService.getNameAndAvatar(userId);
+            log.info("new"+user);
             return Result.success(user);
         }
     }

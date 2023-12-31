@@ -68,6 +68,18 @@
             <artifactId>Common</artifactId>
             <version>1.0.0</version>
         </dependency>
+        <!-- 公用api -->
+        <dependency>
+            <groupId>com.football</groupId>
+            <artifactId>mfapi</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <!-- 引入org.json所需依赖 -->
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20160810</version>
+        </dependency>
     </dependencies>
 
     <build>

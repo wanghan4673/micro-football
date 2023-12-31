@@ -1,5 +1,5 @@
 <template>
-    <el-header style="height: 10vh;">
+    <el-header style="">
         <div class="nav-container">
             <div class="nav-left">
                 <div class="nav-logo">
@@ -112,6 +112,8 @@ export default {
             // 跳转到用户登录页面的逻辑
             if(isAdmin == 0){
                 this.$router.push('/signin')
+            }else{
+                this.$router.push('/adminsignin')
             }
         },
         redirectToForum() {
@@ -124,7 +126,7 @@ export default {
         },
         redirectToMain() {
             //跳转到管理员首页页面的逻辑
-            this.$router.push('/adminHome')
+            this.$router.push('/')
         },
         redirectToPersonal() {
             //跳转到个人中心页面的逻辑

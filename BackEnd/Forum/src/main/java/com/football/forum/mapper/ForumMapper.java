@@ -4,6 +4,7 @@ import com.football.forum.model.Comment;
 import com.football.forum.model.CommentInfo;
 import com.football.forum.model.Post;
 import com.football.forum.model.User;
+import com.football.mfapi.dto.PostDTO;
 import com.github.pagehelper.PageHelper;
 import org.apache.ibatis.annotations.*;
 
@@ -12,47 +13,46 @@ import java.util.List;
 
 @Mapper
 public interface ForumMapper {
-    @Select("""
-        <script>
-        SELECT count(*) FROM post
-        <where>
-        <if test="keyword != null and keyword != ''">
-        (title LIKE CONCAT('%', #{keyword}, '%') OR
-            content LIKE CONCAT('%', #{keyword}, '%'))
-        </if>
-        <if test="tag != null and tag != '' and tag!='全部赛事'">
-                AND tags LIKE CONCAT('%', #{tag}, '%')
-            </if>
-        </where>
-        </script>
-        """)
-    Long count(@Param("keyword") String keyword,String tag);
+//    @Select("""
+//        <script>
+//        SELECT count(*) FROM post
+//        <where>
+//        <if test="keyword != null and keyword != ''">
+//        (title LIKE CONCAT('%', #{keyword}, '%') OR
+//            content LIKE CONCAT('%', #{keyword}, '%'))
+//        </if>
+//        <if test="tag != null and tag != '' and tag!='全部赛事'">
+//                AND tags LIKE CONCAT('%', #{tag}, '%')
+//            </if>
+//        </where>
+//        </script>
+//        """)
+//    Long count(@Param("keyword") String keyword,String tag);
 
-
-    @Select("""
-        <script>
-        SELECT * FROM post
-        <where>
-        <if test="keyword != null and keyword != ''">
-                (title LIKE CONCAT('%', #{keyword}, '%') OR
-                content LIKE CONCAT('%', #{keyword}, '%'))
-        </if>
-            <if test="tag != null and tag != '' and tag!='全部赛事'">
-                AND tags LIKE CONCAT('%', #{tag}, '%')
-            </if>
-        </where>
-        <choose>
-            <when test="timeQ">
-                ORDER BY time DESC
-            </when>
-            <otherwise>
-               ORDER BY (likes * 1 + collect * 5 + comments * 3) DESC
-            </otherwise>
-        </choose>
-        LIMIT #{start},#{size}
-        </script>
-    """)
-    List<Post> getPosts(Integer start,Integer size,String keyword,Boolean timeQ,String tag);
+//    @Select("""
+//        <script>
+//        SELECT * FROM post
+//        <where>
+//        <if test="keyword != null and keyword != ''">
+//                (title LIKE CONCAT('%', #{keyword}, '%') OR
+//                content LIKE CONCAT('%', #{keyword}, '%'))
+//        </if>
+//            <if test="tag != null and tag != '' and tag!='全部赛事'">
+//                AND tags LIKE CONCAT('%', #{tag}, '%')
+//            </if>
+//        </where>
+//        <choose>
+//            <when test="timeQ">
+//                ORDER BY time DESC
+//            </when>
+//            <otherwise>
+//               ORDER BY (likes * 1 + collect * 5 + comments * 3) DESC
+//            </otherwise>
+//        </choose>
+//        LIMIT #{start},#{size}
+//        </script>
+//    """)
+//    List<Post> getPosts(Integer start,Integer size,String keyword,Boolean timeQ,String tag);
 
     @Select("""
         <script>
@@ -65,6 +65,28 @@ public interface ForumMapper {
      """)
     Post getPost(@Param("postid") Integer postid);
 
+    @Select("""
+        <script>
+        SELECT * FROM post
+        </script>
+     """)
+    List<PostDTO> getAllPosts();
+
+    @Select("""
+        <script>
+        SELECT * FROM post
+        WHERE _id = #{postid}
+        </script>
+     """)
+    PostDTO getPostDTO(Integer postid);
+
+    @Select("""
+        <script>
+        SELECT postimg.img FROM postimg
+        WHERE postid = #{postid}
+        </script>
+     """)
+    String[] getPostImg(Integer postid);
     @Select("""
         SELECT comment.comment,comment.time,comment.userid,user.name,user.avatar
         FROM comment join user ON comment.userid = user._id
@@ -81,6 +103,14 @@ public interface ForumMapper {
             post._id = #{postid}
     """)
     User getPoster(@Param("postid") Integer postid);
+
+    @Select("""
+        SELECT *
+        FROM user
+        WHERE
+            _id = #{userid}
+    """)
+    User getUser(@Param("userid") Integer userid);
 
     @Select("""
         SELECT COUNT(*) > 0
@@ -161,4 +191,18 @@ public interface ForumMapper {
     """)
     void insertComment(Integer postid,Long userid,String comment);
 
+    @Insert("""
+        INSERT INTO postimg (postid,img) VALUES (#{postid},#{url})
+    """)
+    void newpostimg(Integer postid,String url);
+
+    @Select("SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_NAME = 'post' AND TABLE_SCHEMA = DATABASE();")
+    int getMaxId();
+
+    @Delete("""
+        DELETE FROM post
+        WHERE
+            _id = #{postid}
+    """)
+    Boolean deletePost(Integer postid);
 }

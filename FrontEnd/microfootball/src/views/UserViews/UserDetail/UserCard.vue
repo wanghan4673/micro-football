@@ -7,42 +7,195 @@
         </div>
         <div class="user-center-box">
             <div class="username-box">
-                用户名
+                {{ name }}
             </div>
             <div class="signature-box">
                 <p class="signature-detail">
-                    个性签名
+                    {{ signature }}
                 </p>
             </div>
         </div>
         <div class="user-right-box">
             <div class="number-detail" style="cursor: pointer;" @click="toMyFollow()">
-                关注数:1
+                关注数: {{ followNum }}
             </div>
             <div class="number-detail" style="cursor: pointer;" @click="toMyFans()">
-                粉丝数:1
+                粉丝数: {{ fansNum }}
             </div>
             <div class="number-detail">
-                积分总量:1
+                积分总量: {{ score }}
             </div>
             <div class="edit-profile-button" @click="toEditProfile()">
                 修改个人资料
             </div>
         </div>
+        <el-dialog title="修改个人资料" v-model="editDialogVisible" width="30%" class="edit-user-box">
+            <el-form :model="userCardForm" :rules="rules" label-width="80px">
+                <el-form-item label="用户名" prop="username">
+                    <el-input v-model="userCardForm.username"></el-input>
+                </el-form-item>
+                <el-form-item label="个性签名" prop="usersignature">
+                    <el-input v-model="userCardForm.usersignature"></el-input>
+                </el-form-item>
+                <el-form-item label="邮箱" prop="useremail">
+                    <el-input v-model="userCardForm.useremail"></el-input>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="editDialogVisible = false">取消</el-button>
+                <el-button type="primary" @click="submitEditForm">提交</el-button>
+            </div>
+        </el-dialog>
     </div>
 </template>
 
 <script setup lang="ts">
+import { ref, onMounted, defineEmits, reactive } from 'vue'
+import { ElMessage, type FormRules } from 'element-plus'
+import axios from 'axios'
+
+interface RuleForm {
+    username: string
+    usersignature: string
+    useremail: string
+}
+const name = ref<string>('')
+const signature = ref<string>('')
+const score = ref<number>(0)
+const followNum = ref<number>(0)
+const fansNum = ref<number>(0)
+const edmitEvents = defineEmits(['son-click'])  // 向父组件传值
+const isPost = ref(true)
+const isFans = ref(false)
+const isFollow = ref(false)
+const editDialogVisible = ref(false);
+const userCardForm = ref({
+    username: '',
+    usersignature: '',
+    useremail: '',
+})
+
+
+const rules = reactive<FormRules<RuleForm>>({
+    username: [
+        { required: true, message: '请输入用户名', trigger: 'blur' },
+        { max: 10, message: '用户名不可超过10个字符', trigger: ['blur', 'change'] }
+    ],
+    usersignature: [
+    ],
+    useremail: [
+        { required: true, message: '请输入邮箱', trigger: 'blur' },
+        { type: 'email', message: '邮箱格式不正确', trigger: ['blur', 'change'] }
+    ]
+})
+
+onMounted(() => {
+    getUserCard()
+    getNums()
+})
+
+const getUserCard = async () => {
+    const token = localStorage.getItem('token')
+    try {
+        const response = await axios.get('/api/user/userInfo', {
+            headers: {
+                'token': token,
+            }
+        })
+        if (response.data.code == 1) {
+            name.value = response.data.data.name
+            signature.value = response.data.data.signature
+            score.value = response.data.data.score
+        } else {
+            ElMessage({
+                message: '获取积分失败!',
+                type: 'error',
+            })
+        }
+    } catch (error) {
+        ElMessage({
+            message: '获取积分请求发送失败',
+            type: 'error',
+        })
+    }
+}
+
+const getNums = async () => {
+    const token = localStorage.getItem('token')
+    try {
+        const response = await axios.get('/api/user/followCount', {
+            headers: {
+                'token': token,
+            }
+        })
+        if (response.data.code == 1) {
+            followNum.value = response.data.data[0]?.follow || 0
+            fansNum.value = response.data.data[0]?.fans || 0
+        } else {
+            ElMessage({
+                message: '获取关注数失败!',
+                type: 'error',
+            })
+        }
+    } catch (error) {
+        ElMessage({
+            message: '获取关注数请求发送失败',
+            type: 'error',
+        })
+    }
+}
 
 const toMyFollow = () => {
-
+    isFans.value = false
+    isFollow.value = true
+    isPost.value = false
+    edmitEvents('son-click', isPost.value, isFans.value, isFollow.value)
 }
 const toMyFans = () => {
-
+    isFans.value = true
+    isFollow.value = false
+    isPost.value = false
+    edmitEvents('son-click', isPost.value, isFans.value, isFollow.value)
 }
 const toEditProfile = () => {
-
+    editDialogVisible.value = true;
 }
+
+const submitEditForm = async () => {
+    const { username, usersignature, useremail } = userCardForm.value
+    let formData = new FormData()
+    formData.append("name", username)
+    formData.append("signature", usersignature)
+    formData.append("email", useremail)
+    const token = localStorage.getItem('token')
+    try {
+        const response = await axios.post('/api/user/update', formData, {
+            headers: {
+                'token': token,
+            }
+        })
+        if (response.data.code === 1) {
+            ElMessage({
+                message: '个人信息更新成功',
+                type: 'success',
+            })
+            setTimeout(() => {
+                window.location.reload()
+            }, 500)
+        } else {
+            ElMessage({
+                message: '个人信息更新失败',
+                type: 'error',
+            })
+        }
+    } catch (error) {
+        ElMessage({
+            message: '修改个人信息请求发送失败',
+            type: 'error',
+        })
+    }
+    editDialogVisible.value = false
+};
 </script>
 
 <style lang="scss">
@@ -52,7 +205,7 @@ const toEditProfile = () => {
     // 名片
     @extend .grid-three-container;
     height: 20vh;
-    background-color: #00ffff;
+    background-color: #c4e7fe;
     border-radius: 1rem;
 }
 
@@ -108,10 +261,21 @@ const toEditProfile = () => {
     margin-top: 1rem;
     width: 6rem;
     transition: transform 0.3s ease;
-    &:hover{
+
+    &:hover {
         color: red;
         transform: scale(1.1);
         cursor: pointer;
     }
+}
+
+.edit-user-box {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -75%);
+    width: 35vw;
 }
 </style>

@@ -1,17 +1,22 @@
 package com.football.forum.controller;
 
-import com.football.common.utils.UserContext;
-import com.football.forum.model.Comment;
-import com.football.forum.model.Post;
-import com.football.forum.model.PostInfo;
-import com.football.forum.model.Result;
+import com.football.forum.model.*;
 import com.football.forum.service.intf.ForumService;
+import com.football.mfapi.client.AdminForumClient;
+import com.football.mfapi.client.ForumClient;
+import com.football.mfapi.dto.PostDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.*;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.awt.print.Pageable;
+import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @Slf4j
@@ -19,42 +24,41 @@ import java.util.List;
 public class ForumController {
     @Autowired
     private ForumService forumService;
-
+    @Autowired
+    private AdminForumClient adminForumClient;
     @GetMapping()
-    public Result GetPosts(@RequestParam(defaultValue = "0",required = false) Integer page,
+    public Result GetPosts(@RequestParam(defaultValue = "1",required = false) Integer page,
                            @RequestParam(defaultValue = "10",required = false) Integer size,
                            @RequestParam(defaultValue = "",required = false) String keyword,
-                           @RequestParam(defaultValue = "true",required = false) Boolean timeQ,
                            @RequestParam(defaultValue = "",required = false) String tag
     ) {
-        return Result.success(forumService.getPosts(page,size,keyword,timeQ,tag));
+        return Result.success(forumService.getPosts(page,size,keyword,tag));
     }
 
     @PostMapping("/post")
     public Result newPost(@RequestBody Post post){
-        forumService.newpost(post);
-        return Result.success();
+        return Result.success(forumService.newpost(post));
     }
 
-    @PutMapping("/post/like")
-    public Result likePost(@RequestParam() Long postid){
+    @PostMapping("/post/like")
+    public Result likePost(@RequestParam("postid") Long postid){
         forumService.likepost(postid);
         return Result.success();
     }
 
-    @PutMapping("/post/collect")
-    public Result collectPost(@RequestParam() Long postid){
+    @PostMapping("/post/collect")
+    public Result collectPost(@RequestParam("postid") Long postid){
         forumService.collectpost(postid);
         return Result.success();
     }
 
-    @PutMapping("/post/follow")
+    @PostMapping("/post/follow")
     public Result follow(@RequestParam() Long followerid){
         forumService.follow(followerid);
         return Result.success();
     }
 
-    @PutMapping("/post/comment")
+    @PostMapping("/post/comment")
     public Result comment(@RequestBody() Comment comment){
         forumService.comment(comment.getPostid(),comment.getComment());
         return Result.success();
@@ -64,5 +68,20 @@ public class ForumController {
     public Result getPost(@PathVariable("id") Integer postid){
         PostInfo postInfo = forumService.getPost(postid);
         return Result.success(postInfo);
+    }
+
+    @PostMapping("/report")
+    public Result report(@RequestParam("reporterName") String reporterName,
+                         @RequestParam("reason") String reason,
+                         @RequestParam("postId") Integer postId){
+        adminForumClient.postReport(reporterName,reason,postId);
+        return  Result.success();
+    }
+
+    @PostMapping("/postimg")
+    public Result upload(@RequestParam("postid") Integer postid,
+                         MultipartFile file) throws IOException {
+        String filename = forumService.uploadFile(postid,file);
+        return Result.success(filename);
     }
 }

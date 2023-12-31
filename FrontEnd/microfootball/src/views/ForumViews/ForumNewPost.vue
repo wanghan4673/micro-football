@@ -48,10 +48,12 @@ import WangEditer from '@/components/ForumComponents/WangEditer.vue';
 import '../../assets/css/forumbuttoncss.css'
 // import QuestionContent from './QuestionContent.vue';
 // import QuestionPreview from './QuestionPreview.vue';
-import { useGeneralStore } from '@/stores/general';
+import { useGeneralStore } from '@/stores/general'
+import { useForumStore } from '../../stores/forum.ts'
 import UploadFiles from '../../components/ForumComponents/UploadFiles.vue';
 import router from '@/router';
 const store = useGeneralStore()
+const forumstore = useForumStore()
 import { ElMessage } from 'element-plus'
 import axios from 'axios';
 
@@ -77,12 +79,14 @@ const convertFileToImageUrl = (file) => {
     }
     return '';
 };
-const uploadFile = async (file) => {
+const uploadFile = async (file,postid) => {
     const formData = new FormData()
+    let token = localStorage.getItem('token')
     formData.append('file', file);
     try {
-        const response = await axios.post(store.api + 'Question/upload', formData, {
+        const response = await axios.post('/api/forum/postimg?postid='+postid, formData, {
             headers: {
+                'token': `${token}`,
                 'Content-Type': 'multipart/form-data',
             },
         });
@@ -104,11 +108,19 @@ const addQuestion = async () => {
     for(const tag of tags.value){
         tagstring.value+= tag
     }
+    if(store.drafts.content=="" && store.drafts.title == "" && tagstring.value == "")
+    {
+        ElMessage({
+            message: "内容不能为空",
+            type: "warning",
+        });
+        return;
+    }
     try {
         response = await axios.post('/api/forum/post',{
             "content": store.drafts.content,
             "title": store.drafts.title,
-            "tags": tagstring.value
+            "tags": tagstring.value,
         },{
             headers: {
                 'token': `${token}`,
@@ -120,7 +132,10 @@ const addQuestion = async () => {
             message: "发帖成功",
             type: "success"
         });
-        router.push('/forum')
+        if(store.drafts.img == null)
+            router.push('/forum')
+        else
+            addpostimg(response.data.data.id)
         }
     } catch (err) {
         ElMessage({
@@ -129,6 +144,17 @@ const addQuestion = async () => {
         });
         console.log(err);
     }
+}
+
+const addpostimg = (postid) =>{
+    for(const img of store.drafts.img){
+        uploadFile(img,postid)
+    }
+    store.drafts.img = []
+    store.drafts.title = ""
+    store.drafts.content =""
+    
+    // router.push('/forum/post?id='+postid)
 }
 </script>
 

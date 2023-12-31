@@ -10,6 +10,8 @@ spring:
     url: jdbc:mysql://1.15.170.195:3306/administrator
     username: administrator
     password: 3K36za337n32DcBe
+  main:
+    allow-bean-definition-overriding: true
 
   mail: # 设置发送者邮箱
     host: smtp.qq.com

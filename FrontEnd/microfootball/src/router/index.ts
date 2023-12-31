@@ -18,7 +18,14 @@ const routes = [
   {
     path: '/personal',
     name: 'personal',
-    component: () => import('../views/UserViews/Personal.vue')
+    component: () => import('../views/UserViews/Personal.vue'),
+    // children:[
+    //   {
+    //     path:'/myPost',
+    //     name:'myPost',
+    //     component: () => import('../views/UserViews/UserDetail/MyPost.vue'),
+    //   }
+    // ]
   },
   {
     path: '/forum',
@@ -79,6 +86,11 @@ const routes = [
     path: '/announceManage',
     name: 'announceManage',
     component: () => import('../views/AdminViews/AnnounceManageView.vue')
+  },
+   {
+    path: '/adminsignin',
+    name: 'adminsignin',
+    component: () => import('../views/AdminViews/AdminSignInView.vue')
   }
 ]
 
@@ -90,7 +102,7 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const topNav = topNavStore()
   const isAdmin = to.query.isAdmin
-  if (to.name === 'signin') {
+  if (to.name === 'signin' || to.name === 'adminsignin') {
       topNav.bothNotShow()
   } else if (to.name === 'adminHome' || to.name === 'userManage' || to.name === 'forumManage' || to.name === 'newsManage' || to.name === 'announceManage'){
     topNav.showAdminNav()

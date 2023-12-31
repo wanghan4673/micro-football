@@ -1,5 +1,7 @@
 package com.football.user.service.intf;
 
+import com.football.user.model.AdminUsers;
+import com.football.user.model.MyPost;
 import com.football.user.model.User;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +12,7 @@ import java.util.Map;
 public interface UserService {
     User login(User user);
 
-    Integer getScore(Long userId);
+    User getUserInfo(Long userId);
 
     List<Map<String, Integer>> getFollowCount(Long userId);
 
@@ -23,4 +25,22 @@ public interface UserService {
     User getNameAndAvatar(Long userId);
 
     boolean register(User user);
+
+    List<MyPost> getMyPosts(Long userId);
+
+    List<User> getMyFollowers(Long userId);
+
+    List<User> getMyFans(Long userId);
+
+    String getUserByIdAndPs(Long userId, String oriPassword);
+
+    boolean updatePassword(Long userId, String newPassword);
+
+    boolean deleteFollow(Long userId, Long deleteId);
+
+    List<AdminUsers> getAllUsers();
+
+    boolean updateBanStatus(Long id);
+
+    List<AdminUsers> getBannedUsers();
 }

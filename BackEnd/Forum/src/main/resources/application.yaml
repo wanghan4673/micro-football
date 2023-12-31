@@ -8,10 +8,11 @@ spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://110.40.206.206:3306/football-user?useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://110.40.206.206:3306/football-user?useSSL=false&serverTimezone=Asia/Shanghai
     username: football-user
     password: Z7xMRj85tyNAs8SC
-
+  main:
+    allow-bean-definition-overriding: true
 
 mybatis:
   configuration:
@@ -27,3 +28,12 @@ pagehelper:
 
 server:
   port: 8082
+
+# 腾讯云对象存储
+tencent:
+  cos:
+    secretId: AKID30pxxjHsIYcR3RZS5WuFsNqGWZQ3UgcL
+    secretKey: sa3GIPIvMZkrqhU8Znrvrb7PVN6bu1vb
+    region: ap-shanghai
+    cosUrl: https://football-1316860845.cos.ap-shanghai.myqcloud.com
+    bucket: football-1316860845
