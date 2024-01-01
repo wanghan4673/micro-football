@@ -6,10 +6,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
 public interface PlayerService {
 
-    List<PlayerSimpleInfo> getPlayersByKeywordAndLeague(String searchKey, Integer leagueId);
+    List<PlayerSimpleInfo> getPlayersByKeywordAndLeague(String searchKey, String leagueName);
 
     PlayerDetailInfo getPlayerDetailById(Integer playerId);
 }

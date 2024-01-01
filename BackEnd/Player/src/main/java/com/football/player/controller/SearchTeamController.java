@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * 查询Team相关的外部api
+ */
 @RestController
 @Slf4j
 @RequestMapping("/player/team")
@@ -24,13 +27,13 @@ public class SearchTeamController {
     private TeamServiceImpl teamServiceImpl;
 
 
-    @GetMapping("/getTeamsByKeyword")
+    @GetMapping("/search")
     public Result getTeamsByKeyword(@RequestParam("searchKey") String searchKey) throws IOException {
         List<?> response= teamServiceImpl.getTeamsByKeyword(searchKey);
         return Result.success(response);
     }
 
-    @GetMapping("/getTeamDetailById")
+    @GetMapping("/detail")
     public Result getTeamsByKeyword(@RequestParam("teamId") Integer teamId) throws IOException {
         TeamDetailInfo response= teamServiceImpl.getTeamDetailById(teamId);
         return Result.success(response);

@@ -19,23 +19,23 @@ import java.util.List;
  */
 @RestController
 @Slf4j
-@RequestMapping("/player/player")
-public class SearchPlayerController {
+@RequestMapping("/player/game")
+public class SearchGameController {
 
     @Autowired
     private PlayerServiceImpl playerServiceImpl;
 
 
     @GetMapping("/search")
-    public Result getPlayersByKeywordAndLeague(@RequestParam("searchKey") String searchKey,
-                                                  @RequestParam("leagueName") String leagueName){
+    public Result getGamesByKeywordAndLeague(@RequestParam("searchKey") String searchKey,
+                                               @RequestParam("leagueId") String leagueName){
         List<?> response= playerServiceImpl.getPlayersByKeywordAndLeague(searchKey,leagueName);
         return Result.success(response);
 
     }
 
     @GetMapping("/detail")
-    public Result getPlayersByKeywordAndLeague(@RequestParam("playerId") int playerId){
+    public Result getGameDetail(@RequestParam("playerId") int playerId){
         PlayerDetailInfo response= playerServiceImpl.getPlayerDetailById(playerId);
         return Result.success(response);
 

@@ -18,17 +18,31 @@ import java.util.Map;
 @Service
 public class PlayerServiceImpl implements PlayerService {
 
+    private HashMap<String,Integer> gameTypeMap=new HashMap<>(){
+        {
+            put("英超", 59);
+            put("西甲", 107);
+            put("意甲",71);
+            put("德甲",78);
+            put("法甲",61);
+        }
+    };
+
 
     private final SearchPlayerApi searchPlayerApi=new SearchPlayerApi();
 
     /**
      * 根据关键字和联赛搜素球员
      * @param searchKey 关键字
-     * @param leagueId 联赛id
+     * @param leagueName 联赛名称
      * @return 球员列表
      */
     @Override
-    public List<PlayerSimpleInfo> getPlayersByKeywordAndLeague(String searchKey, Integer leagueId) {
+    public List<PlayerSimpleInfo> getPlayersByKeywordAndLeague(String searchKey, String leagueName) {
+
+        Integer leagueId=this.gameTypeMap.get(leagueName);
+        if(leagueId==null) return null;
+
         // 调用外部api获取对象
         ResponseEntity<?> responseEntity = searchPlayerApi.getPlayersByKeyAndLeague(searchKey, leagueId);
 
