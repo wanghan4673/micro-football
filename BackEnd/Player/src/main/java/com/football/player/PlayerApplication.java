@@ -11,6 +11,6 @@ public class PlayerApplication {
     public static void main(String[] args) {
         SpringApplication.run(PlayerApplication.class, args);
 
-        System.out.println(new SearchTeamApi().getResponseEntityByKey("bill"));
+        System.out.println(new SearchPlayerApi().getPlayerInfoByIdAndSeason(276,2023));
     }
 }

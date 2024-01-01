@@ -18,9 +18,10 @@ public class SearchPlayerApi {
     /**
      *
      * @param id 球员ID
+     * @param season 赛季id
      * @return 接口返回的String对象->选定赛季信息
      */
-    public ResponseEntity<?> getResponseEntityById(@RequestParam @Nonnull Integer id,
+    public ResponseEntity<?> getPlayerInfoByIdAndSeason(@RequestParam @Nonnull Integer id,
                                                    @RequestParam @Nonnull Integer season){
 
 //        封装参数
@@ -40,7 +41,7 @@ public class SearchPlayerApi {
      * @param season 所选赛季
      * @return 接口返回的String对象->球员列表
      */
-    public ResponseEntity<?> getResponseEntityByTeamId(@RequestParam @Nonnull Integer team_id,
+    public ResponseEntity<?> getPlayersByTeamId(@RequestParam @Nonnull Integer team_id,
                                                        @RequestParam @Nonnull Integer season){
 
 //        封装参数
@@ -61,7 +62,7 @@ public class SearchPlayerApi {
      * @param league_id 联赛id
      * @return 接口返回的String对象->球员列表
      */
-    public ResponseEntity<?> getResponseEntityByKey(@RequestParam @Nonnull String searchKey,
+    public ResponseEntity<?> getPlayersByKeyAndLeague(@RequestParam @Nonnull String searchKey,
                                                     @RequestParam @Nonnull Integer league_id){
 
 //        封装参数
@@ -75,8 +76,6 @@ public class SearchPlayerApi {
         HttpEntity<?> requestEntity = new HttpEntity<>(httpHeaders);
         return restTemplate.exchange(targetUrl, HttpMethod.GET,requestEntity,String.class);
     }
-
-
 
 
 
