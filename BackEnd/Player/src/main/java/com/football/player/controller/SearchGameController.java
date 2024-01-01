@@ -1,7 +1,9 @@
 package com.football.player.controller;
 
+import com.football.player.model.GameDetailInfo;
 import com.football.player.model.PlayerDetailInfo;
 import com.football.player.model.Result;
+import com.football.player.service.impl.GameServiceImpl;
 import com.football.player.service.impl.PlayerServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,24 +25,23 @@ import java.util.List;
 public class SearchGameController {
 
     @Autowired
-    private PlayerServiceImpl playerServiceImpl;
+    private GameServiceImpl gameServiceImpl;
 
 
     @GetMapping("/search")
-    public Result getGamesByKeywordAndLeague(@RequestParam("searchKey") String searchKey,
-                                               @RequestParam("leagueId") String leagueName){
-        List<?> response= playerServiceImpl.getPlayersByKeywordAndLeague(searchKey,leagueName);
+    public Result getGamesByKeywordAndLeague(@RequestParam("date") String date,
+                                               @RequestParam("leagueName") String leagueName){
+        List<?> response= gameServiceImpl.getGamesByDateAndLeague(date,leagueName);
         return Result.success(response);
 
     }
 
     @GetMapping("/detail")
-    public Result getGameDetail(@RequestParam("playerId") int playerId){
-        PlayerDetailInfo response= playerServiceImpl.getPlayerDetailById(playerId);
+    public Result getGameDetail(@RequestParam("id") int id){
+        GameDetailInfo response= gameServiceImpl.getGameDetailById(id);
         return Result.success(response);
 
     }
-
 
 
 

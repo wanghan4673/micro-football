@@ -125,8 +125,9 @@ public class GameServiceImpl implements GameService {
 
         if (responseEntity.getStatusCode().is2xxSuccessful() && responseEntity.getBody() != null) {
             try {
-//                Map<String, Object> responseBody = new ObjectMapper().readValue(responseEntity.getBody().toString(), Map.class);
-                Map<String, Object> responseBody = new ObjectMapper().readValue(test, Map.class);
+                System.out.println("=================== 进行赛事检索 ===================");
+                Map<String, Object> responseBody = new ObjectMapper().readValue(responseEntity.getBody().toString(), Map.class);
+//                Map<String, Object> responseBody = new ObjectMapper().readValue(test, Map.class);
                 List<Map<String, Object>> gamesData = (List<Map<String, Object>>) responseBody.get("response");
 
                 for (Map<String, Object> gameData : gamesData) {
@@ -168,13 +169,14 @@ public class GameServiceImpl implements GameService {
             }
         }
 
-        for(GameSimpleInfo gameSimpleInfo:games)gameSimpleInfo.show();
+        System.out.println("检索赛事结果数量："+games.size());
 
         return games;
     }
 
     @Override
     public GameDetailInfo getGameDetailById(Integer id) {
+        System.out.println("=================== 查询赛事详情 ===================");
 
         // 调用API获取赛事数据，这里应该有一个实际的URL和可能的查询参数
         ResponseEntity<?> responseEntity =searchGameApi.getGameDetailById(id);
@@ -184,8 +186,8 @@ public class GameServiceImpl implements GameService {
 
         if (responseEntity.getStatusCode().is2xxSuccessful() && responseEntity.getBody() != null) {
             try {
-//                Map<String, Object> responseBody = new ObjectMapper().readValue(responseEntity.getBody().toString(), Map.class);
-                Map<String, Object> responseBody = new ObjectMapper().readValue(test, Map.class);
+                Map<String, Object> responseBody = new ObjectMapper().readValue(responseEntity.getBody().toString(), Map.class);
+//                Map<String, Object> responseBody = new ObjectMapper().readValue(test, Map.class);
                 List<Map<String, Object>> gamesData = (List<Map<String, Object>>) responseBody.get("response");
 
                 for (Map<String, Object> gameData : gamesData) {

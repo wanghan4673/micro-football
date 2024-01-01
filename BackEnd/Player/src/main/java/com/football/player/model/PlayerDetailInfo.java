@@ -40,4 +40,16 @@ public class PlayerDetailInfo {
         Integer yellow;
         Integer red;
     }
+
+    public void show(){
+        System.out.println("球员信息：");
+        System.out.println("ID: " + id);
+        System.out.println("姓名: " + name);
+        System.out.println("年龄: " + age);
+        System.out.println("身高: " + height );
+        System.out.println("体重: " + weight);
+        System.out.println("国家: " + country);
+        System.out.println("生日: " + birth);
+    }
+
 }
