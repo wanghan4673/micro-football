@@ -1,6 +1,7 @@
 package com.football.player.controller;
 
 import com.football.player.model.Result;
+import com.football.player.model.TeamDetailInfo;
 import com.football.player.service.impl.PlayerServiceImpl;
 import com.football.player.service.impl.TeamServiceImpl;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +27,12 @@ public class SearchTeamController {
     @GetMapping("/getTeamsByKeyword")
     public Result getTeamsByKeyword(@RequestParam("searchKey") String searchKey) throws IOException {
         List<?> response= teamServiceImpl.getTeamsByKeyword(searchKey);
+        return Result.success(response);
+    }
+
+    @GetMapping("/getTeamDetailById")
+    public Result getTeamsByKeyword(@RequestParam("teamId") Integer teamId) throws IOException {
+        TeamDetailInfo response= teamServiceImpl.getTeamDetailById(teamId);
         return Result.success(response);
     }
 

@@ -30,7 +30,7 @@ public class SearchTeamApi {
      * @param id 球队ID
      * @return 接口返回的String对象->球队基本信息
      */
-    public ResponseEntity<?> getResponseEntityById(@RequestParam @Nonnull Integer id){
+    public ResponseEntity<?> getTeamSimpleInfoById(@RequestParam @Nonnull Integer id){
 
 //        封装参数
         String targetUrl=this.url+"?id="+id.toString();
@@ -45,11 +45,10 @@ public class SearchTeamApi {
     }
 
     /**
-     *
      * @param searchKey 球队关键字。匹配名称或国家名
-     * @return 接口返回的String对象->球队基本信息
+     * @return 接口返回的String对象->球队基本信息列表
      */
-    public ResponseEntity<?> getResponseEntityByKey(@RequestParam @Nonnull String searchKey){
+    public ResponseEntity<?> getTeamsByKey(@RequestParam @Nonnull String searchKey){
 
 //        封装参数
         String targetUrl=this.url+"?search="+searchKey;
