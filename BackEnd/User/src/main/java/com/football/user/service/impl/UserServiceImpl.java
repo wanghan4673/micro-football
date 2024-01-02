@@ -2,6 +2,7 @@ package com.football.user.service.impl;
 
 import com.football.user.mapper.UserMapper;
 import com.football.user.model.AdminUsers;
+import com.football.user.model.GameSubscription;
 import com.football.user.model.MyPost;
 import com.football.user.model.User;
 import com.football.user.service.intf.UserService;
@@ -142,6 +143,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean updateGameSubscript(Long userId, Long gameId, String startTime) {
         return userMapper.insertGameBook(userId,gameId,startTime);
+    }
+
+    @Override
+    public List<GameSubscription> getGamesByUserId(Long userId) {
+        return userMapper.getGamesByUserId(userId);
     }
 
     @Override
