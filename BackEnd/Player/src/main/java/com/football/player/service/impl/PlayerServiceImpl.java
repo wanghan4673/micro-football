@@ -40,6 +40,8 @@ public class PlayerServiceImpl implements PlayerService {
     @Override
     public List<PlayerSimpleInfo> getPlayersByKeywordAndLeague(String searchKey, String leagueName) {
 
+        System.out.println("=================== 进行球员检索 ===================");
+
         Integer leagueId=this.gameTypeMap.get(leagueName);
         if(leagueId==null) return null;
 
@@ -81,6 +83,7 @@ public class PlayerServiceImpl implements PlayerService {
 
                 players.add(playerDto);
             }
+            System.out.println("球员检索结果数量："+players.size());
 
             return players;
         }
@@ -97,6 +100,8 @@ public class PlayerServiceImpl implements PlayerService {
      */
     @Override
     public PlayerDetailInfo getPlayerDetailById(Integer playerId){
+
+        System.out.println("=================== 查询球员详情 ===================");
         PlayerDetailInfo playerDetailInfo=new PlayerDetailInfo();
         List<PlayerDetailInfo.SeasonInfo> seasonInfos=new ArrayList<>();
 
@@ -196,6 +201,7 @@ public class PlayerServiceImpl implements PlayerService {
         }
 
         playerDetailInfo.setSeasonInfos(seasonInfos);
+        playerDetailInfo.show();
         return playerDetailInfo;
     }
 

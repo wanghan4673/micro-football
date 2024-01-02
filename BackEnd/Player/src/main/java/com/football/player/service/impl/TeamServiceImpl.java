@@ -22,6 +22,7 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     public List<TeamSimpleInfo> getTeamsByKeyword(String searchKey){
+        System.out.println("=================== 检索队伍 ===================");
         // 调用外部api获取对象
         ResponseEntity<?> responseEntity = searchTeamApi.getTeamsByKey(searchKey);
 
@@ -59,6 +60,8 @@ public class TeamServiceImpl implements TeamService {
                 teams.add(teamDto);
             }
 
+            System.out.println("检索队伍结果数量："+teams.size());
+
             return teams;
         }
 
@@ -70,6 +73,7 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     public TeamDetailInfo getTeamDetailById(Integer id){
+        System.out.println("=================== 查询队伍详情 ===================");
         TeamDetailInfo teamDetailInfo=new TeamDetailInfo();
         // 调用外部api获取对象
 
@@ -171,6 +175,7 @@ public class TeamServiceImpl implements TeamService {
         }
 
         teamDetailInfo.setPlayers(playerInfos);
+        teamDetailInfo.show();
 
         return teamDetailInfo;
     }

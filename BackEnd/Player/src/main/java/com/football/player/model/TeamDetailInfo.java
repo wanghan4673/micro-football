@@ -33,4 +33,16 @@ public class TeamDetailInfo {
         String photo;
     }
 
+    public void show(){
+        System.out.println("队伍信息：");
+        System.out.println("ID: " + id);
+        System.out.println("姓名: " + name);
+        System.out.println("国家: " + country);
+        System.out.println("logo: " + logo );
+        System.out.println("建立时间: " + founded);
+        System.out.println("场馆名: " + venueName);
+        System.out.println("场馆地址: " + venueAddress);
+        System.out.println("场馆容量: " + venueCapacity);
+        System.out.println("场馆城市: " + venueCity);
+    }
 }

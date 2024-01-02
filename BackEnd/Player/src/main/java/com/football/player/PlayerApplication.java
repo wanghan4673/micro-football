@@ -15,6 +15,6 @@ public class PlayerApplication {
         SpringApplication.run(PlayerApplication.class, args);
 
 //        System.out.println(new SearchGameApi().getGamesByDate("2020-02-06",200,2019));
-        System.out.println(new GameServiceImpl().getGameDetailById(239625));
+//        System.out.println(new GameServiceImpl().getGameDetailById(239625));
     }
 }
