@@ -29,7 +29,7 @@ onMounted(() => {
 const getMyPosts = async () => {
     const token = localStorage.getItem('token')
     try {
-        const response = await axios.get('/api/user/getMyPosts', {
+        const response = await axios.get('/api/users/posts', {
             headers: {
                 'token': token,
             }

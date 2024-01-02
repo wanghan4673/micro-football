@@ -11,7 +11,7 @@ spring:
         - id: user-service
           uri: lb://user-service
           predicates:
-            - Path=/user/**  # 路由断言 判断请求是否符合当前路由
+            - Path=/users/**  # 路由断言 判断请求是否符合当前路由
         - id: forum-service
           uri: lb://forum-service
           predicates:
@@ -39,8 +39,8 @@ jwt:
   auth:
     excludePaths:  # 无需登录的请求路径
       - /search/**  # 搜索不需要检查JWT令牌
-      - /user/login  # 登录
-      - /user/register  # 注册
+      - /users/login  # 登录
+      - /users/register  # 注册
 #      - /forum/posts #管理员获取全部帖子
 #      - /forum/post
       - /admin/login/getCode # 管理员获取验证码
@@ -48,5 +48,5 @@ jwt:
       - /player/**
       - /news/**
     bothPaths:  # 登录和未登录都需要校验的请求路径
-      - /user/loginStatus
+      - /users/login-status
       - /forum  # 登录时有可能有偏好

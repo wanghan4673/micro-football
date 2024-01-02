@@ -15,7 +15,7 @@ public interface UserMapper {
     @Select("select * from user where account = #{account} and password = #{password}")
     User getUserByAccAndPas(User user);
 
-    @Select("select name,signature,score,favorite_league from user where _id = #{userId}")
+    @Select("select name,signature,score,favorite_league,follow,fans from user where _id = #{userId}")
     User getUserInfo(Long userId);
 
     @Select("select follow,fans from user where _id = #{userId}")

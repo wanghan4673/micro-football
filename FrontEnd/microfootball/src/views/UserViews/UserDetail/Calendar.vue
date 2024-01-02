@@ -11,7 +11,7 @@
     </a-config-provider>
   </div>
   <div class="checkin-button-box">
-    <el-button class="checkin-button" @click="checkin">点此签到</el-button>
+    <el-button class="checkin-button" @click="checkIn">点此签到</el-button>
   </div>
 </template>
 
@@ -35,7 +35,7 @@ onMounted(() => {
 const getCheckDays = async () => {
   const token = localStorage.getItem('token')
   try {
-    const response = await axios.get('/api/user/getCheckDays', {
+    const response = await axios.get('/api/users/check-days', {
       headers: {
         'token': token,
       }
@@ -56,7 +56,7 @@ const getCheckDays = async () => {
   }
 }
 
-const checkin = async () => {
+const checkIn = async () => {
   const token = localStorage.getItem('token')
   const currentDate = new Date().toISOString().slice(0, 10)
   console.log(currentDate)
@@ -68,7 +68,7 @@ const checkin = async () => {
     return
   }
   try {
-    const response = await axios.get('/api/user/checkIn', {
+    const response = await axios.post('/api/users/check-in', {}, {
       headers: {
         'token': token,
       }

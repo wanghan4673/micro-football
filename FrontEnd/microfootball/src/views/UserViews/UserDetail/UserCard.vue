@@ -148,14 +148,13 @@ const pwRules = reactive<FormRules<pwRuleForm>>({
 })
 
 onMounted(() => {
-    getUserCard()
-    getNums()
+    getUserInfo()
 })
 
-const getUserCard = async () => {
+const getUserInfo = async () => {
     const token = localStorage.getItem('token')
     try {
-        const response = await axios.get('/api/user/userInfo', {
+        const response = await axios.get('/api/users/user-info', {
             headers: {
                 'token': token,
             }
@@ -164,6 +163,8 @@ const getUserCard = async () => {
             name.value = response.data.data.name
             signature.value = response.data.data.signature
             score.value = response.data.data.score
+            followNum.value = response.data.data.follow
+            fansNum.value = response.data.data.fans
         } else {
             ElMessage({
                 message: '获取积分失败!',
@@ -173,31 +174,6 @@ const getUserCard = async () => {
     } catch (error) {
         ElMessage({
             message: '获取积分请求发送失败',
-            type: 'error',
-        })
-    }
-}
-
-const getNums = async () => {
-    const token = localStorage.getItem('token')
-    try {
-        const response = await axios.get('/api/user/followCount', {
-            headers: {
-                'token': token,
-            }
-        })
-        if (response.data.code == 1) {
-            followNum.value = response.data.data[0]?.follow || 0
-            fansNum.value = response.data.data[0]?.fans || 0
-        } else {
-            ElMessage({
-                message: '获取关注数失败!',
-                type: 'error',
-            })
-        }
-    } catch (error) {
-        ElMessage({
-            message: '获取关注数请求发送失败',
             type: 'error',
         })
     }
@@ -235,7 +211,7 @@ const submitEditForm = async () => {
     formData.append("email", useremail)
     const token = localStorage.getItem('token')
     try {
-        const response = await axios.post('/api/user/update', formData, {
+        const response = await axios.put('/api/users', formData, {
             headers: {
                 'token': token,
             }
@@ -268,7 +244,7 @@ const submitNewPassword = async () => {
     const token = localStorage.getItem('token')
     let response
     try {
-        response = await axios.post('/api/user/changePassword', {
+        response = await axios.put('/api/users/password', {
             oriPassword: sha256(originpassword),
             newPassword: sha256(newpassword)
         }, {
@@ -302,7 +278,7 @@ const submitSelectedLeague = async () => {
     formData.append("league",selectedLeague.value)
     let response
     try {
-        response = await axios.post('/api/user/updateLeague', formData, {
+        response = await axios.put('/api/users/favorite-league', formData, {
             headers: {
                 'token': token,
             }

@@ -58,7 +58,7 @@ onMounted(() => {
 const checkUpcomingGame = async () => {
     const token = localStorage.getItem('token')
     try {
-        const response = await axios.get('/api/user/noticeStartGames', {
+        const response = await axios.get('/api/users/upcoming-games', {
             headers: {
                 'token': token,
             }

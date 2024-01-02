@@ -36,7 +36,7 @@ onMounted(() => {
 const getMyFollow = async () => {
     const token = localStorage.getItem('token')
     try {
-        const response = await axios.get('/api/user/getFollowDetail', {
+        const response = await axios.get('/api/users/follow-list', {
             headers: {
                 'token': token,
             }
@@ -65,7 +65,7 @@ const getMyFollow = async () => {
 const deleteFollow = async (deleteId: number) => {
     const token = localStorage.getItem('token')
     try {
-        const response = await axios.delete(`/api/user/deleteFollow/${deleteId}`, {
+        const response = await axios.delete(`/api/users/follow/${deleteId}`, {
             headers: {
                 'token': token,
             }
