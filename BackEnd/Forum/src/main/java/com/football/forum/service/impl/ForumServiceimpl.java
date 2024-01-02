@@ -111,6 +111,12 @@ public class ForumServiceimpl implements ForumService {
                                                 .must(byKeyword)
                                                 .should(byLeague)
                                                 .boost(2.0F))) // 提高联赛标签的权重
+                                        .highlight(highlightBuilder -> highlightBuilder
+                                                .preTags("<font color='#fc5531'>")
+                                                .postTags("</font>")
+                                                .requireFieldMatch(false)
+                                                .fields("title", highlightFieldBuilder -> highlightFieldBuilder)
+                                                .fields("content", highlightFieldBuilder -> highlightFieldBuilder))
                                         .from((page - 1) * size)
                                         .size(size), Post.class);
                     }
