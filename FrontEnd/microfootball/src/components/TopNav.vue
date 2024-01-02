@@ -77,7 +77,7 @@ export default {
             const token = localStorage.getItem('token');
             let response
             try {
-                const response = await axios.get('/api/user/loginStatus', {
+                const response = await axios.get('/api/users/login-status', {
                     headers: {
                         'token': token
                     }

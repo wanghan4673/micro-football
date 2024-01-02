@@ -123,7 +123,7 @@ const changeScene = () => {
 const login = async () => {
     let response
     try {
-        response = await axios.post('/api/user/login', {
+        response = await axios.post('/api/users/login', {
             account: loginForm.value.account,
             password: sha256(loginForm.value.password)
         })
@@ -165,7 +165,7 @@ const register = async () => {
     }
     let response
     try {
-        response = await axios.post('/api/user/register', {
+        response = await axios.post('/api/users/register', {
             name: registerForm.value.username,
             account: registerForm.value.account,
             password: sha256(registerForm.value.password)

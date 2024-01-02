@@ -10,16 +10,16 @@ import java.util.List;
 
 @FeignClient("user-service")
 public interface UserClient {
-    @GetMapping("/user/getAllUsers")
+    @GetMapping("/users")
     List<UserDTO> getAllUsers();
 
-    @GetMapping("/user/getBannedUsers")
+    @GetMapping("/users/banned")
     List<UserDTO> getBannedUsers();
 
-    @GetMapping("/user/updateBanStatus")
+    @GetMapping("/users/upcoming-games")
     Boolean updateBanStatus(@RequestParam("id") Long id);
-    @PostMapping("/user/followGame")
-    Boolean followGame(@RequestParam("userId") Long userId,
+    @PostMapping("/users/subscribe-game")
+    Boolean subscribeGame(@RequestParam("userId") Long userId,
                        @RequestParam("gameId") Long gameId,
                        @RequestParam("startTime") String startTime);
 }

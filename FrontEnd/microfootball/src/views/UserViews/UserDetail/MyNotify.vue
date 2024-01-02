@@ -24,7 +24,7 @@ onMounted(() => {
 const getMyNotify = async () => {
     const token = localStorage.getItem('token')
     try {
-        const response = await axios.get('/api/user/getNotify', {
+        const response = await axios.get('/api/users/notifications', {
             headers: {
                 'token': token,
             }

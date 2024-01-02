@@ -13,7 +13,7 @@
                 <div class="fan-signature">{{ fan.signature }}</div>
                 <el-divider v-if="!isLastFan(index)" />
             </div>
-            <el-empty v-if="fans.length === 0" description="你还没有关注用户哦" />
+            <el-empty v-if="fans.length === 0" description="你还没有粉丝哦" />
         </el-scrollbar>
     </div>
 </template>
@@ -34,7 +34,7 @@ onMounted(() => {
 const getMyFans = async () => {
     const token = localStorage.getItem('token')
     try {
-        const response = await axios.get('/api/user/getFansDetail', {
+        const response = await axios.get('/api/users/fans-list', {
             headers: {
                 'token': token,
             }
