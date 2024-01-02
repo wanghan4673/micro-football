@@ -5,7 +5,7 @@
             <div v-for="post, index in posts" :key="post.id" class="post-card" @click="toPost(post.id)"
                 :style="{ marginBottom: isLastPost(index) ? '0' : '0.5rem' }">
                 <div class="post-title">{{ post.title }}</div>
-                <div class="post-content">{{ post.content }}</div>
+                <div class="post-content" v-html="post.content"></div>
                 <div class="post-time">{{ post.time }}</div>
             </div>
             <el-empty v-if="posts.length === 0" description="你还没有发过帖子,去论坛发帖吧!" />

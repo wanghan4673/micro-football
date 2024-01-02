@@ -165,6 +165,7 @@ const getUserInfo = async () => {
             score.value = response.data.data.score
             followNum.value = response.data.data.follow
             fansNum.value = response.data.data.fans
+            console.log(response.data.data)
         } else {
             ElMessage({
                 message: '获取积分失败!',
