@@ -136,6 +136,8 @@ const login = async () => {
             })
             localStorage.setItem('token', response.data.data)  // 将token存在浏览器缓存中
             store.user.useraccount = loginForm.value.account
+            // store.user.league = response.data.data.favoriteLeague
+            console.log(response.data)
             gotoPath('/')
         } else {
             ElMessage({
