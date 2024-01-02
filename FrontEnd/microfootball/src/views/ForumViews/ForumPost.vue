@@ -97,8 +97,8 @@ let newcomment = ref("")
 let reportreason = ref('')
 // let visible = ref(false);
 onMounted(() => {
+    // getUserProfile()
     loadPost(postid)
-    getUserProfile()
 })
 
 const loadPost = async (postid) => {
@@ -130,14 +130,14 @@ const loadPost = async (postid) => {
 const getUserProfile = async () => {
     const token = localStorage.getItem('token')
     try {
-        const response = await axios.get('/api/user/userInfo',{
+        const response = await axios.get('/api/users/user-info',{
             headers: {
                 'token': token,
             }
         })
         if (response.data.code == 1) {
             store.user.username = response.data.data.name
-            store.user.league = response.data.data.favorite_league
+            store.user.league = response.data.data.favoriteLeague
             console.log(response.data.data)
         }
     } catch (error) {

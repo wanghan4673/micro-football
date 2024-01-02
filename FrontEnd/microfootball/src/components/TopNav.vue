@@ -85,7 +85,7 @@ export default {
                 if (response.data.code == 1 && response.data.data != null) {
                     this.islog = true;
                     this.userName = response.data.data.name;
-                    this.avatarurl = response.data.data.avatar;
+                    this.avatarurl = "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png";
                 }
                 else if (response.data.code == 1 && response.data.data == null) {
                     this.islog = false;
