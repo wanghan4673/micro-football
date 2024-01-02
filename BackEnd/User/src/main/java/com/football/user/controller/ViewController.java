@@ -2,10 +2,7 @@ package com.football.user.controller;
 
 import com.football.common.utils.UserContext;
 import com.football.mfapi.client.AnnouncementClient;
-import com.football.user.model.AdminUsers;
-import com.football.user.model.MyPost;
-import com.football.user.model.Result;
-import com.football.user.model.User;
+import com.football.user.model.*;
 import com.football.user.service.intf.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -102,5 +100,14 @@ public class ViewController {
         List<AdminUsers> adminUsers = userService.getBannedUsers();
         log.info(adminUsers.toString());
         return adminUsers;
+    }
+
+    @GetMapping("/noticeStartGames")
+    public Result noticeStartGames(){
+        Long userId = UserContext.getUser();
+        log.info("----------获取即将开始的赛事:{}----------",userId);
+//        String startTimeLimit = LocalDateTime.now().plusHours(24).toString();
+        List<GameSubscription> upcomingGames = userService.getGamesByUserId(userId);
+        return Result.success(upcomingGames);
     }
 }

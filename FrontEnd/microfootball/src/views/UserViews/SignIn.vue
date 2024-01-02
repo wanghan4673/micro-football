@@ -127,6 +127,7 @@ const login = async () => {
             account: loginForm.value.account,
             password: sha256(loginForm.value.password)
         })
+        sessionStorage.removeItem('gameDialogShown')
         if (response.data.code == 1) {
             console.log("登录成功")
             ElMessage({
@@ -169,6 +170,7 @@ const register = async () => {
             account: registerForm.value.account,
             password: sha256(registerForm.value.password)
         })
+        sessionStorage.removeItem('gameDialogShown')
         if (response.data.code == 1) {
             console.log("注册成功")
             ElMessage({

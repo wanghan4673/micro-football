@@ -1,6 +1,7 @@
 package com.football.user.service.intf;
 
 import com.football.user.model.AdminUsers;
+import com.football.user.model.GameSubscription;
 import com.football.user.model.MyPost;
 import com.football.user.model.User;
 import org.springframework.stereotype.Service;
@@ -48,4 +49,6 @@ public interface UserService {
     boolean updateLeague(String league,Long userId);
 
     boolean updateGameSubscript(Long userId, Long gameId, String startTime);
+
+    List<GameSubscription> getGamesByUserId(Long userId);
 }

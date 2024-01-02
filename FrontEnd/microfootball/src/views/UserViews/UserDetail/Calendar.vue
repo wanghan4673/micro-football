@@ -41,7 +41,6 @@ const getCheckDays = async () => {
       }
     })
     if (response.data.code == 1) {
-      console.log("a" + response.data.data)
       checkedDates.value = response.data.data
     } else {
       ElMessage({
