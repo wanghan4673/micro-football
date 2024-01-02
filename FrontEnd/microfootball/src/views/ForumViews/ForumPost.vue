@@ -130,7 +130,7 @@ const loadPost = async (postid) => {
 const getUserProfile = async () => {
     const token = localStorage.getItem('token')
     try {
-        const response = await axios.get('/api/user/userInfo',{
+        const response = await axios.get('/api/users/user-info',{
             headers: {
                 'token': token,
             }

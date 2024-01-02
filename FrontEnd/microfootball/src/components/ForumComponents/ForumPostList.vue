@@ -63,7 +63,7 @@ const loadPosts = async () => {
         if (response.status == 200) {
             PostList.value = []
             totalElements = 0
-            // console.log(response)
+            console.log(response)
             for (const post of response.data.data.posts) {
                 PostList.value.push(post)
             }
@@ -82,7 +82,7 @@ const getUserProfile = async () => {
     if(token == null) 
         return
     try {
-        const response = await axios.get('/api/user/userInfo', {
+        const response = await axios.get('/api/users/user-info', {
             headers: {
                 'token': token,
             }
@@ -90,7 +90,8 @@ const getUserProfile = async () => {
         if (response.data.code == 1) {
             store.user.username = response.data.data.name
             store.user.league = response.data.data.favorite_league
-            // console.log(response.data.data)
+            console.log(response.data.data)
+            console.log(store.user.league )
         }
     } catch (error) {
     }
