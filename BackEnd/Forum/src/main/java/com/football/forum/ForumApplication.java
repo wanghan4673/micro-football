@@ -18,7 +18,9 @@ import org.springframework.context.annotation.Import;
 @EnableDiscoveryClient
 @EnableFeignClients(basePackages = "com.football.mfapi")
 @Import(UserConfig.class)
-public class ForumApplication {
+public class
+
+ForumApplication {
     public static void main(String[] args) {
         SpringApplication.run(ForumApplication.class, args);
     }

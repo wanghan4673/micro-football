@@ -78,7 +78,8 @@ import { ElMessage, type FormRules } from 'element-plus'
 import BackButton from '../../components/BackButton.vue'
 import { gotoPath } from '../../assets/api'
 import { sha256 } from 'js-sha256'
-
+import { useGeneralStore } from '@/stores/general'
+const store = useGeneralStore()
 interface RuleForm {
     username: string
     account: string
@@ -122,10 +123,11 @@ const changeScene = () => {
 const login = async () => {
     let response
     try {
-        response = await axios.post('/api/user/login', {
+        response = await axios.post('/api/users/login', {
             account: loginForm.value.account,
             password: sha256(loginForm.value.password)
         })
+        sessionStorage.removeItem('gameDialogShown')
         if (response.data.code == 1) {
             console.log("登录成功")
             ElMessage({
@@ -133,6 +135,7 @@ const login = async () => {
                 type: 'success',
             })
             localStorage.setItem('token', response.data.data)  // 将token存在浏览器缓存中
+            store.user.useraccount = loginForm.value.account
             gotoPath('/')
         } else {
             ElMessage({
@@ -162,12 +165,13 @@ const register = async () => {
     }
     let response
     try {
-        response = await axios.post('/api/user/register', {
+        response = await axios.post('/api/users/register', {
             name: registerForm.value.username,
             account: registerForm.value.account,
             password: sha256(registerForm.value.password)
         })
-        if(response.data.code == 1){
+        sessionStorage.removeItem('gameDialogShown')
+        if (response.data.code == 1) {
             console.log("注册成功")
             ElMessage({
                 message: '注册成功!',

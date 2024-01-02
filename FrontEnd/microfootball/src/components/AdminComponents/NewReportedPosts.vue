@@ -11,69 +11,99 @@
                 placement="top"
                 class="report-item-animation"
             >
-                <el-card
-                @mouseenter="showHoverContent(item.reportId)"
-                @mouseleave="hideHoverContent()"
-                >
-                <h4>{{ item.title }}</h4>
-                <p>{{ item.contains }}</p>
+                <el-card @click="showDetail(item.postId)">
+                    <p>举报理由：{{ item.reason }}</p>
+                    <p>举报人：{{ item.reporterName }}</p>
+                    <el-container style="margin-top: 1vh;">
+                        <el-button type="primary" size="small" @click="delReport(item.id,index)">取消举报</el-button>
+                        <el-button type="primary" size="small" @click="confirm(item.postId, index)">删除帖子</el-button>
+                    </el-container>
                 </el-card>
             </el-timeline-item>
         </el-timeline>
     </el-scrollbar>
-    <!-- <el-card v-if="hoverContent.show" class="timeline-detail">
-        <h1>{{ timeTree[hoverContent.id - 1].eventTitle }}</h1>
-        <h3>{{ timeTree[hoverContent.id - 1].eventContains }}</h3>
-        <h3>{{ timeTree[hoverContent.id - 1].eventTime }}</h3>
-    </el-card> -->
 </template>
 
 <script>
+import axios from "axios"
+import { ElMessage } from 'element-plus';
 export default {
     data(){
         return{
-            reports: [
-                {
-                    reportId: 1,
-                    title: "不符合常规",
-                    contains: "违法违规",
-                    time: "2222-22-20",
-                },
-                {
-                    reportId: 1,
-                    title: "不符合常规",
-                    contains: "违法违规",
-                    time: "2222-22-21",
-                },
-                {
-                    reportId: 1,
-                    title: "不符合常规",
-                    contains: "违法违规",
-                    time: "2222-22-22",
-                },
-                {
-                    reportId: 1,
-                    title: "不符合常规",
-                    contains: "违法违规",
-                    time: "2222-22-23",
-                },
-            ],
-            hoverContent: {
-                show: false,
-                id: -1,
-            },
+            reports: [],
         }
     },
     methods:{
-        showHoverContent(id) {
-            console.log("showHoverContent" + id);
-            this.hoverContent.show = true;
-            this.hoverContent.id = id;
+        async getReport(){
+            const adminToken = localStorage.getItem('adminToken');
+            try {
+                const response = await axios.get('/api/admin/forum/reports', {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                        'token': adminToken
+                    },
+                });
+                if (response.status == 200) {
+                    this.reports = response.data.data;
+                    console.log(this.reports)
+                }
+            } catch (e) {
+                console.log(e)
+            }
         },
-        hideHoverContent() {
-            this.hoverContent.show = false;
-            this.hoverContent.id = -1;
+        async init(){
+            this.getReport()
         },
+        showDetail(id){
+            const showDetailId = id
+            this.$emit('showDetailId', showDetailId);
+        },
+        async delReport(id,index){
+            const adminToken = localStorage.getItem('adminToken');
+            const delId = id;
+            const formData = new FormData()
+            formData.append('id', delId);
+            try {
+                const response = await axios.delete('/api/admin/forum/report/delete/'+delId,{
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                        'token': adminToken
+                    },
+                });
+                if (response.status == 200) {
+                    ElMessage.success("删除举报成功")
+                    this.reports.splice(index,1)
+                }
+            } catch (e) {
+                console.log(e)
+            }
+        },
+        async confirm(id, index) {
+            const adminToken = localStorage.getItem('adminToken');
+            const delId = id;
+            const formData = new FormData()
+            formData.append('id', delId);
+            try {
+                const response = await axios.post('/api/admin/forum/report/confirm', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                        'token': adminToken
+                    },
+                });
+                console.log(response)
+                if (response.status == 200) {
+                    ElMessage.success("删除帖子成功")
+                    setTimeout(() => {
+                        window.location.reload(); // 刷新当前页面
+                    }, 1000);
+                }
+            } catch (e) {
+                console.log(e)
+            }
+        }
+    },
+    mounted(){
+        this.init()
     }
 }
 </script>

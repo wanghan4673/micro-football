@@ -12,12 +12,12 @@ import java.util.List;
 
 @FeignClient("forum-service")
 public interface ForumClient {
-    @GetMapping("/forum/posts")
+    @GetMapping("/forum/ad-allposts")
     List<PostDTO> getAllPost();
 
-    @GetMapping("/forum/post")
+    @GetMapping("/forum/ad-posts")
     PostDTO getPostForAdmin(@RequestParam("id") Integer postid);
 
-    @DeleteMapping("/post")
+    @DeleteMapping("/forum/ad-posts")
     Boolean deletePost(@RequestParam("id") Integer postid);
 }

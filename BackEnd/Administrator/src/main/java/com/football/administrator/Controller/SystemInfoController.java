@@ -13,34 +13,34 @@ import org.springframework.web.bind.annotation.RestController;
 @Controller
 @Slf4j
 @RestController
-@RequestMapping("/admin/sysInfo")
+@RequestMapping("/admin/sys")
 public class SystemInfoController {
     @Autowired
     SystemInfoService systemInfoService;
 
-    @GetMapping("/getSysInfo")
+    @GetMapping("/sysinfo")
     public Result getSysInfo(){
         return Result.success(systemInfoService.getSysInfo());
     }
 
-    @PostMapping("/postNewUser")
+    @PostMapping("/new-user")
     public void postNewUser(){
         systemInfoService.postNewUser();
     }
 
-    @PostMapping("/postNewNews")
+    @PostMapping("/new-news")
     public Result postNewNews(){
         systemInfoService.postNewNews();
         return Result.success();
     }
 
-    @PostMapping("/postNewPost")
+    @PostMapping("/new-post")
     public Result postNewPost(){
         systemInfoService.postNewPost();
         return Result.success();
     }
 
-    @PostMapping("/postNewAnnounce")
+    @PostMapping("/newA-anounce")
     public Result postNewAnnounce(){
         systemInfoService.postNewAnnounce();
         return Result.success();

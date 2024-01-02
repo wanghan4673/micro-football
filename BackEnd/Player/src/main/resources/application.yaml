@@ -7,5 +7,10 @@ spring:
         server-addr: 110.40.206.206:8848  #nacos端口
 
 
+  main:
+    allow-bean-definition-overriding: true
+
+
+
 server:
   port: 8083

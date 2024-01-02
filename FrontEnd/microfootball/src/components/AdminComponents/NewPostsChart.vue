@@ -13,9 +13,8 @@ export default {
 
 <template>
     <el-card>
-        <h3>
-            近30日论坛活跃度曲线（30日新增帖子数曲线）
-        </h3>
+        <h3>被举报帖子详情</h3>
+        
     </el-card>
 </template>
 

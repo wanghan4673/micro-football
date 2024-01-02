@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -23,21 +24,21 @@ public class AnnouncementController {
     SystemInfoService systemInfoService;
     private final AnnouncementClient announcementClient;
 
-    @PostMapping("/postAnnouncement")
+    @PostMapping("/announcement")
     public Result postAnnouncement(@RequestParam("title") String title,
                                    @RequestParam("detail") String detail,
-                                   @RequestParam("receiver") Integer receiver){
+                                   @RequestParam("receiver") Long receiver){
         announcementservice.postAnnouncement(title,detail,receiver);
         systemInfoService.postNewAnnounce();
         return Result.success();
     }
 
-    @GetMapping("/getAnnouncementList")
+    @GetMapping("/announcements")
     public Result getAnnouncementList(){
         return Result.success(announcementservice.getAnnouncementList(0L));
     }
 
-    @GetMapping("/getAnnouncementForUser")
+    @GetMapping("/announcement-user")
     public List<AnnouncementDTO> getAnnouncementListForUser(@RequestParam("id") Long id){
         return announcementservice.getAnnouncementList(id);
     }

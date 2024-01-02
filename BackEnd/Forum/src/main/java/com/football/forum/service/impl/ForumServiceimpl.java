@@ -12,18 +12,27 @@ import com.football.common.utils.UserContext;
 import com.football.forum.mapper.ForumMapper;
 import com.football.forum.model.*;
 import com.football.forum.service.intf.ForumService;
-import com.football.mfapi.dto.PostDTO;
+import com.football.mfapi.client.SystemClient;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import com.qcloud.cos.COSClient;
+import com.qcloud.cos.ClientConfig;
+import com.qcloud.cos.auth.BasicCOSCredentials;
+import com.qcloud.cos.auth.COSCredentials;
+import com.qcloud.cos.model.PutObjectRequest;
+import com.qcloud.cos.model.PutObjectResult;
+import com.qcloud.cos.region.Region;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
 
 @Slf4j
 @Service
@@ -32,15 +41,17 @@ public class ForumServiceimpl implements ForumService {
     private ForumMapper forumMapper;
     @Autowired
     private ElasticsearchClient client;
-
+    @Autowired
+    private SystemClient systemClient;
     @Override
-    public Posts getPosts(int page, int size, String keyword, String tag) {
+    public Posts getPosts(int page, int size, String keyword, String tag,String league) {
 //        PageHelper.startPage(1,2);
 //        Long count = forumMapper.count(keyword,tag);
 //        Integer start = (page-1)* size;
 //        if(start<0) start=0;
 //        List<Post> posts = forumMapper.getPosts(start,size,keyword,timeQ,tag);
         boolean hasTag = tag != null && !tag.isEmpty() && !tag.equals("全部赛事");
+        boolean hasLeague = league != null && !league.isEmpty();
         SearchResponse<Post> response;
         try {
             Query byTag = MatchQuery.of(m -> m
@@ -51,14 +62,32 @@ public class ForumServiceimpl implements ForumService {
                     .field("all")
                     .query(keyword)
             )._toQuery();
+            Query byLeague = MatchQuery.of(m -> m
+                    .field("tags")
+                    .query(league)
+            )._toQuery();
             if (keyword == null || keyword.isEmpty()) {
                 if (!hasTag) {
-                    response = client.search(
-                            e -> e.index("footballpost")
-                                    .query(q -> q.matchAll(m -> m))
-                                    .from((page - 1) * size)
-                                    .size(size), Post.class);
+                    // 查询全部
+                    if (!hasLeague) {
+                        response = client.search(
+                                e -> e.index("footballpost")
+                                        .query(q -> q.matchAll(m -> m))
+                                        .from((page - 1) * size)
+                                        .size(size), Post.class);
+                    } else {
+                        // 登录用户有偏好 优先查询偏好联赛
+                        response = client.search(
+                                e -> e.index("footballpost")
+                                        .query(q -> q.bool(b -> b
+                                                .must(byLeague)
+                                                .should(byTag) // 将联赛标签设置为更高优先级
+                                                .boost(2.0F))) // 提高联赛标签的权重
+                                        .from((page - 1) * size)
+                                        .size(size), Post.class);
+                    }
                 } else {
+                    // 查询标签
                     response = client.search(
                             e -> e.index("footballpost")
                                     .query(q -> q.bool(b -> b.must(byTag)))
@@ -67,18 +96,26 @@ public class ForumServiceimpl implements ForumService {
                 }
             } else {
                 if(!hasTag){
-                    response = client.search(
-                            e -> e.index("footballpost")
-                                    .query(q -> q.bool(b -> b.must(byKeyword)))
-                                    .highlight(highlightBuilder -> highlightBuilder
-                                            .preTags("<font color='#fc5531'>")
-                                            .postTags("</font>")
-                                            .requireFieldMatch(false)
-                                            .fields("title", highlightFieldBuilder -> highlightFieldBuilder)
-                                            .fields("content", highlightFieldBuilder -> highlightFieldBuilder))
-                                    .from((page - 1) * size)
-                                    .size(size), Post.class);
+                    // 查询关键字
+                    if (!hasLeague) {
+                        response = client.search(
+                                e -> e.index("footballpost")
+                                        .query(q -> q.bool(b -> b.must(byKeyword)))
+                                        .from((page - 1) * size)
+                                        .size(size), Post.class);
+                    } else {
+                        // 登录用户有偏好 优先查询偏好联赛
+                        response = client.search(
+                                e -> e.index("footballpost")
+                                        .query(q -> q.bool(b -> b
+                                                .must(byKeyword)
+                                                .should(byLeague)
+                                                .boost(2.0F))) // 提高联赛标签的权重
+                                        .from((page - 1) * size)
+                                        .size(size), Post.class);
+                    }
                 } else{
+                    // 查询标签和关键字
                     response = client.search(
                             e -> e.index("footballpost")
                                     .query(q -> q.bool(b -> b.must(byTag).must(byKeyword)))
@@ -103,6 +140,8 @@ public class ForumServiceimpl implements ForumService {
         Long userid = UserContext.getUser();
         System.out.println(userid);
         Post post = forumMapper.getPost(postid);
+        post.setImg(forumMapper.getPostImg(postid));
+//        System.out.println(post.toString());
         List<CommentInfo> commentInfos = forumMapper.getComments(postid);
         User user = forumMapper.getPoster(postid);
         Boolean isliked = forumMapper.getiflike(postid, userid);
@@ -113,7 +152,7 @@ public class ForumServiceimpl implements ForumService {
     }
 
     @Override
-    public void newpost(Post post) {
+    public Post newpost(Post post) {
         Long userid = UserContext.getUser();
         try {
             Integer lastId = forumMapper.getMaxId();
@@ -131,6 +170,8 @@ public class ForumServiceimpl implements ForumService {
             log.error("Exception during importQues: {}", e.getMessage(), e);
         }
         forumMapper.newPost(post,userid);
+        systemClient.postNewPost();
+        return post;
     }
 
     @Override
@@ -168,6 +209,49 @@ public class ForumServiceimpl implements ForumService {
             forumMapper.follow(followerid, userid);
         }
     }
+
+    @Autowired
+    private TencentProperties tencentProperties;
+    @Override
+    public String uploadFile(Integer postid, MultipartFile file) throws IOException {
+
+
+        String originalFilename = file.getOriginalFilename();
+        //构建新的文件名
+        String newFileName= UUID.randomUUID() +originalFilename.substring(originalFilename.lastIndexOf("."));
+
+        // 将 MultipartFile 转换为 File
+        File tempFile = convertMultiPartToFile(file);
+
+        // 上传文件到COS
+        PutObjectRequest putObjectRequest = new PutObjectRequest(tencentProperties.getBucket(), newFileName, tempFile);
+        COSCredentials cred = new BasicCOSCredentials(tencentProperties.getSecretId(), tencentProperties.getSecretKey());
+        Region region = new Region(tencentProperties.getRegion());
+        ClientConfig clientConfig = new ClientConfig(region);
+        COSClient cosClient = new COSClient(cred, clientConfig);
+        PutObjectResult putObjectResult = cosClient.putObject(putObjectRequest);
+        String fileUrl = tencentProperties.getCosUrl() + "/" + newFileName;
+        cosClient.shutdown();
+
+        forumMapper.newpostimg(postid,fileUrl);
+        // 删除临时文件
+        FileUtils.deleteQuietly(tempFile);
+
+        return fileUrl;
+    }
+    private File convertMultiPartToFile(MultipartFile file) throws IOException {
+        File tempFile = File.createTempFile("temp", null);
+        try (InputStream inputStream = file.getInputStream()) {
+            FileUtils.copyInputStreamToFile(inputStream, tempFile);
+        }
+        return tempFile;
+    }
+    @Override
+    public void newpostimg(Integer postid, String url){
+        System.out.println(url);
+        forumMapper.newpostimg(postid,url);
+    }
+
     private Posts handleResponse(SearchResponse<Post> response){
         log.info("----------------------entry es response------------------------");
         HitsMetadata<Post> hits = response.hits();

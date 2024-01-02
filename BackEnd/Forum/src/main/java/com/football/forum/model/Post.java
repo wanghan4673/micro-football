@@ -19,6 +19,7 @@ public class Post {
     String title;  // 标题
     String tags; //tag
     Long userid; //用户id
+    String[] img;//图片
 }
 
 

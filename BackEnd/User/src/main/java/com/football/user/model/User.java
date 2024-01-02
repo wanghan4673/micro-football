@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class User {
-    Integer id;  // 用户id
+    Long id;  // 用户id
     String name;  // 用户名
     String account;  // 账号
     String password;  // 密码
@@ -18,4 +18,5 @@ public class User {
     Integer fans;  // 粉丝数
     String avatar;  // 图片路径
     Boolean isbanned;  // 是否被封禁
+    String favorite_league;  // 关注的赛事
 }

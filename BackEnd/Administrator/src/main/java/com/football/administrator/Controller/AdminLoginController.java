@@ -57,7 +57,7 @@ public class AdminLoginController {
         else{
             // 5.生成token并下发
             Map<String,Object> claims = new HashMap<>();
-            claims.put("id",adminId);
+            claims.put("id",Long.valueOf(adminId));
             String jwt = jwtUtils.createJwt(claims);
             return Result.success(jwt);
         }

@@ -9,12 +9,6 @@
                 </template>
             </el-input>
         </div>
-        <div class="sort-container">
-            <el-button :class="{ 'sort-button': forumstore.sorttype == 'like' }"
-                @click="changeSort('like')">按热度排序</el-button>
-            <el-button :class="{ 'sort-button': forumstore.sorttype == 'time' }"
-                @click="changeSort('time')">按时间排序</el-button>
-        </div>
     </div>
 </template>
 
@@ -23,14 +17,6 @@ import { ref } from 'vue'
 import { useForumStore } from '../../stores/forum.ts'
 let forumstore = useForumStore()
 
-const changeSort = (type) => {
-    if(type == 'like')
-    {
-        forumstore.sorttype = 'like'
-    }else{
-        forumstore.sorttype = 'time'
-    }
-}
 const keywordchange = () =>{
     forumstore.getPosts = !forumstore.getPosts
     console.log(forumstore.getPosts)
@@ -38,11 +24,4 @@ const keywordchange = () =>{
 </script>
 
 <style lang="scss" scoped>
-.sort-container {
-    /* 排序按钮 */
-}
-.sort-button {
-    /* 排序按钮 */
-    color: orange;
-}
 </style>
