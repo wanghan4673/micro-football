@@ -14,7 +14,7 @@ export default {
             let response
             const adminToken = localStorage.getItem('adminToken');
             try {
-                response = await axios.get("/api/admin/sysInfo/getSysInfo", {
+                response = await axios.get("/api/admin/sys/sysinfo", {
                     headers: {
                         'Content-Type': 'multipart/form-data',
                         'token': adminToken

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AdminNewsController {
     @Autowired
     SystemInfoService systemInfoService;
-    @PostMapping("/postNews")
+    @PostMapping("/news")
     public void postNews(@RequestParam("contains") String contains){
         systemInfoService.postNewNews();
         System.out.println(contains);
