@@ -5,6 +5,7 @@ import com.football.user.model.MyPost;
 import com.football.user.model.User;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
@@ -43,4 +44,8 @@ public interface UserService {
     boolean updateBanStatus(Long id);
 
     List<AdminUsers> getBannedUsers();
+
+    boolean updateLeague(String league,Long userId);
+
+    boolean updateGameSubscript(Long userId, Long gameId, String startTime);
 }

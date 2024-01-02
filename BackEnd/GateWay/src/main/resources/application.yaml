@@ -41,7 +41,6 @@ jwt:
       - /search/**  # 搜索不需要检查JWT令牌
       - /user/login  # 登录
       - /user/register  # 注册
-      - /forum #获取帖子概述
 #      - /forum/posts #管理员获取全部帖子
 #      - /forum/post
       - /admin/login/getCode # 管理员获取验证码
@@ -50,3 +49,4 @@ jwt:
       - /news/**
     bothPaths:  # 登录和未登录都需要校验的请求路径
       - /user/loginStatus
+      - /forum  # 登录时有可能有偏好

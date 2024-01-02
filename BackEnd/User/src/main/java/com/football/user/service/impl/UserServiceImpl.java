@@ -25,7 +25,8 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserMapper userMapper;
 
-    private TLSSigAPIv2 tlsSigAPIv2 = new TLSSigAPIv2(1600013711,"8a1959745a1485707b6fa66ef37a20ccca6ad6e360834fc0b0a3c9c9efd916df");
+    private TLSSigAPIv2 tlsSigAPIv2 = new TLSSigAPIv2(1600013711, "8a1959745a1485707b6fa66ef37a20ccca6ad6e360834fc0b0a3c9c9efd916df");
+
     @Override
     public User login(User user) {
         return userMapper.getUserByAccAndPas(user);
@@ -44,13 +45,14 @@ public class UserServiceImpl implements UserService {
             return false;
         }
     }
+
     @Autowired
     private RestTemplate restTemplate;
 
     private void createIMAccount(User user) {
         Random rand = new Random();
         long random = rand.nextInt() & 0xFFFFFFFFL;
-        String url = "https://console.tim.qq.com/v4/im_open_login_svc/account_import?sdkappid=1600013711&identifier=administrator&usersig="+ tlsSigAPIv2.genUserSig("administrator",5184000) +"&random="+random+"&contenttype=json";
+        String url = "https://console.tim.qq.com/v4/im_open_login_svc/account_import?sdkappid=1600013711&identifier=administrator&usersig=" + tlsSigAPIv2.genUserSig("administrator", 5184000) + "&random=" + random + "&contenttype=json";
 
         // 构建请求体
         Map<String, Object> requestBody = new HashMap<>();
@@ -119,7 +121,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public boolean deleteFollow(Long userId, Long deleteId) {
-        return userMapper.deleteFollow(userId,deleteId)&&userMapper.minusUserFollowNum(userId);
+        return userMapper.deleteFollow(userId, deleteId) && userMapper.minusUserFollowNum(userId);
     }
 
     @Override
@@ -130,6 +132,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<AdminUsers> getBannedUsers() {
         return userMapper.getBannedUsers();
+    }
+
+    @Override
+    public boolean updateLeague(String league, Long userId) {
+        return userMapper.updateLeague(league, userId);
+    }
+
+    @Override
+    public boolean updateGameSubscript(Long userId, Long gameId, String startTime) {
+        return userMapper.insertGameBook(userId,gameId,startTime);
     }
 
     @Override
@@ -170,13 +182,13 @@ public class UserServiceImpl implements UserService {
         List<Timestamp> checkTimes = userMapper.getCheckTimes(userId);
         // 获取所有时间戳后将其转换为YYYY-MM-DD格式
         List<String> checkDays = new ArrayList<>();
-        log.info("123"+checkTimes);
+        log.info("123" + checkTimes);
         for (Timestamp checkTime : checkTimes) {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             String checkDay = sdf.format(new Date(checkTime.getTime()));
             checkDays.add(checkDay);
         }
-        log.info("456"+checkDays);
+        log.info("456" + checkDays);
         return checkDays;
     }
 
