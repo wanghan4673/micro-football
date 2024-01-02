@@ -21,14 +21,14 @@ import java.util.List;
  */
 @RestController
 @Slf4j
-@RequestMapping("/player/game")
+@RequestMapping("/game")
 public class SearchGameController {
 
     @Autowired
     private GameServiceImpl gameServiceImpl;
 
 
-    @GetMapping("/search")
+    @GetMapping("")
     public Result getGamesByKeywordAndLeague(@RequestParam("date") String date,
                                                @RequestParam("leagueName") String leagueName){
         List<?> response= gameServiceImpl.getGamesByDateAndLeague(date,leagueName);

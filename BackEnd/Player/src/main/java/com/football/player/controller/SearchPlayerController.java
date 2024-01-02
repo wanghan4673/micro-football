@@ -19,14 +19,14 @@ import java.util.List;
  */
 @RestController
 @Slf4j
-@RequestMapping("/player/player")
+@RequestMapping("/player")
 public class SearchPlayerController {
 
     @Autowired
     private PlayerServiceImpl playerServiceImpl;
 
 
-    @GetMapping("/search")
+    @GetMapping("")
     public Result getPlayersByKeywordAndLeague(@RequestParam("searchKey") String searchKey,
                                                   @RequestParam("leagueName") String leagueName){
         List<?> response= playerServiceImpl.getPlayersByKeywordAndLeague(searchKey,leagueName);
