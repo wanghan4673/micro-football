@@ -38,6 +38,14 @@
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
         </dependency>
+
+        <!-- Mfapi模块 -->
+        <dependency>
+            <groupId>com.football</groupId>
+            <artifactId>mfapi</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+
     </dependencies>
 
     <build>
