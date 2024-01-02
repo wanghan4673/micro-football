@@ -36,36 +36,36 @@ public class ForumController {
         return Result.success(forumService.getPosts(page,size,keyword,tag,league));
     }
 
-    @PostMapping("/post")
+    @PostMapping("/posts")
     public Result newPost(@RequestBody Post post){
         return Result.success(forumService.newpost(post));
     }
 
-    @PostMapping("/post/like")
+    @PostMapping("/posts/like")
     public Result likePost(@RequestParam("postid") Long postid){
         forumService.likepost(postid);
         return Result.success();
     }
 
-    @PostMapping("/post/collect")
+    @PostMapping("/posts/collect")
     public Result collectPost(@RequestParam("postid") Long postid){
         forumService.collectpost(postid);
         return Result.success();
     }
 
-    @PostMapping("/post/follow")
+    @PostMapping("/posts/follow")
     public Result follow(@RequestParam() Long followerid){
         forumService.follow(followerid);
         return Result.success();
     }
 
-    @PostMapping("/post/comment")
+    @PostMapping("/posts/comment")
     public Result comment(@RequestBody() Comment comment){
         forumService.comment(comment.getPostid(),comment.getComment());
         return Result.success();
     }
 
-    @GetMapping("/post/{id}")
+    @GetMapping("/posts/{id}")
     public Result getPost(@PathVariable("id") Integer postid){
         PostInfo postInfo = forumService.getPost(postid);
         return Result.success(postInfo);
@@ -79,7 +79,7 @@ public class ForumController {
         return  Result.success();
     }
 
-    @PostMapping("/postimg")
+    @PostMapping("/postimgs")
     public Result upload(@RequestParam("postid") Integer postid,
                          MultipartFile file) throws IOException {
         String filename = forumService.uploadFile(postid,file);

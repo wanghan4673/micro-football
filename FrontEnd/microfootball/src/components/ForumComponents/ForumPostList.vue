@@ -19,8 +19,10 @@ import { useForumStore } from '../../stores/forum.ts'
 import { ElMessage } from 'element-plus'
 let forumstore = useForumStore()
 import { useRouter } from 'vue-router';
+import { useGeneralStore} from '../../stores/general.ts'
 import axios from 'axios'
 const router = useRouter()
+const store = useGeneralStore()
 
 const toPost = (post) => {
     forumstore.chosedPost = post
@@ -34,6 +36,7 @@ const toPost = (post) => {
 let PostList = ref([])
 let totalElements = ref(PostList.value.length)
 onMounted(() => {
+    getUserProfile();
     loadPosts();
 })
 
@@ -53,25 +56,45 @@ const handleCurrentChange = async (newPage) => {
 const loadPosts = async () => {
     let response
     try {
-        response = await axios.get('/api/forum?page=' + forumstore.chosedPage + '&size=10&keyword=' + forumstore.keyword + '&tag=' + forumstore.sorttag)
+        let url = '/api/forum?page=' + forumstore.chosedPage + '&size=10&keyword=' + forumstore.keyword + '&tag=' + forumstore.sorttag
+        if(store.user.league!=null && store.user.league != '')
+            url+= '&league='+store.user.league
+        response = await axios.get(url)
         if (response.status == 200) {
             PostList.value = []
             totalElements = 0
-            console.log(response)
+            // console.log(response)
             for (const post of response.data.data.posts) {
                 PostList.value.push(post)
             }
             totalElements = response.data.data.count;
         }
     } catch (e) {
-        console.log(e.message)
+        console.log(e)
         ElMessage({
             message: "获取帖子失败",
             type: "error"
         })
     }
 }
-
+const getUserProfile = async () => {
+    const token = localStorage.getItem('token')
+    if(token == null) 
+        return
+    try {
+        const response = await axios.get('/api/user/userInfo', {
+            headers: {
+                'token': token,
+            }
+        })
+        if (response.data.code == 1) {
+            store.user.username = response.data.data.name
+            store.user.league = response.data.data.favorite_league
+            // console.log(response.data.data)
+        }
+    } catch (error) {
+    }
+}
 </script>
 
 <style lang="scss" scoped>

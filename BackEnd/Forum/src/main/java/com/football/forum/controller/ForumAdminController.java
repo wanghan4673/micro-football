@@ -16,17 +16,17 @@ public class ForumAdminController {
     @Autowired
     private ForumAdminService forumAdminService;
 
-    @GetMapping("/posts")
+    @GetMapping("/ad-allposts")
     public List<PostDTO> GetAllPosts(){
         return forumAdminService.getAllPosts();
     }
 
-    @GetMapping("/post")
+    @GetMapping("/ad-posts")
     public PostDTO getPostForAdmin(@RequestParam("id") Integer postid){
         return forumAdminService.getPostForAdmin(postid);
     }
 
-    @DeleteMapping("/post")
+    @DeleteMapping("/ad-posts")
     public Boolean deletePost(@RequestParam("id") Integer postid){
         return  forumAdminService.deletePost(postid);
     }

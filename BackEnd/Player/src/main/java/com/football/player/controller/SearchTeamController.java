@@ -19,7 +19,7 @@ import java.util.List;
  */
 @RestController
 @Slf4j
-@RequestMapping("/player/team")
+@RequestMapping("/team")
 public class SearchTeamController {
 
 
@@ -27,7 +27,7 @@ public class SearchTeamController {
     private TeamServiceImpl teamServiceImpl;
 
 
-    @GetMapping("/search")
+    @GetMapping("")
     public Result getTeamsByKeyword(@RequestParam("searchKey") String searchKey) throws IOException {
         List<?> response= teamServiceImpl.getTeamsByKeyword(searchKey);
         return Result.success(response);
