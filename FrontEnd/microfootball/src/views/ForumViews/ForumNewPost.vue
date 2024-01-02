@@ -27,13 +27,10 @@
         <div id="Box">
             <p class="QC-title">上传图片</p>
             <UploadFiles />
-            <!-- <div style="" > -->
             <div>
                 <img v-for="img of store.drafts.img" :key="img" :src="convertFileToImageUrl(img)" alt="图片加载失败"
                     style="margin-top: 30px; width: 20%; border: 2px solid #000;display: inline;" />
             </div>
-            <!-- </div> -->
-            <!-- </div> -->
         </div>
         <div id="Box">
             <button class="submitbutton" type="button" @click="addQuestion" style="width: 10vw;">提交</button>
@@ -46,8 +43,6 @@ import { ref, defineProps } from 'vue'
 import WangEditer from '@/components/ForumComponents/WangEditer.vue';
 
 import '../../assets/css/forumbuttoncss.css'
-// import QuestionContent from './QuestionContent.vue';
-// import QuestionPreview from './QuestionPreview.vue';
 import { useGeneralStore } from '@/stores/general'
 import { useForumStore } from '../../stores/forum.ts'
 import UploadFiles from '../../components/ForumComponents/UploadFiles.vue';
@@ -84,7 +79,7 @@ const uploadFile = async (file,postid) => {
     let token = localStorage.getItem('token')
     formData.append('file', file);
     try {
-        const response = await axios.post('/api/forum/postimg?postid='+postid, formData, {
+        const response = await axios.post('/api/forum/postimgs?postid='+postid, formData, {
             headers: {
                 'token': `${token}`,
                 'Content-Type': 'multipart/form-data',
@@ -117,7 +112,7 @@ const addQuestion = async () => {
         return;
     }
     try {
-        response = await axios.post('/api/forum/post',{
+        response = await axios.post('/api/forum/posts',{
             "content": store.drafts.content,
             "title": store.drafts.title,
             "tags": tagstring.value,

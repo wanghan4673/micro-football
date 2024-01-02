@@ -105,7 +105,7 @@ const loadPost = async (postid) => {
     let response
     let token = localStorage.getItem('token')
     try {
-        response = await axios.get("/api/forum/post/" + postid, {
+        response = await axios.get("/api/forum/posts/" + postid, {
             headers: {
                 'token': `${token}`
             }
@@ -173,7 +173,7 @@ const likeclick = async () => {
     let response
     let token = localStorage.getItem('token')
     try {
-        response = await axios.post("/api/forum/post/like?postid=" + postid, {}, {
+        response = await axios.post("/api/forum/posts/like?postid=" + postid, {}, {
             headers: {
                 'token': `${token}`,
             }
@@ -199,7 +199,7 @@ const collectclick = async () => {
     let response
     let token = localStorage.getItem('token')
     try {
-        response = await axios.post("/api/forum/post/collect?postid=" + postid, {}, {
+        response = await axios.post("/api/forum/posts/collect?postid=" + postid, {}, {
             headers: {
                 'token': `${token}`,
             }
@@ -225,7 +225,7 @@ const commentclick = async () => {
     let response
     let token = localStorage.getItem('token')
     try {
-        response = await axios.post("/api/forum/post/comment", {
+        response = await axios.post("/api/forum/posts/comment", {
             "postid": postid,
             "comment": newcomment.value,
         },
