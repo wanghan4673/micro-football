@@ -50,7 +50,7 @@ export default {
         async getAllPost(){
             const adminToken = localStorage.getItem('adminToken');
             try {
-                const response = await axios.get('/api/admin/forum/getAllPost', {
+                const response = await axios.get('/api/admin/forum/posts', {
                     headers: {
                         'Content-Type': 'multipart/form-data',
                         'token': adminToken
@@ -79,7 +79,7 @@ export default {
             this.showDetailId=value
             const adminToken = localStorage.getItem('adminToken');
             try {
-                const response = await axios.get('/api/admin/forum/singlePost?id='+this.showDetailId, {
+                const response = await axios.get('/api/admin/forum/post/?id='+this.showDetailId, {
                     headers: {
                         'Content-Type': 'multipart/form-data',
                         'token': adminToken

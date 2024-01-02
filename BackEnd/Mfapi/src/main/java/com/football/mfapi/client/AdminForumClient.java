@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @FeignClient("administrator-service")
 public interface AdminForumClient {
-    @PostMapping("/admin/forum/postReport")
+    @PostMapping("/admin/forum/report")
     void postReport(@RequestParam("reporterName") String reporterName,
                     @RequestParam("reason") String reason,
                     @RequestParam("postId") Integer postId);

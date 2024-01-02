@@ -37,7 +37,7 @@ export default {
         async getReport(){
             const adminToken = localStorage.getItem('adminToken');
             try {
-                const response = await axios.get('/api/admin/forum/getReportList', {
+                const response = await axios.get('/api/admin/forum/reports', {
                     headers: {
                         'Content-Type': 'multipart/form-data',
                         'token': adminToken
@@ -64,7 +64,7 @@ export default {
             const formData = new FormData()
             formData.append('id', delId);
             try {
-                const response = await axios.post('/api/admin/forum/deleteReport',formData,{
+                const response = await axios.post('/api/admin/forum/report/delete',formData,{
                     headers: {
                         'Content-Type': 'multipart/form-data',
                         'token': adminToken
@@ -84,7 +84,7 @@ export default {
             const formData = new FormData()
             formData.append('id', delId);
             try {
-                const response = await axios.post('/api/admin/forum/confirmReport', formData, {
+                const response = await axios.post('/api/admin/forum/report/confirm', formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data',
                         'token': adminToken

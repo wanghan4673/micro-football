@@ -17,7 +17,7 @@ public class AdminForumController {
     @Autowired
     ForumClient forumClient;
 
-    @PostMapping("/postReport")
+    @PostMapping("/report")
     public Result postReport(
             @RequestParam("reporterName") String reporterName,
             @RequestParam("reason") String reason,
@@ -27,31 +27,31 @@ public class AdminForumController {
         return Result.success();
     }
 
-    @GetMapping("/getReportList")
+    @GetMapping("/reports")
     public Result getReportList(){
         return Result.success(adminForumService.getReportList());
     }
 
-    @PostMapping("/deleteReport")
+    @PostMapping("/report/delete")
     public Result deleteReport(@RequestParam("id") Integer id){
         adminForumService.deleteReport(id);
         return Result.success();
     }
 
-    @PostMapping("/confirmReport")
+    @PostMapping("/report/confirm")
     public Result confirmReport(@RequestParam("id") Integer id){
         adminForumService.deleteReport(id);
         //此处调用论坛
         return Result.success(forumClient.deletePost(id));
     }
 
-    @GetMapping("/getAllPost")
+    @GetMapping("/posts")
     public Result getAllPost(){
         return Result.success(forumClient.getAllPost());
     }
 
-    @GetMapping("/singlePost")
-    public Result getSinglePost(@RequestParam("id") Integer id){
+    @GetMapping("/post/{id}")
+    public Result getSinglePost(@PathVariable("id") Integer id){
         return Result.success(forumClient.getPostForAdmin(id));
     }
 }

@@ -33,7 +33,7 @@ export default {
         async getAnnouncementList() {
             const adminToken = localStorage.getItem('adminToken');
             try {
-                const response = await axios.get('/api/admin/announcement/getAnnouncementList', {
+                const response = await axios.get('/api/admin/announcement/announcements', {
                     headers: {
                         'Content-Type': 'multipart/form-data',
                         'token':adminToken
