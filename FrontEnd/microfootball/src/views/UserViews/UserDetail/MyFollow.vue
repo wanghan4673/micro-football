@@ -70,6 +70,7 @@ const deleteFollow = async (deleteId: number) => {
                 'token': token,
             }
         })
+        console.log(response)
         if (response.data.code == 1) {
             ElMessage({
                 message: '取消关注成功!',

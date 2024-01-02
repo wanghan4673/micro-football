@@ -30,9 +30,10 @@ public class ForumController {
     public Result GetPosts(@RequestParam(defaultValue = "1",required = false) Integer page,
                            @RequestParam(defaultValue = "10",required = false) Integer size,
                            @RequestParam(defaultValue = "",required = false) String keyword,
-                           @RequestParam(defaultValue = "",required = false) String tag
+                           @RequestParam(defaultValue = "",required = false) String tag,
+                           @RequestParam(defaultValue = "",required = false) String league
     ) {
-        return Result.success(forumService.getPosts(page,size,keyword,tag));
+        return Result.success(forumService.getPosts(page,size,keyword,tag,league));
     }
 
     @PostMapping("/post")

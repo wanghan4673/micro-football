@@ -8,6 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Timestamp;
+
 @RestController
 @Slf4j
 @RequestMapping("/user")
@@ -23,7 +25,7 @@ public class UpdateController {
         // 还有一个参数是头像图片 暂时先不考虑
         Long userId = UserContext.getUser();
         log.info("----------更新个人信息:{}----------", userId);
-        log.info(name+signature+email);
+        log.info(name + signature + email);
         boolean updateResult = userService.updateUser(userId, name, signature, email);
         if (updateResult) {
             return Result.success();
@@ -67,17 +69,37 @@ public class UpdateController {
     public Result deleteFollow(@PathVariable Long deleteId) {
         Long userId = UserContext.getUser();
         log.info("----------取消关注:{},{}----------", userId, deleteId);
-        boolean deleteResult = userService.deleteFollow(userId,deleteId);
-        if(deleteResult){
+        boolean deleteResult = userService.deleteFollow(userId, deleteId);
+        if (deleteResult) {
             return Result.success();
-        } else{
+        } else {
             return Result.error("取消关注失败");
         }
     }
 
     @GetMapping("/updateBanStatus")
-    public boolean updateBanStatus(@RequestParam("id") Long id){
+    public boolean updateBanStatus(@RequestParam("id") Long id) {
         log.info("----------更新违禁状态:{}----------", id);
         return userService.updateBanStatus(id);
+    }
+
+    @PostMapping("/updateLeague")
+    public Result updateLeague(@RequestParam(name = "league", required = false) String league) {
+        Long userId = UserContext.getUser();
+        log.info("----------更新关注的赛事:{},{}----------", userId, league);
+        boolean gameResult = userService.updateLeague(league, userId);
+        if (gameResult) {
+            return Result.success();
+        } else {
+            return Result.error("关注失败");
+        }
+    }
+
+    @PostMapping("/followGame")
+    public boolean followGame(@RequestParam("userId") Long userId,
+                             @RequestParam("gameId") Long gameId,
+                             @RequestParam("startTime") String startTime) {
+        log.info("----------订阅赛事:{}.{},{}----------", userId, gameId, startTime);
+        return userService.updateGameSubscript(userId, gameId, startTime);
     }
 }

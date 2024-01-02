@@ -52,11 +52,14 @@ public class LoginGlobalFilter implements GlobalFilter, Ordered {
             // 请求头内有token 开始解析
             token = header.get(0);
         }
-        log.info("token is: "+token);
         Long userId;
         try {
             userId = jwtUtils.parseJwt(token);
         } catch (Exception e) {
+            if(pathBothJudge(request.getPath().toString())){
+                log.info("this path may have expired token, but can be treated as not logged in.");
+                return chain.filter(exchange);
+            }
             ServerHttpResponse response = exchange.getResponse();
             response.setStatusCode(HttpStatus.UNAUTHORIZED);
             return response.setComplete();

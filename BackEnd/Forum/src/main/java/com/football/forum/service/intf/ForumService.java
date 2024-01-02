@@ -12,7 +12,7 @@ import java.util.List;
 
 @Service
 public interface ForumService {
-    Posts getPosts(int page, int size, String keyword,String tag);
+    Posts getPosts(int page, int size, String keyword,String tag,String league);
     PostInfo getPost(Integer postid);
 
     Post newpost(Post post);

@@ -31,7 +31,6 @@ import Canlendar from './UserDetail/Calendar.vue'
 import MyPost from './UserDetail/MyPost.vue'
 import MyFans from './UserDetail/MyFans.vue'
 import MyFollow from './UserDetail/MyFollow.vue'
-import EditProfile from './UserDetail/EditProfile.vue'
 import BackWave from './UserDetail/BackWave.vue'
 import { ref } from 'vue'
 

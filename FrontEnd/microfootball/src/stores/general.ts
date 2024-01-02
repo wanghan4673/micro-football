@@ -11,6 +11,7 @@ export const useGeneralStore = defineStore('general', {
       },
       user:{
         username: '',
+        useraccount: '',
       }
     }
   },

@@ -57,7 +57,7 @@
     </p>
     <div id="QC-bg" v-if="comments != []">
         <div id="Box" style="height: auto;padding-top: 20px;" v-for="(comment, index) of comments" :key="index">
-            <div style="width: 100%; display:flex; justify-content:space-between; border-bottom: 1px solid #44484a;">
+            <div style="width: 100%; display:flex; justify-content:space-between;padding-left: 10vw;padding-right:10vw; border-bottom: 1px solid #44484a;">
                 <div style="max-width:70% ; word-wrap: break-word; overflow: auto;">{{ comment.comment }}</div>
                 <div style="max-width: 25%; display: flex;">
                     <img :src="comment.avatar" alt="">
@@ -109,7 +109,7 @@ const loadPost = async (postid) => {
             }
         });
         if (response.status == 200) {
-            console.log(response.data)
+            // console.log(response.data)
             post.value = response.data.data.post
             comments.value = response.data.data.commentInfos
             poster.value = response.data.data.user
@@ -128,13 +128,14 @@ const loadPost = async (postid) => {
 const getUserProfile = async () => {
     const token = localStorage.getItem('token')
     try {
-        const response = await axios.get('/api/user/score', {
+        const response = await axios.get('/api/user/userInfo',{
             headers: {
                 'token': token,
             }
         })
         if (response.data.code == 1) {
-            store.user.username.value = response.data.data.name
+            store.user.username = response.data.data.name
+            // console.log(store.user.username)
         }
     } catch (error) {
     }
@@ -143,7 +144,7 @@ const handleSubmitClick = async () => {
     let response
     let token = localStorage.getItem('token')
     try {
-        response = await axios.post("/api/forum/report?reporterName=" + store.username + "&reason=" + reportreason.value + "&postId=" + postid, {
+        response = await axios.post("/api/forum/report?reporterName=" + store.user.username + "&reason=" + reportreason.value + "&postId=" + postid, {
         }, {
             headers: {
                 'token': `${token}`,

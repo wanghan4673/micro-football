@@ -12,6 +12,7 @@ import com.football.common.utils.UserContext;
 import com.football.forum.mapper.ForumMapper;
 import com.football.forum.model.*;
 import com.football.forum.service.intf.ForumService;
+import com.football.mfapi.client.SystemClient;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,15 +41,17 @@ public class ForumServiceimpl implements ForumService {
     private ForumMapper forumMapper;
     @Autowired
     private ElasticsearchClient client;
-
+    @Autowired
+    private SystemClient systemClient;
     @Override
-    public Posts getPosts(int page, int size, String keyword, String tag) {
+    public Posts getPosts(int page, int size, String keyword, String tag,String league) {
 //        PageHelper.startPage(1,2);
 //        Long count = forumMapper.count(keyword,tag);
 //        Integer start = (page-1)* size;
 //        if(start<0) start=0;
 //        List<Post> posts = forumMapper.getPosts(start,size,keyword,timeQ,tag);
         boolean hasTag = tag != null && !tag.isEmpty() && !tag.equals("全部赛事");
+        boolean hasLeague = league != null && !league.isEmpty();
         SearchResponse<Post> response;
         try {
             Query byTag = MatchQuery.of(m -> m
@@ -59,14 +62,32 @@ public class ForumServiceimpl implements ForumService {
                     .field("all")
                     .query(keyword)
             )._toQuery();
+            Query byLeague = MatchQuery.of(m -> m
+                    .field("tags")
+                    .query(league)
+            )._toQuery();
             if (keyword == null || keyword.isEmpty()) {
                 if (!hasTag) {
-                    response = client.search(
-                            e -> e.index("footballpost")
-                                    .query(q -> q.matchAll(m -> m))
-                                    .from((page - 1) * size)
-                                    .size(size), Post.class);
+                    // 查询全部
+                    if (!hasLeague) {
+                        response = client.search(
+                                e -> e.index("footballpost")
+                                        .query(q -> q.matchAll(m -> m))
+                                        .from((page - 1) * size)
+                                        .size(size), Post.class);
+                    } else {
+                        // 登录用户有偏好 优先查询偏好联赛
+                        response = client.search(
+                                e -> e.index("footballpost")
+                                        .query(q -> q.bool(b -> b
+                                                .must(byLeague)
+                                                .should(byTag) // 将联赛标签设置为更高优先级
+                                                .boost(2.0F))) // 提高联赛标签的权重
+                                        .from((page - 1) * size)
+                                        .size(size), Post.class);
+                    }
                 } else {
+                    // 查询标签
                     response = client.search(
                             e -> e.index("footballpost")
                                     .query(q -> q.bool(b -> b.must(byTag)))
@@ -75,18 +96,26 @@ public class ForumServiceimpl implements ForumService {
                 }
             } else {
                 if(!hasTag){
-                    response = client.search(
-                            e -> e.index("footballpost")
-                                    .query(q -> q.bool(b -> b.must(byKeyword)))
-                                    .highlight(highlightBuilder -> highlightBuilder
-                                            .preTags("<font color='#fc5531'>")
-                                            .postTags("</font>")
-                                            .requireFieldMatch(false)
-                                            .fields("title", highlightFieldBuilder -> highlightFieldBuilder)
-                                            .fields("content", highlightFieldBuilder -> highlightFieldBuilder))
-                                    .from((page - 1) * size)
-                                    .size(size), Post.class);
+                    // 查询关键字
+                    if (!hasLeague) {
+                        response = client.search(
+                                e -> e.index("footballpost")
+                                        .query(q -> q.bool(b -> b.must(byKeyword)))
+                                        .from((page - 1) * size)
+                                        .size(size), Post.class);
+                    } else {
+                        // 登录用户有偏好 优先查询偏好联赛
+                        response = client.search(
+                                e -> e.index("footballpost")
+                                        .query(q -> q.bool(b -> b
+                                                .must(byKeyword)
+                                                .should(byLeague)
+                                                .boost(2.0F))) // 提高联赛标签的权重
+                                        .from((page - 1) * size)
+                                        .size(size), Post.class);
+                    }
                 } else{
+                    // 查询标签和关键字
                     response = client.search(
                             e -> e.index("footballpost")
                                     .query(q -> q.bool(b -> b.must(byTag).must(byKeyword)))
@@ -141,6 +170,7 @@ public class ForumServiceimpl implements ForumService {
             log.error("Exception during importQues: {}", e.getMessage(), e);
         }
         forumMapper.newPost(post,userid);
+        systemClient.postNewPost();
         return post;
     }
 

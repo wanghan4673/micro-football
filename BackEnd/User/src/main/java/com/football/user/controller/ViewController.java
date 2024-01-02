@@ -29,7 +29,7 @@ public class ViewController {
     @GetMapping("/userInfo")
     public Result viewUserInfo(){
         Long userId = UserContext.getUser();
-        log.info("----------查看个人信息(用户名 个性签名及积分):{}----------", userId);
+        log.info("----------查看个人信息:{}----------", userId);
         User user = userService.getUserInfo(userId);
         return Result.success(user);
     }

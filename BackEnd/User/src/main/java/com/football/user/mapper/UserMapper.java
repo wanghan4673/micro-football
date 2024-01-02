@@ -14,7 +14,7 @@ public interface UserMapper {
     @Select("select * from user where account = #{account} and password = #{password}")
     User getUserByAccAndPas(User user);
 
-    @Select("select name,signature,score from user where _id = #{userId}")
+    @Select("select name,signature,score,favorite_league from user where _id = #{userId}")
     User getUserInfo(Long userId);
 
     @Select("select follow,fans from user where _id = #{userId}")
@@ -88,4 +88,10 @@ public interface UserMapper {
 
     @Update("UPDATE user SET isbanned = CASE WHEN isbanned = 1 THEN 0 ELSE 1 END WHERE _id = #{id}")
     boolean updateBanStatus(Long id);
+
+    @Update("UPDATE user SET favorite_league = #{league} WHERE _id = #{userId}")
+    boolean updateLeague(String league, Long userId);
+
+    @Insert("INSERT INTO gamebooking(userid,gameid,starttime) VALUES (#{userId},#{gameId},#{startTime})")
+    boolean insertGameBook(Long userId, Long gameId, String startTime);
 }
