@@ -33,8 +33,8 @@ const leagues_logo = [
     { "logo": require('@/assets/img/salogo.png'), "name": "意甲" },
     { "logo": require('@/assets/img/bllogo.png'), "name": "德甲" },
     { "logo": require('@/assets/img/le1logo.png'), "name": "法甲" },
-    { "logo": require('@/assets/img/cslogo.png'), "name": "中超" },
-    { "logo": require('@/assets/img/tjlogo.png'), "name": "同济" }]
+    { "logo": require('@/assets/img/cslogo.png'), "name": "中超" },]
+    // { "logo": require('@/assets/img/tjlogo.png'), "name": "同济" }]
 const toNewPost = () =>{
     router.push({
         path: '/forum/newpost'

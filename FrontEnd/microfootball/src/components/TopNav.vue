@@ -145,8 +145,9 @@ export default {
             this.$router.push('/Players')
         },
         logout() {
-            localStorage.removeItem('token');
-            this.$router.push('/');
+            localStorage.removeItem('token')
+            sessionStorage.removeItem('gameDialogShown')
+            this.$router.push('/')
             setTimeout(() => {
                 window.location.reload(); // 刷新当前页面
             }, 100); // 2000毫秒后刷新

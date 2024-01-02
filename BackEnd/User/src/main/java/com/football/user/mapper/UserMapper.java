@@ -1,6 +1,7 @@
 package com.football.user.mapper;
 
 import com.football.user.model.AdminUsers;
+import com.football.user.model.GameSubscription;
 import com.football.user.model.MyPost;
 import com.football.user.model.User;
 import org.apache.ibatis.annotations.*;
@@ -94,4 +95,7 @@ public interface UserMapper {
 
     @Insert("INSERT INTO gamebooking(userid,gameid,starttime) VALUES (#{userId},#{gameId},#{startTime})")
     boolean insertGameBook(Long userId, Long gameId, String startTime);
+
+    @Select("SELECT * FROM gamebooking WHERE userid = #{userId} AND STR_TO_DATE(starttime, '%Y-%m-%dT%H:%i:%s') BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 2 DAY)")
+    List<GameSubscription> getGamesByUserId(Long userId);
 }
