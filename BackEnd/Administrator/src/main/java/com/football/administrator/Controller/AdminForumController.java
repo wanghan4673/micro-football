@@ -32,8 +32,8 @@ public class AdminForumController {
         return Result.success(adminForumService.getReportList());
     }
 
-    @PostMapping("/report/delete")
-    public Result deleteReport(@RequestParam("id") Integer id){
+    @DeleteMapping("/report/delete/{id}")
+    public Result deleteReport(@PathVariable("id") Integer id){
         adminForumService.deleteReport(id);
         return Result.success();
     }
