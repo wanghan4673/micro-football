@@ -24,7 +24,7 @@ public class AnnouncementController {
     SystemInfoService systemInfoService;
     private final AnnouncementClient announcementClient;
 
-    @PostMapping("/postAnnouncement")
+    @PostMapping("/announcement")
     public Result postAnnouncement(@RequestParam("title") String title,
                                    @RequestParam("detail") String detail,
                                    @RequestParam("receiver") Long receiver){
@@ -33,12 +33,12 @@ public class AnnouncementController {
         return Result.success();
     }
 
-    @GetMapping("/getAnnouncementList")
+    @GetMapping("/announcements")
     public Result getAnnouncementList(){
         return Result.success(announcementservice.getAnnouncementList(0L));
     }
 
-    @GetMapping("/getAnnouncementForUser")
+    @GetMapping("/announcement-user")
     public List<AnnouncementDTO> getAnnouncementListForUser(@RequestParam("id") Long id){
         return announcementservice.getAnnouncementList(id);
     }

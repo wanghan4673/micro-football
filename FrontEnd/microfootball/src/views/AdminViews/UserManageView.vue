@@ -76,7 +76,7 @@ export default{
         async getAllUsers() {
             const adminToken = localStorage.getItem('adminToken');
             try {
-                const response = await axios.get('/api/admin/user/getAllUser', {
+                const response = await axios.get('/api/admin/user/users', {
                     headers: {
                         'Content-Type': 'multipart/form-data',
                         'token': adminToken
@@ -93,7 +93,7 @@ export default{
         async getReportedUser(){
             const adminToken = localStorage.getItem('adminToken');
             try {
-                const response = await axios.get('/api/admin/user/reportedUser', {
+                const response = await axios.get('/api/admin/user/reported-users', {
                     headers: {
                         'Content-Type': 'multipart/form-data',
                         'token': adminToken
@@ -112,7 +112,7 @@ export default{
             const formData = new FormData()
             formData.append('id', this.reportedUsers[index].id);
             try {
-                const response = await axios.post('/api/admin/user/updateBanStatus', formData,{
+                const response = await axios.post('/api/admin/user/status', formData,{
                     headers: {
                         'Content-Type': 'multipart/form-data',
                         'token': adminToken
@@ -132,7 +132,7 @@ export default{
             const formData = new FormData()
             formData.append('id', this.allUsers[index].id);
             try {
-                const response = await axios.post('/api/admin/user/updateBanStatus',formData, {
+                const response = await axios.post('/api/admin/user/status',formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data',
                         'token': adminToken

@@ -23,6 +23,7 @@ public class GameServiceImpl implements GameService {
             put("意甲",71);
             put("德甲",78);
             put("法甲",61);
+            put("中超",169);
         }
     };
 

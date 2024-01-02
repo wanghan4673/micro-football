@@ -13,17 +13,17 @@ public class AdminUserController {
     @Autowired
     UserClient userClient;
 
-    @GetMapping("/getAllUser")
+    @GetMapping("/users")
     public Result getAllUser(){
         return Result.success(userClient.getAllUsers());
     }
 
-    @GetMapping("/reportedUser")
+    @GetMapping("/reported-users")
     public Result getReportedUser(){
         return Result.success(userClient.getBannedUsers());
     }
 
-    @PostMapping("/updateBanStatus")
+    @PostMapping("/status")
     public Result updateBanStatus(@RequestParam("id") Long id){
         return Result.success(userClient.updateBanStatus(id));
     }

@@ -25,6 +25,7 @@ public class PlayerServiceImpl implements PlayerService {
             put("意甲",71);
             put("德甲",78);
             put("法甲",61);
+            put("中超",169);
         }
     };
 
@@ -105,8 +106,8 @@ public class PlayerServiceImpl implements PlayerService {
         PlayerDetailInfo playerDetailInfo=new PlayerDetailInfo();
         List<PlayerDetailInfo.SeasonInfo> seasonInfos=new ArrayList<>();
 
-        // 限定范围为2023-2013
-        for(int i =2013;i<=2023;i++){
+        // 限定范围为近五年
+        for(int i =2019;i<=2023;i++){
             // 调用外部api获取对象
             ResponseEntity<?> responseEntity = searchPlayerApi.getPlayerInfoByIdAndSeason(playerId, i);
 
