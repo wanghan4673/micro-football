@@ -17,6 +17,4 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://101.43.38.150/football_news
     username: football_News
-    password:
-  main:
-    allow-bean-definition-overriding: true
+    password: 183022

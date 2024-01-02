@@ -7,22 +7,22 @@
                 <el-page-header @back="goBack()" :icon="ArrowLeft">
                     <template #content>
                         <div class="flex items-center">
-                            <el-avatar :size="32" class="mr-3" :src="returnLogo(Details.newsBody.matchTag)" />
-                            <span style="position: relative;left:1vw;top:-0.5vh"> <b>{{ Details.newsBody.title }}</b>
+                            <el-avatar :size="32" class="mr-3" :src="returnLogo(Details.matchTag)" />
+                            <span style="position: relative;left:1vw;top:-0.5vh"> <b>{{ Details.title }}</b>
                             </span>
                         </div>
                     </template>
                     <el-descriptions :column="2" size="small" class="mt-4">
                         <el-descriptions-item label="新闻__ID：" :label-style="{ fontWeight: 300 }"><b>{{
-                            Details.newsBody.news_id }}</b></el-descriptions-item>
-                        <el-descriptions-item label="发布时间："><b>{{ returnTime(Details.newsBody.publishDateTime)
+                            Details.news_id }}</b></el-descriptions-item>
+                        <el-descriptions-item label="发布时间："><b>{{ returnTime(Details.publishDateTime)
                         }}</b></el-descriptions-item>
-                        <el-descriptions-item label="联赛类型："><b>{{ returnPlace(Details.newsBody.matchTag)
+                        <el-descriptions-item label="联赛类型："><b>{{ returnPlace(Details.matchTag)
                         }}</b></el-descriptions-item>
                         <el-descriptions-item label="新闻标签：">
-                            <el-tag class="ml-2" type="warning"><b>{{ Details.newsBody.matchTag }}&nbsp;</b></el-tag>
+                            <el-tag class="ml-2" type="warning"><b>{{ Details.matchTag }}&nbsp;</b></el-tag>
                             <el-tag class=" ml-2" type="success" style="margin-left: 5px;"><b>
-                                    &nbsp;{{ Details.newsBody.propertyTag }}&nbsp;
+                                    &nbsp;{{ Details.propertyTag }}&nbsp;
                                 </b></el-tag>
                         </el-descriptions-item>
                     </el-descriptions>
@@ -32,15 +32,15 @@
             <div>
                 <!-- 标题 -->
                 <div class="title">
-                    {{ Details.newsBody.title }}
+                    {{ Details.title }}
                 </div>
                 <!-- 正文 -->
                 <div class="content">
-                    {{ Details.newsBody.contains }}
+                    {{ Details.contains }}
                 </div>
                 <!-- 图片 -->
                 <div>
-                    <el-col :span="6" v-for="item in  Details.pictureRoutes">
+                    <el-col :span="6" v-for="item in  Details.pic">
                         <img v-if="item != null && (matchMP4(item) == false || Details.newsBody.news_id > 150)"
                             referrerPolicy='no-referrer' :src="item" alt="Image" class="imgItem">
                         <video v-if="item != null && matchMP4(item) == true && Details.newsBody.news_id < 150"
@@ -56,13 +56,13 @@
 </template>
   
 <script>
-import MyNav from './nav.vue';
-import ChinaLogo from '../assets/img/cslogo.png';
-import EnglandLogo from '../assets/img/pmlogo.png';
-import SpainLogo from '../assets/img/lllogo.png';
-import GermanyLogo from '../assets/img/bllogo.png';
-import ItalyLogo from '../assets/img/salogo.png';
-import FranceLogo from '../assets/img/le1logo.png';
+import MyNav from '../../components/TopNav.vue';
+import ChinaLogo from '../../assets/img/cslogo.png';
+import EnglandLogo from '../../assets/img/pmlogo.png';
+import SpainLogo from '../../assets/img/lllogo.png';
+import GermanyLogo from '../../assets/img/bllogo.png';
+import ItalyLogo from '../../assets/img/salogo.png';
+import FranceLogo from '../../assets/img/le1logo.png';
 
 export default {
     components: {
@@ -72,7 +72,6 @@ export default {
     data() {
         return {
             Details: {
-                newsBody: {
                     matchTag: "",
                     propertyTag: "",
                     title: "",
@@ -80,8 +79,7 @@ export default {
                     contains: "",
                     news_id: 0,
                     publishDateTime: '',
-                },
-                pictureRoutes: [],
+                pic: [],
             },
         };
     },
@@ -220,7 +218,7 @@ export default {
     width: 70px;
     height: 590px;
     margin-left: 35%;
-    background: url(../assets/img/scroll_cat.png);
+    background: url(../../assets/img/scroll_cat.png);
     transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
     opacity: 1;
 }

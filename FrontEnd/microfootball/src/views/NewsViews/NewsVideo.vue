@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- 顶部导航栏 -->
-    <my-nav></my-nav>
+<!--    <my-nav></my-nav>-->
     <!-- 标题+tag筛选 -->
     <el-row>
       <p class="titleLeagueLeft">足坛视频</p>
@@ -83,7 +83,7 @@
 </template>
 
 <script>
-import MyNav from './nav.vue';
+import MyNav from '../../components/TopNav.vue';
 import axios from 'axios';
 
 

@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- 顶部导航栏 -->
-    <my-nav></my-nav>
+<!--    <my-nav></my-nav>-->
     <div>
       <el-row>
         <!-- 新闻（位于左侧） -->
@@ -70,7 +70,7 @@
 </template>
 
 <script>
-import MyNav from './nav.vue';
+import MyNav from '../../components/TopNav.vue';
 import axios from 'axios';
 
 export default {
