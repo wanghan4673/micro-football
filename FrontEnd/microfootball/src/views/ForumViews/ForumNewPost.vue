@@ -57,7 +57,7 @@ const forumstore = useForumStore()
 import { ElMessage } from 'element-plus'
 import axios from 'axios';
 
-let taglist = ref(['英超','西甲','意甲','德甲','法甲','中超','同济']);
+let taglist = ref(['英超','西甲','意甲','德甲','法甲','中超']);
 const tags = ref([]);
 
 const chosetag = (tag) =>{

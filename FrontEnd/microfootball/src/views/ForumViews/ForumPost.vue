@@ -1,20 +1,21 @@
 <template>
     <div style="display: flex; margin-left: 20px;">
-        <el-icon @click="back" style="margin-top: 20px; margin-left: 10px;">
+        <el-icon @click="back" style="margin-top: 30px; margin-left: 10px;">
             <Back />
         </el-icon>
         <div class="QC-title" v-if="post.title">
-            <p style="margin-top: 16px; margin-left: 20px;">{{ post.title }}</p>
+            <p style="margin-top: 16px; margin-left: 20px;font-size: xx-large;">{{ post.title }}</p>
         </div>
     </div>
 
     <div id="QC-bg">
         <div id="Box" v-if="post.content">
-            <div style="width: 100%;word-wrap: break-word; margin-top: 5px;margin-bottom:5px ; ">
-                <img :src="poster.avatar" alt="">
+            <div style="width: 100%;word-wrap: break-word; margin-top: 5px;margin-bottom:5px; font-size: larger; ">
+                <!-- <img :src="poster.avatar" alt=""> -->
+                <span style="font-weight: bold;">帖主 </span>
                 <span> {{ poster.name }}</span>
             </div>
-            <div style="width: 100%;word-wrap: break-word">
+            <div style="width: 100%;word-wrap: break-word;font-size: larger;">
                 <p v-html="post.content"></p>
             </div>
         </div>
@@ -33,15 +34,15 @@
                 <Star />
             </el-icon>
             <span style="font-size: 20px;margin-top: -4px;">{{ post.collect }}</span>
-
-            <el-popover :visible="visible" placement="bottom" :width="360">
+            
+            <el-popover :visible="visible" placement="bottom" :width="360"  >
                 <p style="font-size: 16px;padding-left: 5px; margin-bottom: 15px;">举报理由：</p>
                 <el-input v-model="reportreason" placeholder="举报理由" :rows="3" type="textarea" clearable />
                 <div style="text-align: right; margin: 10px">
                     <el-button type="primary" @click="handleSubmitClick">提交举报</el-button>
                 </div>
                 <template #reference>
-                    <div @click="visible = true"
+                    <div @click="visible = true"  
                         style="display: flex; align-items: center; cursor: pointer;margin-top: -4px;">
                         <el-icon :size="20" :color="iscollected ? '#d57eb7' : ''">
                             <WarningFilled />
@@ -57,12 +58,12 @@
     </p>
     <div id="QC-bg" v-if="comments != []">
         <div id="Box" style="height: auto;padding-top: 20px;" v-for="(comment, index) of comments" :key="index">
-            <div style="width: 100%; display:flex; justify-content:space-between;padding-left: 10vw;padding-right:10vw; border-bottom: 1px solid #44484a;">
-                <div style="max-width:70% ; word-wrap: break-word; overflow: auto;">{{ comment.comment }}</div>
+            <div style="width: 100%; display:flex; justify-content:space-start;gap: 20px; padding-right:10vw; border-bottom: 1px solid #44484a;">
                 <div style="max-width: 25%; display: flex;">
-                    <img :src="comment.avatar" alt="">
+                    <!-- <img :src="comment.avatar" alt=""> -->
                     <p>{{ comment.name }}</p>
                 </div>
+                <div style="max-width:70% ; word-wrap: break-word; overflow: auto;">{{ comment.comment }}</div>
             </div>
         </div>
     </div>
@@ -94,6 +95,7 @@ let isliked = ref(false)
 let iscollected = ref(false)
 let newcomment = ref("")
 let reportreason = ref('')
+// let visible = ref(false);
 onMounted(() => {
     loadPost(postid)
     getUserProfile()
@@ -135,7 +137,8 @@ const getUserProfile = async () => {
         })
         if (response.data.code == 1) {
             store.user.username = response.data.data.name
-            // console.log(store.user.username)
+            store.user.league = response.data.data.favorite_league
+            console.log(response.data.data)
         }
     } catch (error) {
     }
@@ -237,6 +240,7 @@ const commentclick = async () => {
                 message: "评论成功",
                 type: "success"
             })
+            newcomment.value = ''
             loadPost(postid)
         }
     } catch (error) {

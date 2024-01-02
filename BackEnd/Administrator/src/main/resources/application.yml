@@ -5,6 +5,7 @@ spring:
     nacos:
       discovery:
         server-addr: 110.40.206.206:8848  #nacos端口
+        namespace: 4904a6a1-1c1f-435a-b566-f8c71b8fca1e
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://1.15.170.195:3306/administrator

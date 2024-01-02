@@ -5,6 +5,7 @@ spring:
     nacos:
       discovery:
         server-addr: 110.40.206.206:8848  #nacos端口
+        namespace: 4904a6a1-1c1f-435a-b566-f8c71b8fca1e
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
