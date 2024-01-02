@@ -15,7 +15,7 @@ module.exports = defineConfig({
       },
     },
     client: {
-      overlay: false
+      overlay: false   //关闭Uncaught runtime errors
     }
 
   },
