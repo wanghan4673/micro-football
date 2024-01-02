@@ -64,7 +64,7 @@ export default {
             const formData = new FormData()
             formData.append('id', delId);
             try {
-                const response = await axios.post('/api/admin/forum/report/delete',formData,{
+                const response = await axios.delete('/api/admin/forum/report/delete/'+delId,{
                     headers: {
                         'Content-Type': 'multipart/form-data',
                         'token': adminToken
