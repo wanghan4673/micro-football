@@ -43,6 +43,7 @@
 <script>
 import axios from 'axios';
 import { ElMessage } from 'element-plus';
+import {useGeneralStore} from '../stores/general.ts';
 // import { loginStore } from '../stores/login';
 export default {
     data() {
@@ -50,6 +51,7 @@ export default {
             islog: false,
             avatarurl: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
             userName: '',
+            store: useGeneralStore()
         }
     },
     mounted() {
@@ -92,9 +94,12 @@ export default {
                 }
             } catch (err) {
                 if (err.response && err.response.status === 401) {
+                    //清空用户状态
+                    // store.user.league = ''
+
                     // token非法 登录状态异常
                     ElMessage({
-                        message: 'token非法,登录状态异常',
+                        message: '登录过期，请重新登陆',
                         grouping: false,
                         type: 'error',
                     })
