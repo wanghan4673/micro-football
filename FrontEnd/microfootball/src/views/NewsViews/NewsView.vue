@@ -344,7 +344,7 @@
           <p class="titleLeagueLeft" style="left:3vw;">搜索结果</p>
           <div class="line" style="width: 40vw;height: 0.2px;top:4vh;left:-24vw;"></div>
           <el-col :span="18">
-            <div v-for="item  in  searchNewsResults " :key="item.id" class="itemSearch" style="top:1vh">
+            <div v-for="item  in  searchNewsResults " :key="item.id" class="itemSearch" style="top:5vh">
               <div class="imgWrapper" style=" position: relative;top: -10vh;left: -4vw;" @click="openNewsDetails(item.newsId)">
                 <img v-if="item.pic != ''" referrerPolicy='no-referrer'
                   :src="item.pic[0]" alt="SearchImage" class="imgSearch">
