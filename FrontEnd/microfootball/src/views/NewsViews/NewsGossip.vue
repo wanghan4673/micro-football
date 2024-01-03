@@ -25,16 +25,16 @@
           <div v-if="GossipNews.length != 0" v-for="item in GossipNews" :key="item.id" class="itemSearch">
             <div class="imgWrapper" @click="openNewsDetails(item)">
               <img
-                v-if="item.pictureRoutes != null && (matchMP4(item.pictureRoutes[0]) == false || item.newsBody.news_id > 150)"
-                referrerPolicy='no-referrer' :src="item.pictureRoutes[0]" alt="Image" class="imgSearch">
+                v-if="item.pic != null && (matchMP4(item.pic[0]) == false || item.news_id > 150)"
+                referrerPolicy='no-referrer' :src="item.pic[0]" alt="Image" class="imgSearch">
               <video
-                v-if="item.pictureRoutes != null && matchMP4(item.pictureRoutes[0]) == true && item.newsBody.news_id < 150"
-                referrerPolicy='no-referrer' ref="videoPlayer" :src="item.pictureRoutes[0]"
+                v-if="item.pic != null && matchMP4(item.pic[0]) == true && item.news_id < 150"
+                referrerPolicy='no-referrer' ref="videoPlayer" :src="item.pic[0]"
                 class="imgSearch imgForVideo" />
             </div>
             <div class="TextWrapper" @click="openNewsDetails(item)">
-              <div class="titleSearch">{{ item.newsBody.title }}</div>
-              <div class="descriptionSearch">{{ truncateText(item.newsBody.summary, 60) }}</div>
+              <div class="titleSearch">{{ item.title }}</div>
+              <div class="descriptionSearch">{{ truncateText(item.summary, 60) }}</div>
             </div>
           </div>
           <div class="NoMore">No More ......</div>

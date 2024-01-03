@@ -70,6 +70,7 @@ public class ForumServiceimpl implements ForumService {
                 if (!hasTag) {
                     // 查询全部
                     if (!hasLeague) {
+                        log.info("entry01");
                         response = client.search(
                                 e -> e.index("footballpost")
                                         .query(q -> q.matchAll(m -> m))
@@ -77,17 +78,22 @@ public class ForumServiceimpl implements ForumService {
                                         .size(size), Post.class);
                     } else {
                         // 登录用户有偏好 优先查询偏好联赛
+                        log.info("entry02");
                         response = client.search(
                                 e -> e.index("footballpost")
                                         .query(q -> q.bool(b -> b
-                                                .must(byLeague)
-                                                .should(byTag) // 将联赛标签设置为更高优先级
+                                                .must(mustQuery -> mustQuery.matchAll(ma -> ma)) // 确保返回所有帖子
+                                                .should(shouldQuery -> shouldQuery.match(m -> m // 提高特定标签的权重
+                                                        .field("tags")
+                                                        .query(league)
+                                                ))
                                                 .boost(2.0F))) // 提高联赛标签的权重
                                         .from((page - 1) * size)
                                         .size(size), Post.class);
                     }
                 } else {
                     // 查询标签
+                    log.info("entry03");
                     response = client.search(
                             e -> e.index("footballpost")
                                     .query(q -> q.bool(b -> b.must(byTag)))
@@ -98,12 +104,20 @@ public class ForumServiceimpl implements ForumService {
                 if(!hasTag){
                     // 查询关键字
                     if (!hasLeague) {
+                        log.info("entry04");
                         response = client.search(
                                 e -> e.index("footballpost")
                                         .query(q -> q.bool(b -> b.must(byKeyword)))
+                                        .highlight(highlightBuilder -> highlightBuilder
+                                                .preTags("<font color='#fc5531'>")
+                                                .postTags("</font>")
+                                                .requireFieldMatch(false)
+                                                .fields("title", highlightFieldBuilder -> highlightFieldBuilder)
+                                                .fields("content", highlightFieldBuilder -> highlightFieldBuilder))
                                         .from((page - 1) * size)
                                         .size(size), Post.class);
                     } else {
+                        log.info("entry05");
                         // 登录用户有偏好 优先查询偏好联赛
                         response = client.search(
                                 e -> e.index("footballpost")
@@ -111,11 +125,18 @@ public class ForumServiceimpl implements ForumService {
                                                 .must(byKeyword)
                                                 .should(byLeague)
                                                 .boost(2.0F))) // 提高联赛标签的权重
+                                        .highlight(highlightBuilder -> highlightBuilder
+                                                .preTags("<font color='#fc5531'>")
+                                                .postTags("</font>")
+                                                .requireFieldMatch(false)
+                                                .fields("title", highlightFieldBuilder -> highlightFieldBuilder)
+                                                .fields("content", highlightFieldBuilder -> highlightFieldBuilder))
                                         .from((page - 1) * size)
                                         .size(size), Post.class);
                     }
                 } else{
                     // 查询标签和关键字
+                    log.info("entry06");
                     response = client.search(
                             e -> e.index("footballpost")
                                     .query(q -> q.bool(b -> b.must(byTag).must(byKeyword)))

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/user")
+@RequestMapping("/users")
 public class IMController {
 
     private TLSSigAPIv2 tlsSigAPIv2 = new TLSSigAPIv2(1600013711,"8a1959745a1485707b6fa66ef37a20ccca6ad6e360834fc0b0a3c9c9efd916df");

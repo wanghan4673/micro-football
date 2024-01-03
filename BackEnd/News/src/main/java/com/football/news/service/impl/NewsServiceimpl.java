@@ -179,10 +179,10 @@ public class NewsServiceimpl implements NewsService {
 
 
         //List<NewsEntityInfo> assist2=getNewsInfo("","八卦",10);
-        List<NewsEntityInfo> assist2=filterNewsByTags(newsTotal,"","八卦",10);
+        List<NewsEntityInfo> assist2=filterNewsByTags(newsTotal,"","八卦",11);
         result.news.add(assist2.subList(0, 4));
         result.news.add(assist2.subList(4, 7));
-        result.news.add(assist2.subList(7, 10));
+        result.news.add(assist2.subList(7, 11));
 
         List<VideoEntity> assist3=getVideo("","",11);
         result.videos.add(assist3.subList(0,4));

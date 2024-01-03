@@ -134,8 +134,11 @@ const login = async () => {
                 message: '登录成功',
                 type: 'success',
             })
-            localStorage.setItem('token', response.data.data)  // 将token存在浏览器缓存中
+            localStorage.setItem('token', response.data.data.jwt)  // 将token存在浏览器缓存中
             store.user.useraccount = loginForm.value.account
+            store.user.league = response.data.data.favoriteLeague
+            console.log(response.data.data)
+            console.log("store.user.league"+store.user.league)
             gotoPath('/')
         } else {
             ElMessage({
@@ -177,8 +180,8 @@ const register = async () => {
                 message: '注册成功!',
                 type: 'success',
             })
-            console.log(response)
-            localStorage.setItem('token', response.data.data)
+            console.log(response.data.data.jwt)
+            localStorage.setItem('token', response.data.data.jwt)
             gotoPath('/')
         } else {
             ElMessage({
