@@ -18,7 +18,8 @@
                         :class="{ 'blue-text': menutextcolor === 6 }">赛事</el-menu-item>
                     <el-menu-item index=6 @click="redirectToPlayers"
                         :class="{ 'blue-text': menutextcolor === 7 }">球员信息</el-menu-item>
-
+                    <el-menu-item index=7 @click="redirectToTeam"
+                        :class="{ 'blue-text': menutextcolor === 8 }">球队信息</el-menu-item>
                 </el-menu>
             </div>
             <div class="nav-right">
@@ -69,6 +70,8 @@ export default {
                 return 6;
             } else if (this.$route.path === '/Players') {
                 return 7;
+            } else if (this.$route.path === '/Team') {
+                return 8;
             }
         },
     },
@@ -143,6 +146,9 @@ export default {
         redirectToPlayers() {
             //跳转到新闻页面的逻辑
             this.$router.push('/Players')
+        },
+        redirectToTeam() {
+            this.$router.push('/Team')
         },
         logout() {
             localStorage.removeItem('token')

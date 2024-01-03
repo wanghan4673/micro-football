@@ -20,7 +20,7 @@ import java.util.List;
 @RestController
 @Slf4j
 @RequestMapping("/player")
-public class SearchPlayerController {
+public class  SearchPlayerController {
 
     @Autowired
     private PlayerServiceImpl playerServiceImpl;
