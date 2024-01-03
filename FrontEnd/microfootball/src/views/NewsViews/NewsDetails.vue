@@ -41,10 +41,8 @@
                 <!-- 图片 -->
                 <div>
                     <el-col :span="6" v-for="item in  Details.pic">
-                        <img v-if="item != null && (matchMP4(item) == false || Details.newsBody.news_id > 150)"
+                        <img v-if="item != null"
                             referrerPolicy='no-referrer' :src="item" alt="Image" class="imgItem">
-                        <video v-if="item != null && matchMP4(item) == true && Details.newsBody.news_id < 150"
-                            referrerPolicy='no-referrer' ref="videoPlayer" :src="item" class="imgItem" controls />
                     </el-col>
                 </div>
             </div>
@@ -122,10 +120,7 @@ export default {
             else if (tag == '法甲')
                 return 'Ligue 1';
         },
-        //匹配mp4字符，用于判断视频还是图片的渲染
-        matchMP4(str) {
-            return str.includes('mp4');
-        },
+
         goBack() {
             window.close();
         },

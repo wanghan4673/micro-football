@@ -22,13 +22,8 @@
           <div class="line" style="width: 40vw;height: 0.2px;top:-7vh;left:8%;"></div>
           <div v-if="GossipNews.length != 0" v-for="item in GossipNews" :key="item.id" class="itemSearch">
             <div class="imgWrapper" @click="openNewsDetails(item.newsId)">
-              <img
-                v-if="item.pic != null && (matchMP4(item.pic[0]) == false || item.news_id > 150)"
+              <img v-if="item.pic != null"
                 referrerPolicy='no-referrer' :src="item.pic[0]" alt="Image" class="imgSearch">
-              <video
-                v-if="item.pic != null && matchMP4(item.pic[0]) == true && item.news_id < 150"
-                referrerPolicy='no-referrer' ref="videoPlayer" :src="item.pic[0]"
-                class="imgSearch imgForVideo" />
             </div>
             <div class="TextWrapper" @click="openNewsDetails(item.newsId)">
               <div class="titleSearch">{{ item.title }}</div>
