@@ -24,7 +24,7 @@
       <!-- 新闻导航栏 -->
       <el-main>
         <el-menu mode="horizontal" active-text-color="#409eff">
-          <el-menu-item @click="activeTab = 'home'" :class="{ 'active': activeTab == 'home' }"
+          <el-menu-item @click="activeTab = 'home';resetData() " :class="{ 'active': activeTab == 'home' }"
             class="menu">首页</el-menu-item>
           <el-menu-item @click="() => { activeTab = 'China'; switchLeague('中超') }"
             :class="{ 'active': activeTab == 'China' }" class="menu">中超</el-menu-item>
@@ -465,16 +465,9 @@ export default {
   },
 
   //进入页面后调取接口，从而获得一组数据
-  created() {
-    // if (this.SpainItems.length == 0)
-    this.initNewsData();
-  },
 
   mounted() {
-    window.addEventListener('scroll', this.handleScroll);
-  },
-  beforeDestroy() {
-    window.removeEventListener('scroll', this.handleScroll);
+    this.initNewsData();
   },
 
   methods: {
@@ -483,10 +476,7 @@ export default {
       try {
         const response = await axios.get('/api/news/init', ''); // 发送POST请求，并将请求数据作为 JSON 对象发送
 
-        console.log(response.data.value);
-
         this.carouselRecommendItems = response.data.news[0];
-        console.log(this.carouselRecommendItems);
         this.recommendItems1 = response.data.news[1];
         this.recommendItems2 = response.data.news[2];
 
@@ -509,7 +499,13 @@ export default {
         // 处理获取失败的情况
         this.$message.error('数据获取失败，请重试！');
       };
-      return;
+    },
+    resetData() {
+      this.initNewsData();
+      this.LeagueNews = [];
+      this.LeagueTeam = [];
+      this.LeagueShooter = [];
+      this.LeagueVideo = [];
     },
     //搜索
     search() {
@@ -540,7 +536,6 @@ export default {
         // 将数组存贮于传入的数组名中
         this.searchNewsResults = response1.data;
         this.searchVideoResults = response2.data;
-        console.log('123');
         console.log(this.searchNewsResults);
         console.log(this.searchVideoResults);
         console.log(this.activeTab);
@@ -656,18 +651,33 @@ export default {
 
     //切换联赛展示
     switchLeague(gameType) {
+      this.carouselRecommendItems = []
+      this.carouselVideoItems= []
+      this.carouselGossipItems= []
+      this.recommendItems1= []
+      this.recommendItems2= []
+      this.videoItems1= []
+      this.videoItems2= []
+      this.gossipItems1= []
+      this.gossipItems2= []
+      this.ChinaItems= []
+      this.ENGLANDItems= []
+      this.FranceItems= []
+      this.ItalyItems= []
+      this.GermanyItems= []
+      this.SpainItems= []
+
       this.LeagueTitle1 = gameType + '动态';
       this.LeagueTitle2 = gameType + '球队一览';
       //更改联赛数组
 
-      //console.log("获取数据");
       this.getData(-1, gameType, '', this.LeagueNews);
-      console.log("处理后的联赛新闻LeagueNews");
-      console.log(this.LeagueNews);
 
       //this.getTeamName(this.returnLeagueInt(gameType));
       //this.getShooter(gameType);
       this.getVideoData(-1, gameType, '', this.LeagueVideo);
+
+      console.log("abcdddd",this.LeagueNews);
     },
 
 
