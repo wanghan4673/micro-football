@@ -25,6 +25,7 @@ public class AdminUserController {
 
     @PostMapping("/status")
     public Result updateBanStatus(@RequestParam("id") Long id){
-        return Result.success(userClient.updateBanStatus(id));
+        userClient.updateBanStatus(id);
+        return Result.success();
     }
 }
