@@ -41,6 +41,7 @@ public class UserController {
             Map<String, Object> responseData = new HashMap<>();
             responseData.put("jwt", jwt);
             responseData.put("favoriteLeague", login_user.getFavoriteLeague());
+            responseData.put("id", login_user.getId());
             return Result.success(responseData);
         }
         return Result.error("userError");
@@ -152,6 +153,22 @@ public class UserController {
         log.info("----------查看个人信息:{}----------", userId);
         User user = userService.getUserInfo(userId);
         return Result.success(user);
+    }
+
+    @GetMapping("/user-detail")
+    public Result getUserDetail(@RequestParam("userid") Long userid) {
+        Long myid = UserContext.getUser();
+        log.info("----------查看评论者信息:{}----------", userid);
+        User user = userService.getCommentUser(userid,myid);
+        return Result.success(user);
+    }
+
+    @PostMapping("/follow")
+    public Result follow(@RequestParam("fansid") Long followerid){
+        Long fansid = UserContext.getUser();
+        log.info("----------关注用户:{}----------", fansid);
+        userService.follow(fansid,followerid);
+        return Result.success();
     }
 
     @GetMapping("/check-days")
