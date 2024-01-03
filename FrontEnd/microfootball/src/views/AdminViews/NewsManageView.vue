@@ -1,60 +1,101 @@
 <template>
     <el-container style="height: 80vh;margin-top: 5vh;" class="set-horizonal">
-        <el-container style="margin-left: 5vw;width: 55vw;" class="set-vertical">
-            <el-tabs tab-position="left">
-                <el-tab-pane label="英超">
-                    <el-card class="news-list-card" shadow="always">
-                        <h3>当前英超新闻列表</h3>
-                    </el-card>
-                </el-tab-pane>
-                <el-tab-pane label="西甲">
-                    <el-card class="news-list-card" shadow="always">
-                        <h3>当前西甲新闻列表</h3>
-                    </el-card>
-                </el-tab-pane>
-                <el-tab-pane label="德甲">
-                    <el-card class="news-list-card" shadow="always">
-                        <h3>当前德甲新闻列表</h3>
-                    </el-card>
-                </el-tab-pane>
-                <el-tab-pane label="...">
-                    <el-card class="news-list-card" shadow="always">
-                        <h3>当前某某新闻列表</h3>
-                    </el-card>
-                </el-tab-pane>
-            </el-tabs>
-        </el-container>
-        <el-container class="set-vertical" style="margin-right: 5vw;width: 30vw;margin-left: 5vw;">
-            <el-card class="news-list-card" shadow="always">
-                <el-container>
-                    <h3>用户来稿</h3>
-                    <el-button type="primary" size="small" style="margin-left: 2vw;">添加新闻</el-button>
+        <el-card style="height: 80vh;width: 70%;margin-left: 15%;">
+            <el-card v-for="(item,index) in news" :key="index" style="margin-top: 1vh;border-radius: 15px;">
+                <el-container style="display: flex;flex-direction: row;">
+                    <el-container style="display: flex;flex-direction: column;">
+                        <h3>{{item.title}}</h3>
+                        <el-container>{{ item.summary }}</el-container>
+                        <h4><el-icon style="margin-top: 1vh;margin-right: 1vw;"><Clock /></el-icon>{{ item.publishTime }}</h4>
+                    </el-container>
+                    <el-button type="danger" @click="delNews(item.news_id,index)">
+                        删除新闻
+                    </el-button>
                 </el-container>
-                <el-scrollbar style="height: 75vh;">
-                    <el-card style="height: 15vh;margin-top: 2vh;">
-                        <h3>关于足协占用刷段操场的投诉</h3>
-                        <h4 style="margin-top: 1vh;">近日，足协多次占用....</h4>
-                        <h5 style="margin-top: 1vh;">2023-12-03 16:41  来信人：cinderlord</h5>
-                    </el-card>
-                </el-scrollbar>
             </el-card>
-        </el-container>
+        </el-card>
     </el-container>
 </template>
 
 <script>
+import axios from "axios";
 export default {
     components: {
         
     },
     data() {
         return {
-            
+            news:[
+                {
+                    title:"223232",
+                    summary:"sfsadasdsada",
+                    id:1,
+                    publishTime:"2222-22-22"
+                },
+                 {
+                    title: "223232",
+                    summary: "sfsadasdsada",
+                    id: 1,
+                    publishTime: "2222-22-22"
+                },
+                 {
+                    title: "223232",
+                    summary: "sfsadasdsada",
+                    id: 1,
+                    publishTime: "2222-22-22"
+                },
+                 {
+                    title: "223232",
+                    summary: "sfsadasdsada",
+                    id: 1,
+                    publishTime: "2222-22-22"
+                },
+            ]
         }
     },
     methods: {
-
-    }
+        async delNews(id,index){
+            try {
+                const response = await axios.post('/api/admin/news/', {
+                    email: this.loginForm.email,
+                });
+                console.log(response)
+                if (response.data.code == 1) {
+                    ElMessage({
+                        message: '已删除新闻',
+                        type: 'success',
+                    })
+                    this.news.splice(index,1);
+                }
+            } catch (e) {
+                
+            }
+        },
+        async getNews(){
+            const adminToken = localStorage.getItem('adminToken');
+            try {
+                const response = await axios.post('/api/admin/news', {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                        'token': adminToken
+                    },
+                });
+                console.log(response)
+                if (response.data.code == 1) {
+                    ElMessage({
+                        message: '验证码已发送，有效时间五分钟',
+                        type: 'success',
+                    })
+                    this.isAble = false
+                }
+            } catch (e) {
+                
+            }
+        },
+    },
+    mounted(){
+        this.getNews();
+    },
 }
 </script>
 
