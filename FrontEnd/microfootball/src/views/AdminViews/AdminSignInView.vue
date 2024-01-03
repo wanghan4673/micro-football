@@ -12,7 +12,7 @@
                     <el-form :model="loginForm">
                         <el-form-item style="margin-bottom: 15px">
                             <el-input style="width:250px" v-model="loginForm.email" placeholder="请输入邮箱"></el-input>
-                            <el-button style="margin-left: 2vw;" v-if="isAble" type="primary" @click="getReport">发送验证码</el-button>
+                            <el-button style="margin-left: 2vw;" v-if="isAble" type="primary" @click="getPassword">发送验证码</el-button>
                             <el-button style="margin-left: 2vw;" type="primary" disabled v-else>验证码已发送</el-button>
                         </el-form-item>
                         <el-form-item>
@@ -64,9 +64,9 @@ export default {
                     message: '管理员邮箱不正确，请重新登陆',
                     type: 'error',
                 })
-                // setTimeout(() => {
-                //     window.location.reload(); // 刷新当前页面
-                // }, 1000);
+                setTimeout(() => {
+                    window.location.reload(); // 刷新当前页面
+                }, 1000);
             }
         },
         async signin(){
@@ -79,22 +79,6 @@ export default {
                 if (response.data.code == 1) {
                     localStorage.setItem('adminToken', response.data.data)
                     this.$router.push('/adminhome')
-                }
-            } catch (e) {
-                console.log(e)
-            }
-        },
-        async getReport() {
-            const adminToken = localStorage.getItem('adminToken');
-            try {
-                const response = await axios.get('/api/admin/forum/reports', {
-                    headers: {
-                        'Content-Type': 'multipart/form-data',
-                        'token': adminToken
-                    },
-                });
-                if (response.status == 200) {
-                    console.log(this.reports)
                 }
             } catch (e) {
                 console.log(e)
