@@ -31,7 +31,7 @@ public class UserController {
         // 登录成功 生成令牌并下发令牌给前端
         if (login_user != null) {
             if (login_user.getIsbanned()) {
-                return Result.error("该用户已被封禁");
+                return Result.error("isbanned");
             }
             Map<String, Object> claims = new HashMap<>();
             claims.put("id", login_user.getId());
@@ -43,7 +43,7 @@ public class UserController {
             responseData.put("favoriteLeague", login_user.getFavoriteLeague());
             return Result.success(responseData);
         }
-        return Result.error("用户名或密码错误");
+        return Result.error("userError");
         // 如果为null证明数据库中没有此用户
     }
 

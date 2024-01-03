@@ -122,17 +122,17 @@ const redirectToPlayers = () => {
 }
 
 const logout = () => {
-    localStorage.removeItem('token');
-    sessionStorage.removeItem('gameDialogShown');
+    localStorage.removeItem('token')
+    sessionStorage.removeItem('gameDialogShown')
     ElMessage({
         message: '登出成功',
         grouping: false,
         type: 'success',
     })
-    router.push('/');
     setTimeout(() => {
-        window.location.reload();
-    }, 100);
+        window.location.reload()
+    }, 100)
+    router.push('/')
 }
 
 const redirectToLogin = (isAdmin) => {

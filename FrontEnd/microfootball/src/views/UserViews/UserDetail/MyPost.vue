@@ -75,10 +75,8 @@ const isLastPost = (index: number) => {
 @import '../../../assets/css/frame.scss';
 @import '../../../assets/font/font.css';
 .user-post-box {
-    height: 70vh;
-    border-top-right-radius: 2vh;
-    border-top-left-radius: 2vh;
-    background-color: #e8e8e8;
+    height: 72vh;
+    background: linear-gradient(to bottom, #ffffff, #e8e8e8);
 }
 
 .post-card {
