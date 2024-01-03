@@ -6,8 +6,6 @@ spring:
   cloud:
     nacos:
       server-addr: 110.40.206.206:8848  # nacos端口
-      discovery:
-        namespace: 953f09b3-9f6f-45e4-8e44-53e6b5c7cc53
     gateway:
       routes:
         - id: user-service

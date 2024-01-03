@@ -39,10 +39,10 @@ public class AdminForumController {
     }
 
     @PostMapping("/report/confirm")
-    public Result confirmReport(@RequestParam("id") Integer id){
+    public Result confirmReport(@RequestParam("post_id") Integer post_id,@RequestParam("id") Integer id){
         adminForumService.deleteReport(id);
         //此处调用论坛
-        return Result.success(forumClient.deletePost(id));
+        return Result.success(forumClient.deletePost(post_id));
     }
 
     @GetMapping("/posts")

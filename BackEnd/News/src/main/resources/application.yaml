@@ -13,8 +13,6 @@ spring:
     nacos:
       discovery:
         server-addr: 110.40.206.206:8848  #nacos端口
-        namespace: 953f09b3-9f6f-45e4-8e44-53e6b5c7cc53
-
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://101.43.38.150/football_news
