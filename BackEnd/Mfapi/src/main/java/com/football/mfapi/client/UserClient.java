@@ -16,7 +16,7 @@ public interface UserClient {
     @GetMapping("/users/banned")
     List<UserDTO> getBannedUsers();
 
-    @GetMapping("/users/upcoming-games")
+    @GetMapping("/users/ban-status")
     Boolean updateBanStatus(@RequestParam("id") Long id);
     @PostMapping("/users/subscribe-game")
     Boolean subscribeGame(@RequestParam("userId") Long userId,
