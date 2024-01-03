@@ -11,11 +11,11 @@
         </div>
         <div style="display: flex; justify-content: space-between;">
           <!-- 搜索栏 -->
-          <el-input style="margin-left: 20px;" class="search" v-model="searchInput" placeholder=" 请 输 入 搜 索 关 键 字">
-            <template v-slot:prepend>
-              <el-button icon="Search" @click="search"></el-button>
-            </template>
-          </el-input>
+<!--          <el-input style="margin-left: 20px;" class="search" v-model="searchInput" placeholder=" 请 输 入 搜 索 关 键 字">-->
+<!--            <template v-slot:prepend>-->
+<!--              <el-button icon="Search" @click="search"></el-button>-->
+<!--            </template>-->
+<!--          </el-input> -->
           <img src="../../assets/img/recover_logo.png" class="img">
           <img src="../../assets/img/football_logo.png" class="img">
         </div>
