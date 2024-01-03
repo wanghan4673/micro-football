@@ -64,9 +64,9 @@ export default {
                     message: '管理员邮箱不正确，请重新登陆',
                     type: 'error',
                 })
-                setTimeout(() => {
-                    window.location.reload(); // 刷新当前页面
-                }, 1000);
+                // setTimeout(() => {
+                //     window.location.reload(); // 刷新当前页面
+                // }, 1000);
             }
         },
         async signin(){

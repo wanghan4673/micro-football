@@ -1,60 +1,70 @@
 <template>
     <el-container style="height: 80vh;margin-top: 5vh;" class="set-horizonal">
-        <el-container style="margin-left: 5vw;width: 55vw;" class="set-vertical">
-            <el-tabs tab-position="left">
-                <el-tab-pane label="英超">
-                    <el-card class="news-list-card" shadow="always">
-                        <h3>当前英超新闻列表</h3>
-                    </el-card>
-                </el-tab-pane>
-                <el-tab-pane label="西甲">
-                    <el-card class="news-list-card" shadow="always">
-                        <h3>当前西甲新闻列表</h3>
-                    </el-card>
-                </el-tab-pane>
-                <el-tab-pane label="德甲">
-                    <el-card class="news-list-card" shadow="always">
-                        <h3>当前德甲新闻列表</h3>
-                    </el-card>
-                </el-tab-pane>
-                <el-tab-pane label="...">
-                    <el-card class="news-list-card" shadow="always">
-                        <h3>当前某某新闻列表</h3>
-                    </el-card>
-                </el-tab-pane>
-            </el-tabs>
-        </el-container>
-        <el-container class="set-vertical" style="margin-right: 5vw;width: 30vw;margin-left: 5vw;">
-            <el-card class="news-list-card" shadow="always">
-                <el-container>
-                    <h3>用户来稿</h3>
-                    <el-button type="primary" size="small" style="margin-left: 2vw;">添加新闻</el-button>
-                </el-container>
-                <el-scrollbar style="height: 75vh;">
-                    <el-card style="height: 15vh;margin-top: 2vh;">
-                        <h3>关于足协占用刷段操场的投诉</h3>
-                        <h4 style="margin-top: 1vh;">近日，足协多次占用....</h4>
-                        <h5 style="margin-top: 1vh;">2023-12-03 16:41  来信人：cinderlord</h5>
-                    </el-card>
-                </el-scrollbar>
-            </el-card>
-        </el-container>
+        <el-card style="height: 80vh;width: 70%;margin-left: 15%;">
+            <el-scrollbar style="height: 78vh;">
+                <el-card v-for="(item,index) in news" :key="index" style="margin-top: 1vh;border-radius: 15px;">
+                    <h3>{{item.title}}</h3>
+                    <el-container>{{ item.summary }}</el-container>
+                    <h4><el-icon style="margin-top: 1vh;margin-right: 1vw;"><Clock /></el-icon>{{ item.publishdatetime }}</h4>
+                </el-card>
+            </el-scrollbar>
+        </el-card>
     </el-container>
 </template>
 
 <script>
+import axios from "axios";
 export default {
     components: {
         
     },
     data() {
         return {
-            
+            news:[],
         }
     },
     methods: {
-
-    }
+        async delNews(id,index){
+            const adminToken = localStorage.getItem('adminToken');
+            const delId = id
+            try {
+                const response = await axios.delete('/api/admin/news/delete/'+delId , {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                        'token': adminToken
+                    },
+                });
+                console.log(response)
+                if (response.data.code == 200) {
+                    ElMessage({
+                        message: '已删除新闻',
+                        type: 'success',
+                    })
+                    this.news.splice(index,1);
+                }
+            } catch (e) {
+                
+            }
+        },
+        async getNews(){
+            const adminToken = localStorage.getItem('adminToken');
+            try {
+                const response = await axios.get('/api/admin/news', {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                        'token': adminToken
+                    },
+                });
+                this.news=response.data.data
+                console.log(this.news)
+            } catch (e) {
+                
+            }
+        },
+    },
+    created(){
+        this.getNews();
+    },
 }
 </script>
 

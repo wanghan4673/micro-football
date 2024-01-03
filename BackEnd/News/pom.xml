@@ -49,11 +49,11 @@
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
         </dependency>
+        <!-- Mfapi模块 -->
         <dependency>
             <groupId>com.football</groupId>
-            <artifactId>Forum</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-            <scope>compile</scope>
+            <artifactId>mfapi</artifactId>
+            <version>1.0.0</version>
         </dependency>
     </dependencies>
 

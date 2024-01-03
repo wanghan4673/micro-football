@@ -1,5 +1,6 @@
 package com.football.news.service.impl;
 
+import com.football.mfapi.dto.NewsDTO;
 import com.football.news.mapper.NewsMapper;
 import com.football.news.model.Entity.NewsEntity;
 import com.football.news.model.Info.NewsEntityInfo;
@@ -10,6 +11,7 @@ import com.football.news.service.intf.NewsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -54,6 +56,25 @@ public class NewsServiceimpl implements NewsService {
         return newList;
     }
 
+    @Override
+    //将新闻转换为DTO
+    public List<NewsDTO> convertToDTOList(List<NewsEntityInfo> newsEntityInfoList) {
+        List<NewsDTO> newsDTOList = new ArrayList<>();
+
+        for (NewsEntityInfo newsEntityInfo : newsEntityInfoList) {
+            int news_id = newsEntityInfo.getNewsId();
+            String title = newsEntityInfo.getTitle();
+            Timestamp publishTime = newsEntityInfo.getPublishdatetime();
+            String summary = newsEntityInfo.getSummary();
+
+            NewsDTO newsDTO = new NewsDTO(news_id, title, publishTime, summary);
+
+            newsDTOList.add(newsDTO);
+        }
+
+        return newsDTOList;
+    }
+
     //获取所有新闻
     @Override
     public List<NewsEntityInfo> getAllNews(){
@@ -61,6 +82,12 @@ public class NewsServiceimpl implements NewsService {
         allNews=newsMapper.getAllNews();
         return this.addPicForNews(allNews);
     }
+
+    @Override
+    public List<NewsDTO> getAllNewsDTO(){
+        return convertToDTOList(getAllNews());
+    }
+
 
     //按照Tag筛选新闻
     @Override

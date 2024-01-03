@@ -1,5 +1,6 @@
 package com.football.news.service.intf;
 
+import com.football.mfapi.dto.NewsDTO;
 import com.football.news.model.Entity.NewsEntity;
 import com.football.news.model.Info.InitInfo;
 import com.football.news.model.Info.NewsEntityInfo;
@@ -20,8 +21,13 @@ public interface NewsService  {
     //从视频列表中随机取n个元素组成新列表
     List<VideoEntity> randomVideo(List<VideoEntity> list, Integer num);
 
+    //将新闻转换为DTO
+    List<NewsDTO> convertToDTOList(List<NewsEntityInfo> newsEntityInfoList);
+
     //获取所有新闻
     List<NewsEntityInfo> getAllNews();
+
+    List<NewsDTO> getAllNewsDTO();
 
     //按Tag获取新闻
     List<NewsEntityInfo> getNewsInfo(String Tag1, String Tag2);

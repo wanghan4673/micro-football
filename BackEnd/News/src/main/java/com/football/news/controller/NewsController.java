@@ -1,7 +1,6 @@
 package com.football.news.controller;
 
-
-import com.football.forum.service.intf.ForumService;
+import com.football.mfapi.dto.NewsDTO;
 import com.football.news.mapper.NewsMapper;
 import com.football.news.model.Entity.NewsEntity;
 import com.football.news.service.intf.NewsService;
@@ -37,9 +36,13 @@ public class NewsController {
 
     // 返回所有新闻
     @GetMapping("/allnews")
-    public ResponseEntity<?> getAllNews(){
-        return ResponseEntity.ok().body(newsService.getAllNews());
+//    public ResponseEntity<?> getAllNews(){
+//        return ResponseEntity.ok().body(newsService.getAllNews());
+//    }
+    public List<NewsDTO> getAllNews(){
+        return newsService.getAllNewsDTO();
     }
+
 
     // 按照新闻的两个Tag返回新闻列表，num代表返回数量
     @GetMapping("/news")
