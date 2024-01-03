@@ -19,6 +19,9 @@ public class NewsEntityInfo extends NewsEntity implements Comparable<NewsEntityI
         return pictureRoutes;
     }
 
+
+
+
     @Override
     public int compareTo (NewsEntityInfo other) {
         return other.relevance - this.relevance;

@@ -1,166 +1,155 @@
 <template>
-    <el-header style="">
+    <el-header>
         <div class="nav-container">
             <div class="nav-left">
                 <div class="nav-logo">
-                    <img src="@/assets/img/tjlogo.png" style="width: 50px;height: 50px;" />
+                    <img src="@/assets/img/tjlogo.png" alt="Logo" style="width: 50px;height: 50px;" />
                 </div>
                 <el-menu mode="horizontal" :ellipsis="false">
-                    <el-menu-item index=1 @click="redirectToMain"
-                        :class="{ 'blue-text': menutextcolor === 2 }">首页</el-menu-item>
-                    <el-menu-item index=2 @click="redirectToNews"
-                        :class="{ 'blue-text': menutextcolor === 3 }">新闻</el-menu-item>
-                    <el-menu-item index=3 @click="redirectToForum"
-                        :class="{ 'blue-text': menutextcolor === 4 }">论坛</el-menu-item>
-                    <el-menu-item index=4 @click="redirectToIM"
-                        :class="{ 'blue-text': menutextcolor === 5 }">聊天</el-menu-item>
-                    <el-menu-item index=5 @click="redirectToGames"
-                        :class="{ 'blue-text': menutextcolor === 6 }">赛事</el-menu-item>
-                    <el-menu-item index=6 @click="redirectToPlayers"
-                        :class="{ 'blue-text': menutextcolor === 7 }">球员信息</el-menu-item>
+                    <el-menu-item index="1" @click="redirectToNews"
+                        :class="{ 'blue-text': menutextcolor === 2 }">新闻</el-menu-item>
+                    <el-menu-item index="2" @click="redirectToForum"
+                        :class="{ 'blue-text': menutextcolor === 3 }">论坛</el-menu-item>
+                    <el-menu-item index="3" @click="redirectToIM"
+                        :class="{ 'blue-text': menutextcolor === 4 }">聊天</el-menu-item>
+                    <el-menu-item index="4" @click="redirectToGames"
+                        :class="{ 'blue-text': menutextcolor === 5 }">赛事</el-menu-item>
+                    <el-menu-item index="5" @click="redirectToPlayers"
+                        :class="{ 'blue-text': menutextcolor === 6 }">球员信息</el-menu-item>
                     <el-menu-item index=7 @click="redirectToTeam"
-                        :class="{ 'blue-text': menutextcolor === 8 }">球队信息</el-menu-item>
+                        :class="{ 'blue-text': menutextcolor === 7 }">球队信息</el-menu-item>
                 </el-menu>
             </div>
             <div class="nav-right">
                 <el-dropdown trigger="hover">
-                    <el-avatar :src=this.avatarurl alt="Avatar" class="avatar"></el-avatar>
+                    <el-avatar :src="avatarurl" alt="Avatar" class="avatar"></el-avatar>
                     <template #dropdown>
-                        <el-dropdown-menu v-slot: dropdown>
-                            <el-dropdown-item @click="redirectToLogin(0)" v-if="!this.islog">用户登录/注册</el-dropdown-item>
-                            <el-dropdown-item @click="redirectToLogin(1)" v-if="!this.islog">管理员登录</el-dropdown-item>
-                            <el-dropdown-item @click="redirectToPersonal" v-if="this.islog">个人中心</el-dropdown-item>
-                            <el-dropdown-item @click="logout" v-if="this.islog">登出</el-dropdown-item>
+                        <el-dropdown-menu>
+                            <el-dropdown-item @click="redirectToLogin(0)" v-if="!islog">用户登录/注册</el-dropdown-item>
+                            <el-dropdown-item @click="redirectToLogin(1)" v-if="!islog">管理员登录</el-dropdown-item>
+                            <el-dropdown-item @click="redirectToPersonal" v-if="islog">个人中心</el-dropdown-item>
+                            <el-dropdown-item @click="logout" v-if="islog">登出</el-dropdown-item>
                         </el-dropdown-menu>
                     </template>
                 </el-dropdown>
-                <span class="user-nickname">{{ this.userName }}</span>
+                <span class="user-nickname">{{ userName }}</span>
             </div>
         </div>
     </el-header>
 </template>
     
   
-<script>
-import axios from 'axios';
-import { ElMessage } from 'element-plus';
-// import { loginStore } from '../stores/login';
-export default {
-    data() {
-        return {
-            islog: false,
-            avatarurl: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
-            userName: '',
+<script setup>
+import { ref, computed, onMounted } from 'vue'
+import axios from 'axios'
+import { ElMessage } from 'element-plus'
+import { useRouter } from 'vue-router'
+
+const islog = ref(false)
+const avatarurl = ref("https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png")
+const userName = ref('')
+const router = useRouter()
+
+const menutextcolor = computed(() => {
+    const path = router.currentRoute.value.path;
+    switch (path) {
+        case '/News': return 2;
+        case '/forum': return 3;
+        case '/IM': return 4;
+        case '/Games': return 5;
+        case '/Players': return 6;
+        default: return 0;
+    }
+})
+
+onMounted(() => {
+    JudgeAccount()
+})
+
+const JudgeAccount = async () => {
+    const token = localStorage.getItem('token');
+    let response
+    try {
+        const response = await axios.get('/api/users/login-status', {
+            headers: {
+                'token': token
+            }
+        })
+        if (response.data.code == 1 && response.data.data != null) {
+            islog.value = true;
+            userName.value = response.data.data.name;
+            avatarurl.value = "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png";
         }
-    },
-    mounted() {
-        this.JudgeAccount();
-    },
-    computed: {
-        menutextcolor() {
-            if (this.$route.path === '/') {
-                return 2;
-            } else if (this.$route.path === '/News') {
-                return 3;
-            } else if (this.$route.path === '/forum') {
-                return 4;
-            } else if (this.$route.path === '/') {
-                return 5;
-            } else if (this.$route.path === '/Games') {
-                return 6;
-            } else if (this.$route.path === '/Players') {
-                return 7;
-            } else if (this.$route.path === '/Team') {
-                return 8;
-            }
-        },
-    },
-    methods: {
-        async JudgeAccount() {
-            const token = localStorage.getItem('token');
-            let response
-            try {
-                const response = await axios.get('/api/users/login-status', {
-                    headers: {
-                        'token': token
-                    }
-                })
-                if (response.data.code == 1 && response.data.data != null) {
-                    this.islog = true;
-                    this.userName = response.data.data.name;
-                    this.avatarurl = response.data.data.avatar;
-                }
-                else if (response.data.code == 1 && response.data.data == null) {
-                    this.islog = false;
-                }
-            } catch (err) {
-                if (err.response && err.response.status === 401) {
-                    // token非法 登录状态异常
-                    ElMessage({
-                        message: 'token非法,登录状态异常',
-                        grouping: false,
-                        type: 'error',
-                    })
-                }
-            }
-        },
-        redirectToLogin(isAdmin) {
-            // if (isAdmin) {
-            //     const store = loginStore()
-            //     store.adminLogin()
-            // } else {
-            //     const store = loginStore()
-            //     store.userLogin()
-            // }
-            // 跳转到用户登录页面的逻辑
-            if(isAdmin == 0){
-                this.$router.push('/signin')
-            }else{
-                this.$router.push('/adminsignin')
-            }
-        },
-        redirectToForum() {
-            //跳转到论坛页面的逻辑
-            this.$router.push('/forum')
-        },
-        redirectToIM() {
-            //跳转到聊天页面的逻辑
-            this.$router.push('/IM')
-        },
-        redirectToMain() {
-            //跳转到管理员首页页面的逻辑
-            this.$router.push('/')
-        },
-        redirectToPersonal() {
-            //跳转到个人中心页面的逻辑
-            this.$router.push('/personal')
-        },
-        redirectToGames() {
-            //跳转到赛事页面的逻辑
-            this.$router.push('/Games')
-        },
-        redirectToNews() {
-            //跳转到新闻页面的逻辑
-            this.$router.push('/News')
-        },
-        redirectToPlayers() {
-            //跳转到新闻页面的逻辑
-            this.$router.push('/Players')
-        },
-        redirectToTeam() {
-            this.$router.push('/Team')
-        },
-        logout() {
-            localStorage.removeItem('token')
-            sessionStorage.removeItem('gameDialogShown')
-            this.$router.push('/')
-            setTimeout(() => {
-                window.location.reload(); // 刷新当前页面
-            }, 100); // 2000毫秒后刷新
+        else if (response.data.code == 1 && response.data.data == null) {
+            islog.value = false;
+        }
+    } catch (err) {
+        if (err.response && err.response.status === 401) {
+            // token非法 登录状态异常
+            ElMessage({
+                message: 'token非法,登录状态异常',
+                grouping: false,
+                type: 'error',
+            })
         }
     }
-};
+}
+
+const redirectToForum = () => {
+    router.push('/forum');
+}
+
+const redirectToIM = () => {
+    router.push('/IM');
+}
+
+const redirectToMain = () => {
+    router.push('/');
+}
+
+const redirectToPersonal = () => {
+    router.push('/personal');
+}
+
+const redirectToGames = () => {
+    router.push('/Games');
+}
+
+const redirectToNews = () => {
+    router.push('/News');
+}
+
+const redirectToPlayers = () => {
+    router.push('/Players');
+}
+
+const redirectToPlayers = () => {
+    router.push('/Team')
+}
+
+const logout = () => {
+    localStorage.removeItem('token')
+    sessionStorage.removeItem('gameDialogShown')
+    ElMessage({
+        message: '登出成功',
+        grouping: false,
+        type: 'success',
+    })
+    setTimeout(() => {
+        window.location.reload()
+    }, 100)
+    router.push('/')
+}
+
+const redirectToLogin = (isAdmin) => {
+    if (isAdmin === 0) {
+        router.push('/signin');
+    } else {
+        router.push('/adminsignin');
+    }
+}
 </script>
+
 <style scoped>
 .nav-container {
     /* margin-top: -10px; */
@@ -204,6 +193,5 @@ export default {
 
 .blue-text {
     color: #3ba7ea;
-}
-</style>
+}</style>
     

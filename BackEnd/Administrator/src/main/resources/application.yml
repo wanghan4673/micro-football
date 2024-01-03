@@ -30,4 +30,4 @@ jwt:
     expire: 3600000
 
 server:
-  port: 8085
+  port: 86

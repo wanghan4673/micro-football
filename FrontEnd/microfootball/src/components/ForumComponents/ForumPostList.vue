@@ -36,7 +36,7 @@ const toPost = (post) => {
 let PostList = ref([])
 let totalElements = ref(PostList.value.length)
 onMounted(() => {
-    getUserProfile();
+    console.log(store.user.league)
     loadPosts();
 })
 
@@ -60,10 +60,11 @@ const loadPosts = async () => {
         if(store.user.league!=null && store.user.league != '')
             url+= '&league='+store.user.league
         response = await axios.get(url)
+        console.log(url)
         if (response.status == 200) {
             PostList.value = []
             totalElements = 0
-            // console.log(response)
+            console.log(response)
             for (const post of response.data.data.posts) {
                 PostList.value.push(post)
             }
@@ -82,15 +83,16 @@ const getUserProfile = async () => {
     if(token == null) 
         return
     try {
-        const response = await axios.get('/api/user/userInfo', {
+        const response = await axios.get('/api/users/user-info', {
             headers: {
                 'token': token,
             }
         })
         if (response.data.code == 1) {
             store.user.username = response.data.data.name
-            store.user.league = response.data.data.favorite_league
-            // console.log(response.data.data)
+            store.user.league = response.data.data.favoriteLeague
+            console.log(response.data.data)
+            console.log(store.user.league )
         }
     } catch (error) {
     }

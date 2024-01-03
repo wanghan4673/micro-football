@@ -1,11 +1,9 @@
 <template>
   <div>
-    <!-- 顶部导航栏 -->
-    <my-nav></my-nav>
     <div>
       <el-row>
         <!-- 新闻（位于左侧） -->
-        <el-col :span="18">
+        <el-col :span="18" >
           <p class="titleLeagueLeft">足坛八卦</p>
           <el-icon class="Gossipicon">
             <Promotion />
@@ -21,20 +19,20 @@
               <el-button plain @click="selectGossip('')">ALL</el-button>
             </el-row>
           </div>
-          <div class="line" style="width: 40vw;height: 0.2px;top:-9vh;left:8%;"></div>
+          <div class="line" style="width: 40vw;height: 0.2px;top:-7vh;left:8%;"></div>
           <div v-if="GossipNews.length != 0" v-for="item in GossipNews" :key="item.id" class="itemSearch">
-            <div class="imgWrapper" @click="openNewsDetails(item)">
+            <div class="imgWrapper" @click="openNewsDetails(item.newsId)">
               <img
-                v-if="item.pictureRoutes != null && (matchMP4(item.pictureRoutes[0]) == false || item.newsBody.news_id > 150)"
-                referrerPolicy='no-referrer' :src="item.pictureRoutes[0]" alt="Image" class="imgSearch">
+                v-if="item.pic != null && (matchMP4(item.pic[0]) == false || item.news_id > 150)"
+                referrerPolicy='no-referrer' :src="item.pic[0]" alt="Image" class="imgSearch">
               <video
-                v-if="item.pictureRoutes != null && matchMP4(item.pictureRoutes[0]) == true && item.newsBody.news_id < 150"
-                referrerPolicy='no-referrer' ref="videoPlayer" :src="item.pictureRoutes[0]"
+                v-if="item.pic != null && matchMP4(item.pic[0]) == true && item.news_id < 150"
+                referrerPolicy='no-referrer' ref="videoPlayer" :src="item.pic[0]"
                 class="imgSearch imgForVideo" />
             </div>
-            <div class="TextWrapper" @click="openNewsDetails(item)">
-              <div class="titleSearch">{{ item.newsBody.title }}</div>
-              <div class="descriptionSearch">{{ truncateText(item.newsBody.summary, 60) }}</div>
+            <div class="TextWrapper" @click="openNewsDetails(item.newsId)">
+              <div class="titleSearch">{{ item.title }}</div>
+              <div class="descriptionSearch">{{ truncateText(item.summary, 60) }}</div>
             </div>
           </div>
           <div class="NoMore">No More ......</div>
@@ -70,7 +68,7 @@
 </template>
 
 <script>
-import MyNav from './nav.vue';
+import MyNav from '../../components/TopNav.vue';
 import axios from 'axios';
 
 export default {
@@ -85,67 +83,57 @@ export default {
   },
 
   created() {
+
     this.getData(-1, '', '八卦', this.GossipNews);
+
     this.getVideo(-1, '', '八卦', this.GossipNewsVideo);
   },
 
   methods: {
-    //从后端接口获取新闻数据
+    //从后端获取新闻数据
     async getData(newsQuantity, tag1, tag2, dataItems) {
       try {
-        const requestData = {
-          num: newsQuantity,
-          matchTag: String(tag1),
-          propertyTag: String(tag2),
-        };
-
-        const response = await axios.post('/api/News/GetNews', requestData, {
-          headers: {
-            'Content-Type': 'application/json',
-          },
+        const response = await axios.get('/api/news/news', {
+          params: {
+            Tag1: String(tag1),
+            Tag2: String(tag2),
+            num: newsQuantity
+          }
         }); // 发送POST请求，并将请求数据作为 JSON 对象发送
 
-        console.log(response.data.value);
+        // 将数组存贮于传入的数组名中
+        dataItems.splice(0, dataItems.length, ...response.data);
+        console.log("搜索到的item",dataItems);
+
+      } catch (error) {
+        // 处理获取失败的情况
+        this.$message.error('数据获取失败，请重试！');
+      }
+
+    },
+    //从后端获取视频数据
+    async getVideo(newsQuantity, tag1, tag2, dataItems) {
+      try {
+        const response = await axios.get('/api/news/video', {
+          params: {
+            Tag1: String(tag1),
+            Tag2: String(tag2),
+            num: newsQuantity
+          }
+        }); // 发送POST请求，并将请求数据作为 JSON 对象发送
+
+        // console.log(response.data.value);
 
         // 将数组存贮于传入的数组名中
-        dataItems.splice(0, dataItems.length, ...response.data.value);
+        dataItems.splice(0, dataItems.length, ...response.data);
         // console.log(dataItems);
         // console.log(this.items);
       } catch (error) {
         // console.error(error);
         // 处理获取失败的情况
         this.$message.error('数据获取失败，请重试！');
-      };
-      return;
-    },
+      }
 
-    //从后端接口获取视频数据
-    async getVideo(newsQuantity, tag1, tag2, dataItems) {
-      try {
-        const requestData = {
-          num: newsQuantity,
-          matchTag: String(tag1),
-          propertyTag: String(tag2),
-        };
-
-        const response = await axios.post('/api/Video/GetVideoRandomly', requestData, {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }); // 发送POST请求，并将请求数据作为 JSON 对象发送
-
-        console.log(response.data.value);
-
-        // 将数组存贮于传入的数组名中
-        dataItems.splice(0, dataItems.length, ...response.data.value);
-        console.log(dataItems);
-        // console.log(this.items);
-      } catch (error) {
-        // console.error(error);
-        // 处理获取失败的情况
-        this.$message.error('数据获取失败，请重试！');
-      };
-      return;
     },
 
     //按照selectTag来筛选数据
@@ -163,13 +151,13 @@ export default {
     },
 
     //打开新闻详情页
-    openNewsDetails(item) {
-      // console.log("123");
-      // console.log(item);
-      const queryString = encodeURIComponent(JSON.stringify(item));
-      // this.$router.push({ path: '/NewsDetails', query: { data: queryString } });
-      const url = `${window.location.origin}/NewsDetails?data=${queryString}`;
-      window.open(url, '_blank');
+    openNewsDetails(newsId) {
+      // 打开新窗口
+      let newPage = this.$router.resolve({
+        path: 'NewsDetails',
+        query: { newsId: newsId },
+      });
+      window.open(newPage.href, '_blank');
     },
 
 
@@ -194,7 +182,7 @@ export default {
   margin-bottom: 10px;
   position: relative;
   left: 8%;
-  top: -13vh;
+  top: -10vh;
   margin-top: 5%;
 }
 
@@ -330,7 +318,7 @@ export default {
   line-height: normal;
   position: relative;
   left: 6vw;
-  top: -3vh;
+  top: 0vh;
 }
 
 .line {
@@ -342,15 +330,15 @@ export default {
 .Gossipicon {
   position: relative;
   left: 6vw;
-  top: -8vh;
+  top: -3vh;
   font-size: 50px;
   color: rgb(134, 71, 228);
 }
 
 .GossipButton {
   position: relative;
-  left: 10vw;
-  top: -12vh;
+  left: 11vw;
+  top: -10vh;
 }
 
 /* 右侧八卦标题 */

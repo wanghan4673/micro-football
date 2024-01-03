@@ -16,7 +16,7 @@
                     <p>举报人：{{ item.reporterName }}</p>
                     <el-container style="margin-top: 1vh;">
                         <el-button type="primary" size="small" @click="delReport(item.id,index)">取消举报</el-button>
-                        <el-button type="primary" size="small" @click="confirm(item.postId, index)">删除帖子</el-button>
+                        <el-button type="primary" size="small" @click="confirm(item.id ,item.postId)">删除帖子</el-button>
                     </el-container>
                 </el-card>
             </el-timeline-item>
@@ -78,11 +78,11 @@ export default {
                 console.log(e)
             }
         },
-        async confirm(id, index) {
+        async confirm(id, post_id) {
             const adminToken = localStorage.getItem('adminToken');
-            const delId = id;
             const formData = new FormData()
-            formData.append('id', delId);
+            formData.append('post_id', post_id);
+            formData.append('id', id);
             try {
                 const response = await axios.post('/api/admin/forum/report/confirm', formData, {
                     headers: {

@@ -134,14 +134,25 @@ const login = async () => {
                 message: '登录成功',
                 type: 'success',
             })
-            localStorage.setItem('token', response.data.data)  // 将token存在浏览器缓存中
+            localStorage.setItem('token', response.data.data.jwt)  // 将token存在浏览器缓存中
             store.user.useraccount = loginForm.value.account
+            store.user.league = response.data.data.favoriteLeague
+            store.user.userid = response.data.data.id
+            console.log(response.data.data)
+            console.log("store.user.league" + store.user.league)
             gotoPath('/')
         } else {
-            ElMessage({
-                message: '用户名或密码错误,请重新登录!',
-                type: 'error',
-            })
+            if (response.data.msg == "isbanned") {
+                ElMessage({
+                    message: '该用户已被封禁!',
+                    type: 'error',
+                })
+            } else {
+                ElMessage({
+                    message: '用户名或密码错误,请重新登录!',
+                    type: 'error',
+                })
+            }
             setTimeout(() => {
                 window.location.reload(); // 刷新当前页面
             }, 1000);
@@ -177,8 +188,8 @@ const register = async () => {
                 message: '注册成功!',
                 type: 'success',
             })
-            console.log(response)
-            localStorage.setItem('token', response.data.data)
+            console.log(response.data.data.jwt)
+            localStorage.setItem('token', response.data.data.jwt)
             gotoPath('/')
         } else {
             ElMessage({

@@ -18,5 +18,6 @@ public class User {
     Integer fans;  // 粉丝数
     String avatar;  // 图片路径
     Boolean isbanned;  // 是否被封禁
-    String favorite_league;  // 关注的赛事
+    String favoriteLeague;  // 关注的赛事
+    Boolean isFollowing; //用于判断是否已关注
 }

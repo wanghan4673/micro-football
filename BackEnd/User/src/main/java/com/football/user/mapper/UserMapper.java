@@ -18,6 +18,32 @@ public interface UserMapper {
     @Select("select name,signature,score,favorite_league,follow,fans from user where _id = #{userId}")
     User getUserInfo(Long userId);
 
+    @Select("SELECT u.name, u.account, u.signature, u.score, u.favorite_league, u.follow, u.fans, " +
+            "CASE WHEN f.followerid IS NOT NULL THEN true ELSE false END AS isFollowing " +
+            "FROM user u " +
+            "LEFT JOIN follow f ON u._id = f.followerid AND f.fansid = #{myid} " +
+            "WHERE u._id = #{userId}")
+    User getCommentUser(Long userId, Long myid);
+
+    @Insert("""
+        INSERT INTO follow(fansid, followerid) VALUES (#{fansid},#{followerid})
+    """)
+    void follow(Long fansid,Long followerid);
+
+    @Select("""
+        SELECT COUNT(*) FROM follow
+        WHERE
+            fansid = #{fansid} AND followerid = #{followerid}
+    """)
+    Boolean checkfollow(Long fansid,Long followerid);
+
+    @Delete("""
+        DELETE FROM follow
+        WHERE
+            fansid = #{fansid} AND followerid =#{followerid}
+    """)
+    void removefollow(Long fansid,Long followerid);
+
     @Select("select follow,fans from user where _id = #{userId}")
     List<Map<String, Integer>> getFollowCount(Long userId);
 

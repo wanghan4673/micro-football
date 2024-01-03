@@ -74,7 +74,6 @@
                 <el-radio label="德甲">德甲</el-radio>
                 <el-radio label="法甲">法甲</el-radio>
                 <el-radio label="中超">中超</el-radio>
-                <el-radio label="同济">同济</el-radio>
             </el-radio-group>
             <div slot="footer" class="dialog-footer">
                 <el-button @click="changeLgVisible = false">取消</el-button>
@@ -165,6 +164,7 @@ const getUserInfo = async () => {
             score.value = response.data.data.score
             followNum.value = response.data.data.follow
             fansNum.value = response.data.data.fans
+            console.log(response.data.data)
         } else {
             ElMessage({
                 message: '获取积分失败!',
@@ -313,7 +313,8 @@ const submitSelectedLeague = async () => {
     @extend .grid-three-container;
     height: 20vh;
     background-color: #c4e7fe;
-    border-radius: 1rem;
+    border-top-right-radius: 1rem;
+    border-top-left-radius: 1rem;
 }
 
 .user-avator-box {

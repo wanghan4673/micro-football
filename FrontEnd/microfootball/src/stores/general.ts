@@ -1,8 +1,7 @@
 import { defineStore } from 'pinia'
 
 export const useGeneralStore = defineStore('general', {
-  state: () => {
-    return {
+  state: () => ({
       islogin: true,
       drafts:{
         title: '',
@@ -12,8 +11,11 @@ export const useGeneralStore = defineStore('general', {
       user:{
         username: '',
         useraccount: '',
+        userid: -1,
         league: '',
       }
-    }
-  },
+  }),
+  persist: {
+    enabled: true // true 表示开启持久化保存
+  }
 })

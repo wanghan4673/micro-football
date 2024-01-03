@@ -7,7 +7,7 @@ const routes = [
     // 首页
     path: '/',
     name: 'home',
-    component: HomeView
+    component: () => import('../views/ForumViews/ForumView.vue')
   },
   {
     // 登录注册
@@ -45,7 +45,22 @@ const routes = [
   {
     path: '/News',
     name: 'News',
-    component: () => import('../views/NewsViews/NewsView.vue')
+    component: () => import('../views/NewsViews/NewsView.vue'),
+  },
+  {
+    path: '/NewsVideo',
+    name: 'NewsVideo',
+    component: () => import('../views/NewsViews/NewsVideo.vue')
+  },
+  {
+    path: '/NewsGossip',
+    name: 'NewsGossip',
+    component: () => import('../views/NewsViews/NewsGossip.vue')
+  },
+  {
+    path: '/NewsDetails',
+    name: 'NewsDetails',
+    component: () => import('../views/NewsViews/NewsDetails.vue')
   },
   {
     path: '/Players',

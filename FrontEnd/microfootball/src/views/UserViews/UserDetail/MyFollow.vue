@@ -118,9 +118,7 @@ const toMyPost = () => {
 }
 
 .user-follow-box {
-    height: 70vh;
-    border-top-right-radius: 2vh;
-    border-top-left-radius: 2vh;
+    height: 72vh;
     background: linear-gradient(to bottom, #ffffff, #e8e8e8);
 }
 

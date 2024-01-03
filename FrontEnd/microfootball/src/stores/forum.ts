@@ -1,16 +1,16 @@
 import { defineStore } from 'pinia'
 
 export const useForumStore = defineStore('forum', {
-    persist: true, //开启持久化
-    state: () => {
-        return {
-            keyword: '',
-            sorttype: 'like',
-            sorttag: '',
-            chosedPost: null,
-            getPosts: false,
-            chosedPage: 1,
-            newedpost: false
-        }
-    },
+    state: () => ({
+        keyword: '',
+        sorttype: 'like',
+        sorttag: '',
+        chosedPost: null,
+        getPosts: false,
+        chosedPage: 1,
+        newedpost: false
+    }),
+    persist: {
+      enabled: true // true 表示开启持久化保存
+    }
 })

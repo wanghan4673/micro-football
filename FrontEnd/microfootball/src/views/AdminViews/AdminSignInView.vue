@@ -83,42 +83,9 @@ export default {
             } catch (e) {
                 console.log(e)
             }
-        }
+        },
     }
 }
-
-// const login = async () => {
-//     let response
-//     try {
-//         response = await axios.post('/api/user/login', {
-//             account: loginForm.value.account,
-//             password: sha256(loginForm.value.password)
-//         })
-//         if (response.data.code == 1) {
-//             console.log("登录成功")
-//             ElMessage({
-//                 message: '登录成功',
-//                 type: 'success',
-//             })
-//             localStorage.setItem('token', response.data.data)  // 将token存在浏览器缓存中
-//             gotoPath('/')
-//         } else {
-//             ElMessage({
-//                 message: '用户名或密码错误,请重新登录!',
-//                 type: 'error',
-//             })
-//             setTimeout(() => {
-//                 window.location.reload(); // 刷新当前页面
-//             }, 1000);
-//             return
-//         }
-//     } catch (error) {
-//         ElMessage({
-//             message: '登录请求发送失败',
-//             type: 'error',
-//         })
-//     }
-// }
 </script>
 
 <style lang="scss">

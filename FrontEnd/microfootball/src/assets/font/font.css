@@ -1,0 +1,13 @@
+@font-face {
+    font-family: 'title';
+    src: url('YouSheYuFeiTeJianKangTi-2.ttf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'words';
+    src: url('AaGuDianKeBenSong-2.ttf');
+    font-weight: normal;
+    font-style: normal;
+}

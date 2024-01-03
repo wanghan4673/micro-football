@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- 顶部导航栏 -->
-    <my-nav></my-nav>
+<!--    <my-nav></my-nav>-->
     <!-- 标题+tag筛选 -->
     <el-row>
       <p class="titleLeagueLeft">足坛视频</p>
@@ -20,7 +20,7 @@
         </el-row>
       </div>
     </el-row>
-    <div class="line" style="width: 40vw;height: 0.2px;top:-1vh;left:5%;"></div>
+    <div class="line" style="width: 50vw;height: 0.2px;top:4vh;left:5%;"></div>
 
     <el-row :gutter="20">
       <el-col :span="8">
@@ -48,7 +48,7 @@
               <img referrerPolicy='no-referrer' :src="item.cover" class="imgRightItem" @click="openLink(item.urllink)"
                 alt="image" />
               <a class="Rightdescription" v-if="item.title != null" @click="openLink(item.urlink)">{{
-                truncateText(item.title, 14) }}</a>
+                truncateText(item.title, 10) }}</a>
             </el-col>
           </el-row>
         </div>
@@ -70,7 +70,7 @@
             <img referrerPolicy='no-referrer' :src="item.cover" class="imgItem" @click="openLink(item.urllink)"
               alt="image" />
             <a class="Alldescription" v-if="item.title != null" @click="openLink(item.urllink)">{{
-              truncateText(item.title, 12) }}</a>
+              truncateText(item.title, 10) }}</a>
           </el-col>
         </el-row>
       </div>
@@ -83,7 +83,7 @@
 </template>
 
 <script>
-import MyNav from './nav.vue';
+import MyNav from '../../components/TopNav.vue';
 import axios from 'axios';
 
 
@@ -111,31 +111,29 @@ export default {
       window.open(url, '_blank');
     },
 
-    //从后端接口获取数据
+    //从后端获取视频数据
     async getVideoData(newsQuantity, tag1, tag2, dataItems) {
-      let response
       try {
-        const requestData = {
-          num: newsQuantity,
-          matchTag: String(tag1),
-          propertyTag: String(tag2),
-        };
-        response = await axios.post('/api/Video/GetVideoRandomly', requestData, {
-          headers: {
-            'Content-Type': 'application/json',
-          },
+        const response = await axios.get('/api/news/video', {
+          params: {
+            Tag1: String(tag1),
+            Tag2: String(tag2),
+            num: newsQuantity
+          }
         }); // 发送POST请求，并将请求数据作为 JSON 对象发送
+
+        // console.log(response.data.value);
+
+        // 将数组存贮于传入的数组名中
+        dataItems.splice(0, dataItems.length, ...response.data);
+        // console.log(dataItems);
+        // console.log(this.items);
       } catch (error) {
         // console.error(error);
         // 处理获取失败的情况
         this.$message.error('数据获取失败，请重试！');
       }
-      console.log(response.data.value);
-      // 将数组存贮于传入的数组名中
-      // dataItems = response.data.value;
-      dataItems.splice(0, dataItems.length, ...response.data.value);
-      console.log(this.VideoCarousel);
-      return;
+
     },
 
     //换一批，即更新数据
@@ -167,19 +165,19 @@ export default {
 <style  scoped>
 .VideoCarousel {
   position: relative;
-  top: 2vh;
+  top: 5vh;
   left: 3vw;
 }
 
 .VideoRecommend {
   position: relative;
-  top: 2vh;
+  top: 5vh;
   left: 7vw;
 }
 
 .Videocontainer {
   position: relative;
-  top: -12vh;
+  top: -9vh;
   left: 6vw;
 }
 
@@ -199,7 +197,7 @@ export default {
   white-space: nowrap;
   color: #000;
   font-family: Inder;
-  font-size: 20px;
+  font-size: 18px;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
@@ -216,7 +214,9 @@ export default {
   left: 0%;
   width: 100%;
   height: 120%;
+  top:3vh;
   position: relative;
+  border-radius: 6px;
 }
 
 /* 左上走马灯 */
@@ -230,7 +230,7 @@ export default {
 /* 走马灯描述 */
 .description {
   position: absolute;
-  bottom: 0;
+  bottom: 4vh;
   left: 0%;
   width: 100%;
   background-color: rgba(0, 0, 0, 0.5);
@@ -257,7 +257,7 @@ export default {
   line-height: normal;
   position: relative;
   left: 6vw;
-  top: -3vh;
+  top: 0vh;
 }
 
 .line {
@@ -269,8 +269,8 @@ export default {
 .imgRightItem {
   top: 0vh;
   left: 0%;
-  width: 80%;
-  height: 80%;
+  width: 85%;
+  height: 85%;
   position: relative;
   border-radius: 6px;
 }
@@ -295,7 +295,7 @@ export default {
 
 .Gossipicon {
   position: relative;
-  left: -15.5vw;
+  left: -22.5vw;
   top: 7vh;
   font-size: 50px;
   color: rgb(134, 71, 228);
@@ -303,7 +303,7 @@ export default {
 
 .GossipButton {
   position: relative;
-  left: -14vw;
+  left: -21vw;
   top: 8.5vh;
 }
 
@@ -318,7 +318,7 @@ export default {
 .shiftButton {
   position: relative;
   left: 88vw;
-  top: -34vh;
+  top: -28vh;
   background-color: rgb(255, 255, 255);
   border-radius: 2px;
   width: 22px;

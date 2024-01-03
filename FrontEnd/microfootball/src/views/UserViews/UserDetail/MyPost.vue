@@ -5,7 +5,7 @@
             <div v-for="post, index in posts" :key="post.id" class="post-card" @click="toPost(post.id)"
                 :style="{ marginBottom: isLastPost(index) ? '0' : '0.5rem' }">
                 <div class="post-title">{{ post.title }}</div>
-                <div class="post-content">{{ post.content }}</div>
+                <div class="post-content" v-html="post.content"></div>
                 <div class="post-time">{{ post.time }}</div>
             </div>
             <el-empty v-if="posts.length === 0" description="你还没有发过帖子,去论坛发帖吧!" />
@@ -72,11 +72,11 @@ const isLastPost = (index: number) => {
 </script>
 
 <style lang="scss">
+@import '../../../assets/css/frame.scss';
+@import '../../../assets/font/font.css';
 .user-post-box {
-    height: 70vh;
-    border-top-right-radius: 2vh;
-    border-top-left-radius: 2vh;
-    background-color: #e8e8e8;
+    height: 72vh;
+    background: linear-gradient(to bottom, #ffffff, #e8e8e8);
 }
 
 .post-card {
@@ -86,13 +86,16 @@ const isLastPost = (index: number) => {
     background-color: #f7f7f7;
 
     .post-title {
+        font-family: title;
         display: flex;
         align-items: center;
         justify-content: center;
         font-size: 1.5rem;
+        margin-bottom: 1vh;
     }
 
     .post-content {
+        font-family: words;
         width: 90%;
         align-self: center;
         flex: 1;

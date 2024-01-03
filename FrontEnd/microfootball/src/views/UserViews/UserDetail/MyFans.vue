@@ -25,7 +25,7 @@ import axios from 'axios'
 import { gotoPath } from '@/assets/api';
 
 const fans = ref<{ id: number; name: string; signature: string }[]>([])
-const edmitEvents = defineEmits(['son-click'])  // 向父组件传值
+const edmitEvents  = defineEmits(['son-click'])  // 向父组件传值
 
 onMounted(() => {
     getMyFans()
@@ -85,9 +85,7 @@ const toMyPost = () => {
 }
 
 .user-fans-box {
-    height: 70vh;
-    border-top-right-radius: 2vh;
-    border-top-left-radius: 2vh;
+    height: 72vh;
     background: linear-gradient(to bottom, #ffffff, #e8e8e8);
 }
 

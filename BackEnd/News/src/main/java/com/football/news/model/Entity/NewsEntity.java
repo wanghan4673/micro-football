@@ -41,6 +41,8 @@ public class NewsEntity {
          this.propertag=propertag;
     }
 
+    public NewsEntity() {}
+
     public int getNewsId() {
         return newsId;
     }

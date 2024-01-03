@@ -7,22 +7,22 @@
                 <el-page-header @back="goBack()" :icon="ArrowLeft">
                     <template #content>
                         <div class="flex items-center">
-                            <el-avatar :size="32" class="mr-3" :src="returnLogo(Details.newsBody.matchTag)" />
-                            <span style="position: relative;left:1vw;top:-0.5vh"> <b>{{ Details.newsBody.title }}</b>
+                            <el-avatar :size="32" class="mr-3" :src="returnLogo(Details.matchtag)" />
+                            <span style="position: relative;left:1vw;top:-1vh"> <b>{{ Details.title }}</b>
                             </span>
                         </div>
                     </template>
                     <el-descriptions :column="2" size="small" class="mt-4">
                         <el-descriptions-item label="新闻__ID：" :label-style="{ fontWeight: 300 }"><b>{{
-                            Details.newsBody.news_id }}</b></el-descriptions-item>
-                        <el-descriptions-item label="发布时间："><b>{{ returnTime(Details.newsBody.publishDateTime)
+                            Details.newsId }}</b></el-descriptions-item>
+                        <el-descriptions-item label="发布时间："><b>{{ returnTime(Details.publishdatetime)
                         }}</b></el-descriptions-item>
-                        <el-descriptions-item label="联赛类型："><b>{{ returnPlace(Details.newsBody.matchTag)
+                        <el-descriptions-item label="联赛类型："><b>{{ returnPlace(Details.matchtag)
                         }}</b></el-descriptions-item>
                         <el-descriptions-item label="新闻标签：">
-                            <el-tag class="ml-2" type="warning"><b>{{ Details.newsBody.matchTag }}&nbsp;</b></el-tag>
+                            <el-tag class="ml-2" type="warning"><b>{{ Details.matchtag }}&nbsp;</b></el-tag>
                             <el-tag class=" ml-2" type="success" style="margin-left: 5px;"><b>
-                                    &nbsp;{{ Details.newsBody.propertyTag }}&nbsp;
+                                    &nbsp;{{ Details.propertag }}&nbsp;
                                 </b></el-tag>
                         </el-descriptions-item>
                     </el-descriptions>
@@ -32,15 +32,15 @@
             <div>
                 <!-- 标题 -->
                 <div class="title">
-                    {{ Details.newsBody.title }}
+                    {{ Details.title }}
                 </div>
                 <!-- 正文 -->
                 <div class="content">
-                    {{ Details.newsBody.contains }}
+                    {{ Details.contains }}
                 </div>
                 <!-- 图片 -->
                 <div>
-                    <el-col :span="6" v-for="item in  Details.pictureRoutes">
+                    <el-col :span="6" v-for="item in  Details.pic">
                         <img v-if="item != null && (matchMP4(item) == false || Details.newsBody.news_id > 150)"
                             referrerPolicy='no-referrer' :src="item" alt="Image" class="imgItem">
                         <video v-if="item != null && matchMP4(item) == true && Details.newsBody.news_id < 150"
@@ -56,13 +56,14 @@
 </template>
   
 <script>
-import MyNav from './nav.vue';
-import ChinaLogo from '../assets/img/cslogo.png';
-import EnglandLogo from '../assets/img/pmlogo.png';
-import SpainLogo from '../assets/img/lllogo.png';
-import GermanyLogo from '../assets/img/bllogo.png';
-import ItalyLogo from '../assets/img/salogo.png';
-import FranceLogo from '../assets/img/le1logo.png';
+import MyNav from '../../components/TopNav.vue';
+import ChinaLogo from '../../assets/img/cslogo.png';
+import EnglandLogo from '../../assets/img/pmlogo.png';
+import SpainLogo from '../../assets/img/lllogo.png';
+import GermanyLogo from '../../assets/img/bllogo.png';
+import ItalyLogo from '../../assets/img/salogo.png';
+import FranceLogo from '../../assets/img/le1logo.png';
+import axios from "axios";
 
 export default {
     components: {
@@ -72,28 +73,21 @@ export default {
     data() {
         return {
             Details: {
-                newsBody: {
-                    matchTag: "",
-                    propertyTag: "",
+                    matchtag: "",
+                    propertag: "",
                     title: "",
                     summary: "",
                     contains: "",
                     news_id: 0,
                     publishDateTime: '',
-                },
-                pictureRoutes: [],
+                    pic: [],
             },
         };
     },
     created() {
-        const queryString = this.$route.query.data;
-        if (queryString) {
-            const decodedString = decodeURIComponent(queryString.replace(/%/g, '%25'));
-            this.Details = JSON.parse(decodedString);
-
-            console.log('123');
-            console.log(this.Details.pictureRoutes);
-        }
+        const id=this.$route.query.newsId;
+        console.log("传入的ID值",id);
+        this.getNewsDetails(id);
     },
 
     methods: {
@@ -160,6 +154,27 @@ export default {
                 requestAnimationFrame(animateScroll);
             }
         },
+
+
+      //从后端获取新闻数据
+      async getNewsDetails(id) {
+        try {
+          const response = await axios.get('/api/news/newsdetails', {
+            params: {
+              id:id,
+            }
+          }); // 发送POST请求，并将请求数据作为 JSON 对象发送
+
+          console.log(response);
+
+          this.Details=response.data;
+
+        } catch (error) {
+          // 处理获取失败的情况
+          this.$message.error('数据获取失败，请重试！');
+        }
+
+      }
     },
 };
 </script>
@@ -220,7 +235,7 @@ export default {
     width: 70px;
     height: 590px;
     margin-left: 35%;
-    background: url(../assets/img/scroll_cat.png);
+    background: url(../../assets/img/scroll_cat.png);
     transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
     opacity: 1;
 }
