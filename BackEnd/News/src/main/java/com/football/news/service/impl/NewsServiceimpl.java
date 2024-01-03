@@ -37,11 +37,27 @@ public class NewsServiceimpl implements NewsService {
         }
         return newsWithPicList;
     }
+    @Override
+    public List<NewsEntityInfo> addVoidPicForNews(List<NewsEntity> newsWithoutPic){
+        List<NewsEntityInfo> newsWithPicList = new ArrayList<>();
+        for(NewsEntity news: newsWithoutPic) {
+            NewsEntityInfo newsWithPic = new NewsEntityInfo(news.getNewsId(),news.getTitle(),news.getPublishdatetime(),news.getSummary(),news.getContains(),news.getMatchtag(),news.getPropertag(), null);
+            newsWithPicList.add(newsWithPic);
+        }
+        return newsWithPicList;
+    }
 
     //从新闻列表中随机取n个元素组成新列表
     @Override
     public List<NewsEntityInfo> randomNews(List<NewsEntityInfo> list, Integer num){
         List<NewsEntityInfo> newList = new ArrayList<> ();
+        Collections.shuffle (list);
+        newList = list.subList (0, num);
+        return newList;
+    }
+    @Override
+    public List<NewsEntity> randomNewsEntity(List<NewsEntity> list, Integer num){
+        List<NewsEntity> newList = new ArrayList<> ();
         Collections.shuffle (list);
         newList = list.subList (0, num);
         return newList;
@@ -81,6 +97,12 @@ public class NewsServiceimpl implements NewsService {
         List<NewsEntity> allNews=new ArrayList<>();
         allNews=newsMapper.getAllNews();
         return this.addPicForNews(allNews);
+    }
+
+    //获取所有新闻
+    @Override
+    public List<NewsEntity> getAllNewsEntity(){
+        return newsMapper.getAllNews();
     }
 
     @Override
@@ -142,6 +164,28 @@ public class NewsServiceimpl implements NewsService {
         else
             return this.randomNews(newsWithPic,num);
     }
+    @Override
+    public List<NewsEntity> filterNewsEntityByTags(List<NewsEntity> newsList, String tag1, String tag2, Integer num) {
+        List<NewsEntity> newsWithPic=new ArrayList<>();
+        if(tag1.equals("")&&tag2.equals(""))
+            newsWithPic=newsList;
+        else if(tag1.equals(""))
+            newsWithPic=newsList.stream()
+                    .filter(news -> tag2.equals(news.getPropertag()))
+                    .collect(Collectors.toList());
+        else if (tag2.equals(""))
+            newsWithPic=newsList.stream()
+                    .filter(news -> tag1.equals(news.getMatchtag()))
+                    .collect(Collectors.toList());
+        else
+            newsWithPic=newsList.stream()
+                    .filter(news -> tag1.equals(news.getMatchtag()) && tag2.equals(news.getPropertag()))
+                    .collect(Collectors.toList());
+        if(num==-1)
+            return newsWithPic;
+        else
+            return this.randomNewsEntity(newsWithPic,num);
+    }
 
 
     //按照Tag筛选视频
@@ -180,37 +224,27 @@ public class NewsServiceimpl implements NewsService {
         result.news=new ArrayList<List<NewsEntityInfo>>();
         result.videos=new ArrayList<List<VideoEntity>>();
 
-        List<NewsEntityInfo> newsTotal=getAllNews();
+        List<NewsEntity> newsTotal=getAllNewsEntity();
 
-        //List<NewsEntityInfo> assist1=getNewsInfo("","普通",19);
-        List<NewsEntityInfo> assist1=filterNewsByTags(newsTotal,"","普通",19);
-        result.news.add(assist1.subList(0,4));
-        result.news.add(assist1.subList(4,6));
-        result.news.add(assist1.subList(6,8));
-        //result.news.add(assist1.subList(8,12));
-        //result.news.add(assist1.subList(12,14));
-        //result.news.add(assist1.subList(14,19));
+        List<NewsEntity> assist1=filterNewsEntityByTags(newsTotal,"","普通",19);
+        result.news.add(addPicForNews(assist1.subList(0,4)));   //需要图片
+        result.news.add(addPicForNews(assist1.subList(4,6)));   //需要图片
+        result.news.add(addVoidPicForNews(assist1.subList(6,8)));
 
-//        result.news.add(getNewsInfo("中超","普通",4));
-//        result.news.add(getNewsInfo("英超","普通",4));
-//        result.news.add(getNewsInfo("西甲","普通",4));
-//        result.news.add(getNewsInfo("德甲","普通",4));
-//        result.news.add(getNewsInfo("意甲","普通",4));
-//        result.news.add(getNewsInfo("法甲","普通",4));
-        result.news.add(filterNewsByTags(newsTotal,"中超","普通",4));
-        result.news.add(filterNewsByTags(newsTotal,"英超","普通",4));
-        result.news.add(filterNewsByTags(newsTotal,"西甲","普通",4));
-        result.news.add(filterNewsByTags(newsTotal,"德甲","普通",4));
-        result.news.add(filterNewsByTags(newsTotal,"意甲","普通",4));
-        result.news.add(filterNewsByTags(newsTotal,"法甲","普通",4));
+        result.news.add(addVoidPicForNews(filterNewsEntityByTags(newsTotal,"中超","普通",4)));
+        result.news.add(addVoidPicForNews(filterNewsEntityByTags(newsTotal,"英超","普通",4)));
+        result.news.add(addVoidPicForNews(filterNewsEntityByTags(newsTotal,"西甲","普通",4)));
+        result.news.add(addVoidPicForNews(filterNewsEntityByTags(newsTotal,"德甲","普通",4)));
+        result.news.add(addVoidPicForNews(filterNewsEntityByTags(newsTotal,"意甲","普通",4)));
+        result.news.add(addVoidPicForNews(filterNewsEntityByTags(newsTotal,"法甲","普通",4)));
 
 
-        //List<NewsEntityInfo> assist2=getNewsInfo("","八卦",10);
-        List<NewsEntityInfo> assist2=filterNewsByTags(newsTotal,"","八卦",11);
-        result.news.add(assist2.subList(0, 4));
-        result.news.add(assist2.subList(4, 7));
-        result.news.add(assist2.subList(7, 11));
+        List<NewsEntity> assist2=filterNewsEntityByTags(newsTotal,"","八卦",11);
+        result.news.add(addPicForNews(assist2.subList(0, 4)));   //需要图片
+        result.news.add(addPicForNews(assist2.subList(4, 7)));   //需要图片
+        result.news.add(addVoidPicForNews(assist2.subList(7, 11)));
 
+        //视频数据
         List<VideoEntity> assist3=getVideo("","",11);
         result.videos.add(assist3.subList(0,4));
         result.videos.add(assist3.subList(4,6));

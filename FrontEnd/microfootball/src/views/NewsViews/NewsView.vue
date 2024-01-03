@@ -744,46 +744,10 @@ export default {
       console.log(item);
       const queryString = encodeURIComponent(JSON.stringify(item));
       // this.$router.push({ path: '/NewsDetails', query: { data: queryString } });
-      const url = `${window.location.origin}/NewsDetails?data=${queryString}`;
+      const url = `${window.location.origin}/#/NewsDetails?data=${queryString}`;
       window.open(url, '_blank');
     },
 
-    // //打开球队详情页
-    // openTeamDetails(teamName) {
-    //   // this.$router.push({
-    //   //   path: '/teamMsg',
-    //   //   query: {
-    //   //     teamName: teamName
-    //   //   }
-    //   // });
-    //   const url = `${window.location.origin}/teamMsg?teamName=${teamName}`;
-    //   window.open(url, '_blank');
-    // },
-    // //打开球员详情页
-    // openPlayerDetails(playerName) {
-    //   // this.$router.push({
-    //   //   path: '/detailedPlayerMsg',
-    //   //   query: {
-    //   //     playerName: playerName
-    //   //   }
-    //   // });
-    //   const url = `${window.location.origin}/detailedPlayerMsg?playerName=${playerName}`;
-    //   window.open(url, '_blank');
-    // },
-
-    // // 处理射手榜表格单元格的点击事件
-    // handleCellClick(row, column, cell, event) {
-    //   // 获取当前点击的单元格的属性名
-    //   const prop = column.property;
-    //   // 判断属性名是否是playerName或teamName
-    //   if (prop == "playerName") {
-    //     // 如果是playerName，就调用openPlayerDetails函数，并传入当前行的playerName属性值
-    //     this.openPlayerDetails(row.playerName);
-    //   } else if (prop == "teamName") {
-    //     // 如果是teamName，就调用openTeamDetails函数，并传入当前行的teamName属性值
-    //     this.openTeamDetails(row.teamName);
-    //   }
-    // }
   }
 }
 </script>
@@ -875,8 +839,10 @@ export default {
 /* 左上走马灯 */
 .Carousel {
   left: 8%;
-  width: 80%;
-  height: 80%;
+  /*width: 80%;*/
+  /*height: 80%;*/
+  width: 25vw;
+  height: 40vh;
   position: relative;
 }
 
