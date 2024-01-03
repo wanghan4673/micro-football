@@ -161,6 +161,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User getCommentUser(Long userId, Long myid){
+        return userMapper.getCommentUser(userId,myid);
+    }
+
+    @Override
+    public void follow(Long fansid,Long followerid){
+        if (userMapper.checkfollow(fansid, followerid)) {
+            userMapper.removefollow(fansid, followerid);
+        } else {
+            userMapper.follow(fansid, followerid);
+        }
+    }
+
+    @Override
     public List<Map<String, Integer>> getFollowCount(Long userId) {
         return userMapper.getFollowCount(userId);
     }

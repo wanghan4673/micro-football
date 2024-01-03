@@ -137,6 +137,7 @@ const login = async () => {
             localStorage.setItem('token', response.data.data.jwt)  // 将token存在浏览器缓存中
             store.user.useraccount = loginForm.value.account
             store.user.league = response.data.data.favoriteLeague
+            store.user.userid = response.data.data.id
             console.log(response.data.data)
             console.log("store.user.league" + store.user.league)
             gotoPath('/')

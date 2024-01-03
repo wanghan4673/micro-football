@@ -51,4 +51,8 @@ public interface UserService {
     boolean updateGameSubscript(Long userId, Long gameId, String startTime);
 
     List<GameSubscription> getGamesByUserId(Long userId);
+
+    User getCommentUser(Long userId, Long myid);
+    void follow(Long fansid,Long followerid);
+
 }
