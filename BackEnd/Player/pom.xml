@@ -45,6 +45,12 @@
             <artifactId>mfapi</artifactId>
             <version>1.0.0</version>
         </dependency>
+        <!-- common -->
+        <dependency>
+            <groupId>com.football</groupId>
+            <artifactId>Common</artifactId>
+            <version>1.0.0</version>
+        </dependency>
 
     </dependencies>
 
@@ -62,6 +68,14 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>9</source>
+                    <target>9</target>
+                </configuration>
             </plugin>
         </plugins>
     </build>

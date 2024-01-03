@@ -28,6 +28,14 @@ spring:
           uri: lb://player-service
           predicates:
             - Path=/player/**
+        - id: player-service
+          uri: lb://player-service
+          predicates:
+            - Path=/game/**
+        - id: player-service
+          uri: lb://player-service
+          predicates:
+            - Path=/team/**
         - id: news-service
           uri: lb://news-service
           predicates:
@@ -46,6 +54,9 @@ jwt:
       - /admin/login/getCode # 管理员获取验证码
       - /admin/login/checkCode  # 校验验证码
       - /player/**
+      - /game
+      - /game/detail
+      - /team/**
       - /news/**
     bothPaths:  # 登录和未登录都需要校验的请求路径
       - /users/login-status

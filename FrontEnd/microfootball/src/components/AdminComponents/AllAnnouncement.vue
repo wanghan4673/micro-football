@@ -42,6 +42,9 @@ export default {
                 console.log(response)
                 if (response.status == 200) {
                     this.announcement=response.data.data;
+                    for (let i = 0; i < this.announcement.length; i++) {
+                        this.announcement[i].time = this.announcement[i].time.replace('T', ' ');
+                    }
                 }
             } catch (e) {
                 console.log(e)

@@ -14,7 +14,7 @@
         </el-container>
         <el-container class="set-vertical" style="margin-right: 5vw;width: 30vw;margin-left: 5vw;margin-top: 4vh;">
             <el-card style="height: 35vh;">
-                <h4>被举报帖子详情</h4>
+                <h4>帖子详情</h4>
                 <h3 style="margin-top: 1vh;">{{ reportedPost.title }}</h3>
                 <el-container><span v-html="reportedPost.content"></span></el-container>
                 <el-container>{{ reportedPost.time }}</el-container>

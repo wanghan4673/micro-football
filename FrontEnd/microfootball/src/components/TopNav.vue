@@ -16,6 +16,8 @@
                         :class="{ 'blue-text': menutextcolor === 5 }">赛事</el-menu-item>
                     <el-menu-item index="5" @click="redirectToPlayers"
                         :class="{ 'blue-text': menutextcolor === 6 }">球员信息</el-menu-item>
+                    <el-menu-item index=7 @click="redirectToTeam"
+                        :class="{ 'blue-text': menutextcolor === 7 }">球队信息</el-menu-item>
                 </el-menu>
             </div>
             <div class="nav-right">
@@ -56,6 +58,7 @@ const menutextcolor = computed(() => {
         case '/IM': return 4;
         case '/Games': return 5;
         case '/Players': return 6;
+        case '/Team': return 7;
         default: return 0;
     }
 })
@@ -119,6 +122,10 @@ const redirectToNews = () => {
 
 const redirectToPlayers = () => {
     router.push('/Players');
+}
+
+const redirectToTeam = () => {
+    router.push('/Team')
 }
 
 const logout = () => {

@@ -45,6 +45,9 @@ export default {
                 });
                 if (response.status == 200) {
                     this.reports = response.data.data;
+                    for (let i = 0; i < this.reports.length; i++) {
+                        this.reports[i].time = this.reports[i].time.replace('T', ' ');
+                    }
                     console.log(this.reports)
                 }
             } catch (e) {

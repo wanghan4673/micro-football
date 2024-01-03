@@ -1,5 +1,6 @@
 package com.football.player.service.impl;
 
+import com.alibaba.nacos.client.constant.Constants;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.football.player.Api.SearchGameApi;
 import com.football.player.Api.SearchPlayerApi;
@@ -9,6 +10,7 @@ import com.football.player.service.intf.GameService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.lang.module.Configuration;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -18,7 +20,7 @@ public class GameServiceImpl implements GameService {
 
     private HashMap<String,Integer> gameTypeMap=new HashMap<>(){
         {
-            put("英超", 59);
+            put("英超", 39);
             put("西甲", 107);
             put("意甲",71);
             put("德甲",78);
@@ -131,7 +133,9 @@ public class GameServiceImpl implements GameService {
 //                Map<String, Object> responseBody = new ObjectMapper().readValue(test, Map.class);
                 List<Map<String, Object>> gamesData = (List<Map<String, Object>>) responseBody.get("response");
 
+
                 for (Map<String, Object> gameData : gamesData) {
+
                     Map<String, Object> fixture = (Map<String, Object>) gameData.get("fixture");
                     Map<String, Object> teams = (Map<String, Object>) gameData.get("teams");
                     Map<String, Object> goals = (Map<String, Object>) gameData.get("goals");
