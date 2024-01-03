@@ -1,7 +1,5 @@
 package com.football.news.controller;
 
-
-import com.football.forum.service.intf.ForumService;
 import com.football.mfapi.dto.NewsDTO;
 import com.football.news.mapper.NewsMapper;
 import com.football.news.model.Entity.NewsEntity;
