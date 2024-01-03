@@ -19,7 +19,7 @@ public interface NewsMapper{
              WHERE                                                                                     
                  news_id=#{NewsId}                                    
          """)
-    List<NewsEntity> findAllByNewsId(@Param("NewsId") Integer NewsId);
+    NewsEntity findAllByNewsId(@Param("NewsId") Integer NewsId);
 
     //按照id选出该条新闻对应的图片
     @Select("""

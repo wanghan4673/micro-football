@@ -46,6 +46,17 @@ public class NewsServiceimpl implements NewsService {
         }
         return newsWithPicList;
     }
+    @Override
+    public NewsEntityInfo addPicForOneNews(NewsEntity news){
+        List<NewshavepictureEntity> pic = newsMapper.findPictureById(news.getNewsId());
+        List<String> picList=new ArrayList<>();
+        for(NewshavepictureEntity item: pic){
+            picList.add(item.getPictureroute());
+        }
+        NewsEntityInfo newsWithPic = new NewsEntityInfo(news.getNewsId(),news.getTitle(),news.getPublishdatetime(),news.getSummary(),news.getContains(),news.getMatchtag(),news.getPropertag(), picList);
+
+        return newsWithPic;
+    }
 
     //从新闻列表中随机取n个元素组成新列表
     @Override
@@ -109,6 +120,13 @@ public class NewsServiceimpl implements NewsService {
     public List<NewsDTO> getAllNewsDTO(){
         return convertToDTOList(getAllNews());
     }
+
+    //按照新闻id返回新闻具体内容
+    @Override
+    public NewsEntityInfo getDetailsById(Integer id){
+        return addPicForOneNews(newsMapper.findAllByNewsId(id));
+    }
+
 
 
     //按照Tag筛选新闻

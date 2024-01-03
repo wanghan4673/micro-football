@@ -17,6 +17,8 @@ public interface NewsService  {
 
     List<NewsEntityInfo> addVoidPicForNews(List<NewsEntity> newsWithoutPic);
 
+    NewsEntityInfo addPicForOneNews(NewsEntity news);
+
     //从新闻列表中随机取n个元素组成新列表
     List<NewsEntityInfo> randomNews(List<NewsEntityInfo> list, Integer num);
 
@@ -35,6 +37,9 @@ public interface NewsService  {
     List<NewsEntity> getAllNewsEntity();
 
     List<NewsDTO> getAllNewsDTO();
+
+    //按照新闻id返回新闻具体内容
+    NewsEntityInfo getDetailsById(Integer id);
 
     //按Tag获取新闻
     List<NewsEntityInfo> getNewsInfo(String Tag1, String Tag2);

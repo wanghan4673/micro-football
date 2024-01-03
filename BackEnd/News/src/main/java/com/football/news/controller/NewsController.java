@@ -22,11 +22,11 @@ public class NewsController {
     @Autowired
     private NewsService newsService;
 
-//    // 按照新闻ID返回新闻内容（测试用）
-//    @GetMapping("/getOneNewsById")
-//    public ResponseEntity<?> getNewsById(@RequestParam Integer id){
-//       return ResponseEntity.ok().body(newsMapper.findAllByNewsId(id));
-//    }
+    // 按照新闻ID返回新闻内容（测试用）
+    @GetMapping("/newsdetails")
+    public ResponseEntity<?> getNewsDetailsById(@RequestParam Integer id){
+       return ResponseEntity.ok().body(newsService.getDetailsById(id));
+    }
 
     //初始化新闻页面的信息，防止初始化页面请求次数过多
     @GetMapping("/init")
@@ -36,9 +36,6 @@ public class NewsController {
 
     // 返回所有新闻
     @GetMapping("/allnews")
-//    public ResponseEntity<?> getAllNews(){
-//        return ResponseEntity.ok().body(newsService.getAllNews());
-//    }
     public List<NewsDTO> getAllNews(){
         return newsService.getAllNewsDTO();
     }
