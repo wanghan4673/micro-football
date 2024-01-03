@@ -51,9 +51,15 @@
         </dependency>
         <dependency>
             <groupId>com.football</groupId>
-            <artifactId>Forum</artifactId>
+            <artifactId>News</artifactId>
             <version>0.0.1-SNAPSHOT</version>
             <scope>compile</scope>
+        </dependency>
+        <!-- Mfapi模块 -->
+        <dependency>
+            <groupId>com.football</groupId>
+            <artifactId>mfapi</artifactId>
+            <version>1.0.0</version>
         </dependency>
     </dependencies>
 
