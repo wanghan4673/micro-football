@@ -54,7 +54,8 @@ jwt:
       - /admin/login/getCode # 管理员获取验证码
       - /admin/login/checkCode  # 校验验证码
       - /player/**
-      - /game/**
+      - /game
+      - /game/detail
       - /team/**
       - /news/**
     bothPaths:  # 登录和未登录都需要校验的请求路径
