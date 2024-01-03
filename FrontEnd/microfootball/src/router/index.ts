@@ -44,17 +44,17 @@ const routes = [
   },
   {
     path: '/NewsVideo',
-    name: '/NewsVideo',
+    name: 'NewsVideo',
     component: () => import('../views/NewsViews/NewsVideo.vue')
   },
   {
     path: '/NewsGossip',
-    name: '/NewsGossip',
+    name: 'NewsGossip',
     component: () => import('../views/NewsViews/NewsGossip.vue')
   },
   {
     path: '/NewsDetails',
-    name: '/NewsDetails',
+    name: 'NewsDetails',
     component: () => import('../views/NewsViews/NewsDetails.vue')
   },
   {

@@ -15,8 +15,12 @@ public interface NewsService  {
     //将无图片的新闻与其图片相连构成NewEntityInfo
     List<NewsEntityInfo> addPicForNews(List<NewsEntity> newsWithoutPic);
 
+    List<NewsEntityInfo> addVoidPicForNews(List<NewsEntity> newsWithoutPic);
+
     //从新闻列表中随机取n个元素组成新列表
     List<NewsEntityInfo> randomNews(List<NewsEntityInfo> list, Integer num);
+
+    List<NewsEntity> randomNewsEntity(List<NewsEntity> list, Integer num);
 
     //从视频列表中随机取n个元素组成新列表
     List<VideoEntity> randomVideo(List<VideoEntity> list, Integer num);
@@ -26,6 +30,9 @@ public interface NewsService  {
 
     //获取所有新闻
     List<NewsEntityInfo> getAllNews();
+
+    //获取所有新闻
+    List<NewsEntity> getAllNewsEntity();
 
     List<NewsDTO> getAllNewsDTO();
 
@@ -37,6 +44,8 @@ public interface NewsService  {
 
     //从所有新闻的列表里筛选满足tag的元素
     List<NewsEntityInfo> filterNewsByTags(List<NewsEntityInfo> newsList, String tag1, String tag2, Integer num);
+
+    List<NewsEntity> filterNewsEntityByTags(List<NewsEntity> newsList, String tag1, String tag2, Integer num);
 
     //按照Tag筛选视频
     List<VideoEntity> getVideo(String Tag1, String Tag2);
