@@ -72,6 +72,8 @@ const isLastPost = (index: number) => {
 </script>
 
 <style lang="scss">
+@import '../../../assets/css/frame.scss';
+@import '../../../assets/font/font.css';
 .user-post-box {
     height: 70vh;
     border-top-right-radius: 2vh;
@@ -86,13 +88,16 @@ const isLastPost = (index: number) => {
     background-color: #f7f7f7;
 
     .post-title {
+        font-family: title;
         display: flex;
         align-items: center;
         justify-content: center;
         font-size: 1.5rem;
+        margin-bottom: 1vh;
     }
 
     .post-content {
+        font-family: words;
         width: 90%;
         align-self: center;
         flex: 1;

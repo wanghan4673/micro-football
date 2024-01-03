@@ -7,7 +7,7 @@ const routes = [
     // 首页
     path: '/',
     name: 'home',
-    component: HomeView
+    component: () => import('../views/ForumViews/ForumView.vue')
   },
   {
     // 登录注册

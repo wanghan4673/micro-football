@@ -25,7 +25,7 @@ import axios from 'axios'
 import { gotoPath } from '@/assets/api';
 
 const fans = ref<{ id: number; name: string; signature: string }[]>([])
-const edmitEvents = defineEmits(['son-click'])  // 向父组件传值
+const edmitEvents  = defineEmits(['son-click'])  // 向父组件传值
 
 onMounted(() => {
     getMyFans()
