@@ -88,6 +88,10 @@ import { ref, onMounted, defineEmits, reactive } from 'vue'
 import { ElMessage, type FormRules } from 'element-plus'
 import axios from 'axios'
 import { sha256 } from 'js-sha256';
+import { storeToRefs } from 'pinia';
+import { useGeneralStore } from '@/stores/general';
+
+const store = useGeneralStore()
 
 interface RuleForm {
     username: string
@@ -289,6 +293,7 @@ const submitSelectedLeague = async () => {
                 message: '关注联赛成功',
                 type: 'success',
             })
+            store.user.league = selectedLeague.value
         } else {
             ElMessage({
                 message: '关注联赛失败!',

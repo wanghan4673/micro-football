@@ -164,7 +164,7 @@ public class UserController {
     }
 
     @PostMapping("/follow")
-    public Result follow(@RequestParam("fansid") Long followerid){
+    public Result follow(@RequestParam("followerid") Long followerid){
         Long fansid = UserContext.getUser();
         log.info("----------关注用户:{}----------", fansid);
         userService.follow(fansid,followerid);
