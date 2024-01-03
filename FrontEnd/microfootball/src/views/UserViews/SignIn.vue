@@ -138,13 +138,20 @@ const login = async () => {
             store.user.useraccount = loginForm.value.account
             store.user.league = response.data.data.favoriteLeague
             console.log(response.data.data)
-            console.log("store.user.league"+store.user.league)
+            console.log("store.user.league" + store.user.league)
             gotoPath('/')
         } else {
-            ElMessage({
-                message: '用户名或密码错误,请重新登录!',
-                type: 'error',
-            })
+            if (response.data.msg == "isbanned") {
+                ElMessage({
+                    message: '该用户已被封禁!',
+                    type: 'error',
+                })
+            } else {
+                ElMessage({
+                    message: '用户名或密码错误,请重新登录!',
+                    type: 'error',
+                })
+            }
             setTimeout(() => {
                 window.location.reload(); // 刷新当前页面
             }, 1000);
