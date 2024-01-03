@@ -7,7 +7,7 @@
         <artifactId>BackEnd</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-
+    <packaging>jar</packaging>
     <artifactId>Administrator</artifactId>
 
     <properties>
