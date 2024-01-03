@@ -1,75 +1,84 @@
 <template>
-    <div style="display: flex; margin-left: 20px;">
-        <el-icon @click="back" style="margin-top: 30px; margin-left: 10px;">
-            <Back />
-        </el-icon>
-        <div class="QC-title" v-if="post.title">
-            <p style="margin-top: 16px; margin-left: 20px;font-size: xx-large;">{{ post.title }}</p>
-        </div>
-    </div>
-
-    <div id="QC-bg">
-        <div id="Box" v-if="post.content">
-            <div style="width: 100%;word-wrap: break-word; margin-top: 5px;margin-bottom:5px; font-size: larger; ">
-                <!-- <img :src="poster.avatar" alt=""> -->
-                <span style="font-weight: bold;">帖主 </span>
-                <span> {{ poster.name }}</span>
-            </div>
-            <div style="width: 100%;word-wrap: break-word;font-size: larger;">
-                <p v-html="post.content"></p>
-            </div>
-        </div>
-        <!-- v-if="props.Question.img && props.Question.img.length > 0"  -->
-        <div id="Box" v-if="post.img">
-            <div v-for="img of post.img" :key="img">
-                <img :src="img" alt="图片加载失败" style="max-width: 60%;" />
-            </div>
-        </div>
-        <div style="display: flex; gap:20px;margin:20px;">
-            <el-icon :size="20" :color="isliked ? '#d57eb7' : ''" @click="likeclick">
-                <CircleCheck />
-            </el-icon>
-            <span style="font-size: 20px; margin-top: -4px;">{{ post.likes }}</span>
-            <el-icon :size="20" :color="iscollected ? '#d57eb7' : ''" @click="collectclick">
-                <Star />
-            </el-icon>
-            <span style="font-size: 20px;margin-top: -4px;">{{ post.collect }}</span>
-            
-            <el-popover :visible="visible" placement="bottom" :width="360"  >
-                <p style="font-size: 16px;padding-left: 5px; margin-bottom: 15px;">举报理由：</p>
-                <el-input v-model="reportreason" placeholder="举报理由" :rows="3" type="textarea" clearable />
-                <div style="text-align: right; margin: 10px">
-                    <el-button type="primary" @click="handleSubmitClick">提交举报</el-button>
+    <div style="display: flex;justify-content: center;">
+        <div style="display: flex; flex-direction: column;align-items: flex-start;width: 80vw; ">
+            <div style="display: flex;">
+                <el-icon @click="back" style="margin-top: 30px; margin-left: 50px;">
+                    <Back />
+                </el-icon>
+                <div class="QC-title" v-if="post.title">
+                    <p style="margin-top: 16px; margin-left: 20px;font-size: xx-large; color: rgb(5, 103, 103);">{{
+                        post.title
+                    }}</p>
                 </div>
-                <template #reference>
-                    <div @click="visible = true"  
-                        style="display: flex; align-items: center; cursor: pointer;margin-top: -4px;">
-                        <el-icon :size="20" :color="iscollected ? '#d57eb7' : ''">
-                            <WarningFilled />
-                        </el-icon>
-                        <span style="font-size: 14px; margin-left: 5px;">举报</span>
+            </div>
+
+            <div id="QC-bg">
+                <div id="Box" v-if="post.content">
+                    <div style="width: 100%;word-wrap: break-word; margin-top: 5px;margin-bottom:15px; font-size: larger; ">
+                        <!-- <img :src="poster.avatar" alt=""> -->
+                        <span style="font-weight: bold;">帖主 </span>
+                        <span> {{ poster.name }}</span>
                     </div>
-                </template>
-            </el-popover>
-
-        </div>
-    </div>
-    <p style="font-size: large; font-weight: 400; margin: 20px;margin-left: 50px;">评论 {{ comments ? comments.length : 0 }}
-    </p>
-    <div id="QC-bg" v-if="comments != []">
-        <div id="Box" style="height: auto;padding-top: 20px;" v-for="(comment, index) of comments" :key="index">
-            <div style="width: 100%; display:flex; justify-content:space-start;gap: 20px; padding-right:10vw; border-bottom: 1px solid #44484a;">
-                <div style="max-width: 25%; display: flex;">
-                    <!-- <img :src="comment.avatar" alt=""> -->
-                    <p>{{ comment.name }}</p>
+                    <div style="width: 100%;word-wrap: break-word;font-size: x-large;">
+                        <p v-html="post.content"></p>
+                    </div>
                 </div>
-                <div style="max-width:70% ; word-wrap: break-word; overflow: auto;">{{ comment.comment }}</div>
+                <!-- v-if="props.Question.img && props.Question.img.length > 0"  -->
+                <div id="Box" v-if="post.img">
+                    <div v-for="img of post.img" :key="img">
+                        <img :src="img" alt="图片加载失败" style="max-width: 60%;" />
+                    </div>
+                </div>
+                <div style="display: flex; gap:20px;margin:20px;">
+                    <el-icon :size="20" :color="isliked ? '#d57eb7' : ''" @click="likeclick">
+                        <CircleCheck />
+                    </el-icon>
+                    <span style="font-size: 20px; margin-top: -4px;">{{ post.likes }}</span>
+                    <el-icon :size="20" :color="iscollected ? '#d57eb7' : ''" @click="collectclick">
+                        <Star />
+                    </el-icon>
+                    <span style="font-size: 20px;margin-top: -4px;">{{ post.collect }}</span>
+
+                    <el-popover :visible="visible" placement="bottom" :width="360">
+                        <p style="font-size: 16px;padding-left: 5px; margin-bottom: 15px;">举报理由：</p>
+                        <el-input v-model="reportreason" placeholder="举报理由" :rows="3" type="textarea" clearable />
+                        <div style="text-align: right; margin: 10px">
+                            <el-button type="primary" @click="handleSubmitClick">提交举报</el-button>
+                        </div>
+                        <template #reference>
+                            <div @click="visible = true"
+                                style="display: flex; align-items: center; cursor: pointer;margin-top: -4px;">
+                                <el-icon :size="20">
+                                    <WarningFilled />
+                                </el-icon>
+                                <span style="font-size: 14px; margin-left: 5px;">举报</span>
+                            </div>
+                        </template>
+                    </el-popover>
+
+                </div>
+            </div>
+            <div id="QC-bg" v-if="comments != []">
+                <p style="font-size: large; font-weight: 400; margin: 20px;margin-left: 5px;">评论 {{ comments ?
+                    comments.length : 0
+                }}
+                </p>
+                <div id="Box" style="height: auto;padding-top: 20px;" v-for="(comment, index) of comments" :key="index">
+                    <div
+                        style="width: 100%; display:flex; justify-content:space-start;gap: 20px; padding-right:10vw; border-bottom: 1px solid #44484a31;">
+                        <div style="max-width: 25%; display: flex;">
+                            <!-- <img :src="comment.avatar" alt=""> -->
+                            <p>{{ comment.name }}</p>
+                        </div>
+                        <div style="max-width:70% ; word-wrap: break-word; overflow: auto;">{{ comment.comment }}</div>
+                    </div>
+                </div>
+            </div>
+            <div id="newcomment">
+                <el-input v-model="newcomment" placeholder="发布评论" style="height: 100%;width: 60%;"></el-input>
+                <el-button color="#5a9feacc" @click="commentclick">发布评论</el-button>
             </div>
         </div>
-    </div>
-    <div id="newcomment">
-        <el-input v-model="newcomment" placeholder="发布评论" style="height: 100%;width: 60%;"></el-input>
-        <el-button color="#5a9feacc" @click="commentclick">发布评论</el-button>
     </div>
 </template>
 
@@ -130,7 +139,7 @@ const loadPost = async (postid) => {
 const getUserProfile = async () => {
     const token = localStorage.getItem('token')
     try {
-        const response = await axios.get('/api/users/user-info',{
+        const response = await axios.get('/api/users/user-info', {
             headers: {
                 'token': token,
             }
@@ -263,7 +272,7 @@ const commentclick = async () => {
 #QC-bg {
     width: 90%;
     background-color: #fff;
-    max-width: 1200px;
+    // max-width: 1400px;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -296,8 +305,7 @@ const commentclick = async () => {
     background-color: #fff;
     max-width: 1200px;
     // box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
-    margin-left: 50px;
-    padding-left: 30px;
+    margin-left: 48px;
+    // padding-left: 30px;
     margin-bottom: 20px;
-}
-</style> 
+}</style> 
