@@ -26,7 +26,7 @@ export default{
         TeamListComponent
     },
     setup(){
-        const BaseUrl = 'api/team'
+        const BaseUrl = '/api/team'
         const titleText = ref('联赛球队信息')
         const subTitleText = ref('背后英雄，揭秘每支球队的独特魅力')
         const searchDefaultText = ref('搜索球队信息')
@@ -38,6 +38,7 @@ export default{
             isSearch.value = false
             try{
                 const response = await axios.get(`${BaseUrl}?searchKey=${text}`)//game/date=${dateStr}&leagueName=${league}`);
+                // const response = await axios.get(`http://localhost:8083/team?searchKey=${text}`)
                 console.log(response);
                 teamList.value.push(...response.data.data);
                 console.log('gameList', teamList.value);

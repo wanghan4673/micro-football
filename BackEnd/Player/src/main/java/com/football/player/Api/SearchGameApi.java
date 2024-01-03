@@ -13,7 +13,7 @@ public class SearchGameApi {
     private final RestTemplate restTemplate=new RestTemplate();
 
 //    private final String api_key="bfd7a84e6c17a2010889853305a34463";
-    private final String api_key="130e3aed8e5e9780537823a7db871865";
+    private final String api_key="3815dd73115a6066c80722af607a4bf2";
     private final String url="https://v3.football.api-sports.io/fixtures";
 
     /**
@@ -23,10 +23,13 @@ public class SearchGameApi {
     public ResponseEntity<?> getGamesByDate(@RequestParam @Nonnull String date,
                                             @RequestParam @Nonnull Integer leagueId,
                                             @RequestParam @Nonnull Integer season){
-        String timeZone="UTC";
+//        String timeZone="UTC";
+        System.out.println("data is "+date);
+        System.out.println("leagueId is "+leagueId);
+        System.out.println("season is "+season);
 
 //        封装参数
-        String targetUrl=this.url+"?date="+date+"&league="+leagueId+"&season="+season+"&timezone="+timeZone;
+        String targetUrl=this.url+"?date="+date+"&league="+leagueId+"&season="+season;
 //        targetUrl=this.url+"?date="+date;
 //        封装请求头
         HttpHeaders httpHeaders=new HttpHeaders();

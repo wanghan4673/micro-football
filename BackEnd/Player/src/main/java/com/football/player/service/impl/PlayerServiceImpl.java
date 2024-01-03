@@ -20,7 +20,7 @@ public class PlayerServiceImpl implements PlayerService {
 
     private HashMap<String,Integer> gameTypeMap=new HashMap<>(){
         {
-            put("英超", 59);
+            put("英超", 39);
             put("西甲", 107);
             put("意甲",71);
             put("德甲",78);

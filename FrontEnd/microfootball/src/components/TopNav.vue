@@ -58,6 +58,7 @@ const menutextcolor = computed(() => {
         case '/IM': return 4;
         case '/Games': return 5;
         case '/Players': return 6;
+        case '/Team': return 7;
         default: return 0;
     }
 })
@@ -123,7 +124,7 @@ const redirectToPlayers = () => {
     router.push('/Players');
 }
 
-const redirectToPlayers = () => {
+const redirectToTeam = () => {
     router.push('/Team')
 }
 
