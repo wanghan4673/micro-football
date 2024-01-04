@@ -139,7 +139,7 @@ const logout = () => {
     setTimeout(() => {
         window.location.reload()
     }, 100)
-    router.push('/')
+    router.push('/forum')
 }
 
 const redirectToLogin = (isAdmin) => {

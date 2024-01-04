@@ -48,6 +48,7 @@ public class PlayerServiceImpl implements PlayerService {
 
         // 调用外部api获取对象
         ResponseEntity<?> responseEntity = searchPlayerApi.getPlayersByKeyAndLeague(searchKey, leagueId);
+        System.out.println(responseEntity);
 
 
         Map<String, Object> responseBody=new HashMap<>();
