@@ -26,6 +26,10 @@
                                         <p>{{ commentuser.name }}</p>
                                     </div>
                                     <div style="display: flex;justify-content: space-between;">
+                                        <p>聊天ID:</p>
+                                        <p>{{ commentuser.account }}</p>
+                                    </div>
+                                    <div style="display: flex;justify-content: space-between;">
                                         <p>个性签名：</p>
                                         <p>{{ commentuser.signature }}</p>
                                     </div>
@@ -114,6 +118,10 @@
                                         <p>{{ commentuser.name }}</p>
                                     </div>
                                     <div style="display: flex;justify-content: space-between;">
+                                        <p>聊天ID:</p>
+                                        <p>{{ commentuser.account }}</p>
+                                    </div>
+                                    <div style="display: flex;justify-content: space-between;">
                                         <p>个性签名：</p>
                                         <p>{{ commentuser.signature }}</p>
                                     </div>
@@ -180,6 +188,7 @@ let newcomment = ref("")
 let reportreason = ref('')
 let commentuser = ref({
     name: '',
+    account: '',
     signature: '',
     favorite_league: '',
     follow: '',
@@ -204,6 +213,7 @@ const loadcommentuser = async (followerid) => {
         if (response.status == 200) {
             console.log(response)
             commentuser.value.name = response.data.data.name
+            commentuser.value.account = response.data.data.account
             commentuser.value.signature = response.data.data.signature
             commentuser.value.favorite_league = response.data.data.favoriteLeague
             commentuser.value.follow = response.data.data.follow
