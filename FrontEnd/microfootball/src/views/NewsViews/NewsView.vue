@@ -11,11 +11,11 @@
         </div>
         <div style="display: flex; justify-content: space-between;">
           <!-- 搜索栏 -->
-          <el-input style="margin-left: 20px;" class="search" v-model="searchInput" placeholder=" 请 输 入 搜 索 关 键 字">
-            <template v-slot:prepend>
-              <el-button icon="Search" @click="search"></el-button>
-            </template>
-          </el-input>
+<!--          <el-input style="margin-left: 20px;" class="search" v-model="searchInput" placeholder=" 请 输 入 搜 索 关 键 字">-->
+<!--            <template v-slot:prepend>-->
+<!--              <el-button icon="Search" @click="search"></el-button>-->
+<!--            </template>-->
+<!--          </el-input> -->
           <img src="../../assets/img/recover_logo.png" class="img">
           <img src="../../assets/img/football_logo.png" class="img">
         </div>
@@ -344,7 +344,7 @@
           <p class="titleLeagueLeft" style="left:3vw;">搜索结果</p>
           <div class="line" style="width: 40vw;height: 0.2px;top:4vh;left:-24vw;"></div>
           <el-col :span="18">
-            <div v-for="item  in  searchNewsResults " :key="item.id" class="itemSearch" style="top:1vh">
+            <div v-for="item  in  searchNewsResults " :key="item.id" class="itemSearch" style="top:5vh">
               <div class="imgWrapper" style=" position: relative;top: -10vh;left: -4vw;" @click="openNewsDetails(item.newsId)">
                 <img v-if="item.pic != ''" referrerPolicy='no-referrer'
                   :src="item.pic[0]" alt="SearchImage" class="imgSearch">

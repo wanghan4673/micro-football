@@ -77,14 +77,14 @@
                     </el-icon>
                     <span style="font-size: 20px;margin-top: -4px;">{{ post.collect }}</span>
 
-                    <el-popover :visible="visible" placement="bottom" :width="360">
+                    <el-popover :visible="visiblereport" placement="bottom" :width="360">
                         <p style="font-size: 16px;padding-left: 5px; margin-bottom: 15px;">举报理由：</p>
                         <el-input v-model="reportreason" placeholder="举报理由" :rows="3" type="textarea" clearable />
                         <div style="text-align: right; margin: 10px">
                             <el-button type="primary" @click="handleSubmitClick">提交举报</el-button>
                         </div>
                         <template #reference>
-                            <div @click="visible = true"
+                            <div @click="visiblereport = true"
                                 style="display: flex; align-items: center; cursor: pointer;margin-top: -4px;">
                                 <el-icon :size="20">
                                     <WarningFilled />
@@ -188,7 +188,7 @@ let commentuser = ref({
 })
 // let visible = ref(false);
 onMounted(() => {
-    // getUserProfile()
+    getUserProfile()
     loadPost(postid)
 })
 const loadcommentuser = async (followerid) => {
@@ -214,11 +214,11 @@ const loadcommentuser = async (followerid) => {
         console.log(error)
     }
 }
-const clickfollow = async (fansid) => {
+const clickfollow = async (followerid) => {
     let response
     let token = localStorage.getItem('token')
     try {
-        response = await axios.post("/api/users/follow?fansid=" + fansid, {}, {
+        response = await axios.post("/api/users/follow?followerid=" + followerid, {}, {
             headers: {
                 'token': `${token}`
             }
@@ -292,6 +292,7 @@ const getUserProfile = async () => {
     }
 }
 const handleSubmitClick = async () => {
+console.log(store.user.username)
     let response
     let token = localStorage.getItem('token')
     try {

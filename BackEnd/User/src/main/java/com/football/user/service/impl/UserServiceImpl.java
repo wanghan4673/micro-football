@@ -122,7 +122,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public boolean deleteFollow(Long userId, Long deleteId) {
-        return userMapper.deleteFollow(userId, deleteId) && userMapper.minusUserFollowNum(userId);
+        return userMapper.deleteFollow(userId, deleteId);
     }
 
     @Override
