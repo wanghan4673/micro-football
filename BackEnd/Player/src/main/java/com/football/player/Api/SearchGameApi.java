@@ -13,7 +13,7 @@ public class SearchGameApi {
     private final RestTemplate restTemplate=new RestTemplate();
 
 //    private final String api_key="bfd7a84e6c17a2010889853305a34463";
-    private final String api_key="3815dd73115a6066c80722af607a4bf2";
+    private final String api_key="130e3aed8e5e9780537823a7db871865";
     private final String url="https://v3.football.api-sports.io/fixtures";
 
     /**
