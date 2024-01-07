@@ -1,5 +1,5 @@
 server:
-  port: 8088
+  port: 90
 
 mybatis:
   configuration:
@@ -13,6 +13,8 @@ spring:
     nacos:
       discovery:
         server-addr: 110.40.206.206:8848  #nacos端口
+        ip: 1.15.170.195
+        port: 90
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://101.43.38.150/football_news

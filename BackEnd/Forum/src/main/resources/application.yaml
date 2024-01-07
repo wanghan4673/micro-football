@@ -5,6 +5,8 @@ spring:
     nacos:
       discovery:
         server-addr: 110.40.206.206:8848  #nacos端口
+        ip: 1.15.170.195
+        port: 89
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -27,7 +29,7 @@ pagehelper:
 
 
 server:
-  port: 8082
+  port: 89
 
 # 腾讯云对象存储
 tencent:

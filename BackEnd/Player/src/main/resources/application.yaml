@@ -5,6 +5,8 @@ spring:
     nacos:
       discovery:
         server-addr: 110.40.206.206:8848  #nacos端口
+        ip: 1.15.170.195
+        port: 91
 
 
   main:
@@ -13,4 +15,4 @@ spring:
 
 
 server:
-  port: 8083
+  port: 91
