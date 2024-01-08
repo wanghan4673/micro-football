@@ -88,7 +88,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import '../../assets/css/frame.scss';
 @import '../UserViews/UserCSS/signin.scss';
 
@@ -102,6 +102,7 @@ export default {
 
 .signin-box {
     /* 登录注册部分 */
+    width: 100%;
     padding-top: 10vh;
     display: flex;
     flex-direction: column;

@@ -58,6 +58,7 @@ const menutextcolor = computed(() => {
         case '/IM': return 4;
         case '/Games': return 5;
         case '/Players': return 6;
+        case '/Team': return 7;
         default: return 0;
     }
 })
@@ -138,7 +139,7 @@ const logout = () => {
     setTimeout(() => {
         window.location.reload()
     }, 100)
-    router.push('/')
+    router.push('/forum')
 }
 
 const redirectToLogin = (isAdmin) => {

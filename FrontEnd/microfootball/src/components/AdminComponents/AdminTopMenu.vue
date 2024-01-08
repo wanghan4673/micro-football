@@ -10,12 +10,12 @@
                 <el-menu-item index="adminHome" @click="directToSubsystem(0)">系统总览</el-menu-item>
                 <el-menu-item index="userManage" @click="directToSubsystem(1)">用户管理</el-menu-item>
                 <el-menu-item index="forumManage" @click="directToSubsystem(2)">论坛管理</el-menu-item>
-                <el-menu-item index="newsManage" @click="directToSubsystem(3)">新闻管理</el-menu-item>
+                <el-menu-item index="newsManage" @click="directToSubsystem(3)">新闻浏览</el-menu-item>
                 <el-menu-item index="announceManage" @click="directToSubsystem(4)">公告管理</el-menu-item>
             </el-menu>
         </el-container>
         <el-container style="width: 30vw;">
-            <h4 style="margin-left: 20vw;" @click="directToSubsystem(5)">退出管理员系统</h4>
+            <h4 style="margin-left: 20vw;cursor: pointer;" @click="directToSubsystem(5)">退出管理员系统</h4>
         </el-container>
     </div>
 </template>

@@ -12,7 +12,7 @@
                 <el-table v-if="reportedUsers != []" :data="reportedUsers" height="65vh" style="width: 100%;border-radius: 10px;">
                     <el-table-column align="center" prop="id" label="用户Id" width="100" />
                     <el-table-column prop="name" label="用户昵称" width="150" />
-                    <el-table-column align="center" prop="createDate" label="注册时间" width="150" />
+                    <el-table-column align="center" prop="createDate" label="注册时间" width="180" />
                     <el-table-column align="center" prop="score" label="积分" width="100" />
                     <el-table-column align="center" prop="fans" label="粉丝数" width="100" />
                     <el-table-column fixed="right" label="操作">
@@ -30,7 +30,7 @@
                 <el-table v-if="allUsers!=[]" :data="allUsers" height="65vh" style="width: 100%;border-radius: 10px;">
                     <el-table-column align="center" prop="id" label="用户Id" width="100" />
                     <el-table-column prop="name" label="用户昵称" width="150" />
-                    <el-table-column align="center" prop="createDate" label="注册时间" width="150" />
+                    <el-table-column align="center" prop="createDate" label="注册时间" width="180" />
                     <el-table-column align="center" prop="score" label="积分" width="100" />
                     <el-table-column align="center" prop="fans" label="粉丝数" width="100" />
                     <el-table-column fixed="right" label="操作">
@@ -85,6 +85,9 @@ export default{
                 console.log(response)
                 if (response.status == 200) {
                     this.allUsers=response.data.data
+                    for (let i = 0; i < this.allUsers.length; i++) {
+                        this.allUsers[i].createDate = new Date(this.allUsers[i].createDate).toISOString().replace('T', ' ').split('.')[0];
+                    }
                 }
             } catch (e) {
                 console.log(e)
@@ -102,6 +105,9 @@ export default{
                 console.log(response)
                 if (response.status == 200) {
                     this.reportedUsers = response.data.data
+                    for (let i = 0; i < this.reportedUsers.length; i++) {
+                        this.reportedUsers[i].createDate = new Date(this.reportedUsers[i].createDate).toISOString().replace('T', ' ').split('.')[0];
+                    }
                 }
             } catch (e) {
                 console.log(e)

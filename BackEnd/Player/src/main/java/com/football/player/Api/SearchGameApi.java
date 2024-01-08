@@ -23,10 +23,13 @@ public class SearchGameApi {
     public ResponseEntity<?> getGamesByDate(@RequestParam @Nonnull String date,
                                             @RequestParam @Nonnull Integer leagueId,
                                             @RequestParam @Nonnull Integer season){
-        String timeZone="UTC";
+//        String timeZone="UTC";
+        System.out.println("data is "+date);
+        System.out.println("leagueId is "+leagueId);
+        System.out.println("season is "+season);
 
 //        封装参数
-        String targetUrl=this.url+"?date="+date+"&league="+leagueId+"&season="+season+"&timezone="+timeZone;
+        String targetUrl=this.url+"?date="+date+"&league="+leagueId+"&season="+season;
 //        targetUrl=this.url+"?date="+date;
 //        封装请求头
         HttpHeaders httpHeaders=new HttpHeaders();

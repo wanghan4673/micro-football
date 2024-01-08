@@ -5,7 +5,12 @@ spring:
     nacos:
       discovery:
         server-addr: 110.40.206.206:8848  #nacos端口
+<<<<<<< HEAD
         namespace: 59e72a86-b13e-469f-8983-e4583f18539b
+=======
+        ip: 1.15.170.195
+        port: 88
+>>>>>>> 1ec43517080aa273b94c393f75610ecd8b953b35
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -26,4 +31,4 @@ jwt:
     expire: 3600000
 
 server:
-  port: 8081
+  port: 88

@@ -5,9 +5,16 @@ spring:
     name: gateway  # 服务名称
   cloud:
     nacos:
+<<<<<<< HEAD
       server-addr: 110.40.206.206:8848  # nacos端口
       discovery:
         namespace: 59e72a86-b13e-469f-8983-e4583f18539b
+=======
+      discovery:
+        server-addr: 110.40.206.206:8848  # nacos端口
+        ip: 1.15.170.195
+        port: 87
+>>>>>>> 1ec43517080aa273b94c393f75610ecd8b953b35
     gateway:
       routes:
         - id: user-service

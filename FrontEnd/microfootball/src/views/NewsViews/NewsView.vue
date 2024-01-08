@@ -11,11 +11,11 @@
         </div>
         <div style="display: flex; justify-content: space-between;">
           <!-- 搜索栏 -->
-          <el-input style="margin-left: 20px;" class="search" v-model="searchInput" placeholder=" 请 输 入 搜 索 关 键 字">
-            <template v-slot:prepend>
-              <el-button icon="Search" @click="search"></el-button>
-            </template>
-          </el-input>
+<!--          <el-input style="margin-left: 20px;" class="search" v-model="searchInput" placeholder=" 请 输 入 搜 索 关 键 字">-->
+<!--            <template v-slot:prepend>-->
+<!--              <el-button icon="Search" @click="search"></el-button>-->
+<!--            </template>-->
+<!--          </el-input> -->
           <img src="../../assets/img/recover_logo.png" class="img">
           <img src="../../assets/img/football_logo.png" class="img">
         </div>
@@ -54,13 +54,11 @@
             <el-carousel :interval="3000">
               <el-carousel-item v-if="carouselRecommendItems.length != 0" v-for="(item, index) in carouselRecommendItems"
                 :key="index">
-                <img v-if="item.pic != null && (matchMP4(item.pic[0]) == false)" referrerPolicy='no-referrer'
+                <img v-if="item.pic != ''" referrerPolicy='no-referrer'
                   :src="item.pic[0]" alt="carousel image" style="width: 100%;height: 100%;"
                   @click="openNewsDetails(item.newsId)">
-                <img v-if="item.pic == null" referrerPolicy='no-referrer' src="../../assets/img/home_slider2.jpg"
+                <img v-else referrerPolicy='no-referrer' src="https://football-1316860845.cos.ap-shanghai.myqcloud.com/home_slider2.jpg"
                   alt="Image" class="imgANO" @click="openNewsDetails(item.newsId)">
-                <video v-if="item.pic != null && (matchMP4(item.pic[0]) == true)" referrerPolicy='no-referrer'
-                  ref="videoPlayer" :src="item.pic[0]" class="imgANO imgForVideo" @click="openNewsDetails(item.newsId)" />
                 <div style="background-color: rgb(0, 0, 0.5); color: white; position: relative;bottom: 25px;"
                   @click="openNewsDetails(item.newsId)">{{
                     truncateText(truncateText(item.title, 16), 16) }}</div>
@@ -72,13 +70,10 @@
             <el-row>
               <el-col :span="12" v-if="recommendItems1.length != 0" v-for="(item, index) in recommendItems1" :key="index">
                 <div class="imgItem1" @click="openNewsDetails(item.newsId)">
-                  <img v-if="item.pic != null && (matchMP4(item.pic[0]) == false)" referrerPolicy='no-referrer'
+                  <img v-if="item.pic != ''" referrerPolicy='no-referrer'
                     :src="item.pic[0]" alt="Image" class="imgRecommend" @click="openNewsDetails(item.newsId)">
-                  <img v-if="item.pic == null" referrerPolicy='no-referrer' src="../../assets/img/home_slider2.jpg"
+                  <img v-else referrerPolicy='no-referrer' src="https://football-1316860845.cos.ap-shanghai.myqcloud.com/home_slider2.jpg"
                     alt="Image" class="imgRecommend" @click="openNewsDetails(item.newsId)">
-                  <video v-if="item.pic != null && (matchMP4(item.pic[0]) == true)" referrerPolicy='no-referrer'
-                    ref="videoPlayer" :src="item.pic[0]" class="imgRecommend imgForVideo"
-                    @click="openNewsDetails(item.newsId)" />
                   <div class="descriptionRecommend" @click="openNewsDetails(item.newsId)">{{ truncateText(item.title, 16) }}
                   </div>
                 </div>
@@ -240,12 +235,10 @@
                   <el-carousel :interval="3000">
                     <el-carousel-item v-if="recommendItems1.length != 0" v-for="(item, index) in carouselGossipItems"
                       :key="index">
-                      <img v-if="item.pic != null && (matchMP4(item.pic[0]) == false)" referrerPolicy='no-referrer'
+                      <img v-if="item.pic != ''" referrerPolicy='no-referrer'
                         :src="item.pic[0]" alt="carousel image" @click="openNewsDetails(item.newsId)" class="imgANO">
-                      <img v-if="item.pic == null" referrerPolicy='no-referrer' src="../../assets/img/home_slider2.jpg"
+                      <img v-else referrerPolicy='no-referrer' src="https://football-1316860845.cos.ap-shanghai.myqcloud.com/home_slider2.jpg"
                         alt="Image" @click="openNewsDetails(item.newsId)" class="imgANO">
-                      <video v-if="item.pic != null && (matchMP4(item.pic[0]) == true)" referrerPolicy='no-referrer'
-                        ref="videoPlayer" :src="item.pic[0]" @click="openNewsDetails(item.newsId)" class="imgANO" />
                       <div style="background-color: rgb(0, 0, 0.5); color: white; position: relative;bottom: 20px;"
                         @click="openNewsDetails(item.newsId)">{{ truncateText(item.title, 16)
                         }}
@@ -259,13 +252,10 @@
                     style="padding-top: 10px;">
                     <el-row :gutter="20">
                       <el-col :span="11">
-                        <img v-if="item.pic != null && (matchMP4(item.pic[0]) == false)" referrerPolicy='no-referrer'
-                          :src="item.pic[0]" alt="Image" class="imgGossip" @click="openNewsDetails(item.newsId)">
-                        <img v-if="item.pic == null" referrerPolicy='no-referrer' src="../../assets/img/home_slider2.jpg"
-                          alt="Image" class="imgGossip" @click="openNewsDetails(item.newsId)">
-                        <video v-if="item.pic != null && matchMP4(item.pic[0]) == true" referrerPolicy='no-referrer'
-                          ref="videoPlayer" :src="item.pic[0]" @click="openNewsDetails(item.newsId)"
-                          class="imgGossip imgForVideo" />
+                        <img v-if="item.pic != ''" referrerPolicy='no-referrer'
+                          :src="item.pic[0]" alt="GossipImage1" class="imgGossip" @click="openNewsDetails(item.newsId)">
+                        <img v-else referrerPolicy='no-referrer' src="https://football-1316860845.cos.ap-shanghai.myqcloud.com/home_slider2.jpg"
+                          alt="GossipImage2" class="imgGossip" @click="openNewsDetails(item.newsId)">
                       </el-col>
                       <el-col :span="8">
                         <div v-if="item != null" class="descriptionGossip" @click="openNewsDetails(item.newsId)">{{
@@ -305,12 +295,10 @@
 <!--              <div class="line" style="width: 40vw;height: 0.2px;top:-3vh;left:5vw;"></div>-->
               <div v-if="LeagueNews.length != 0" v-for="(item, index) in LeagueNews" :key="index" class="itemLeague">
                 <div class="imgWrapper" @click="openNewsDetails(item.newsId)">
-                  <img v-if="item.pic != null && (matchMP4(item.pic[0]) == false)" referrerPolicy='no-referrer'
-                    :src="item.pic[0]" alt="Image" class="imgSearch">
-                  <img v-if="item.pic == null" referrerPolicy='no-referrer' src="../../assets/img/home_slider2.jpg"
-                    alt="Image" class="imgSearch">
-                  <video v-if="item.pic != null && (matchMP4(item.pic[0]) == true)" referrerPolicy='no-referrer'
-                    ref="videoPlayer" :src="item.pic[0]" class="imgSearch imgForVideo" />
+                  <img v-if="item.pic != ''" referrerPolicy='no-referrer'
+                    :src="item.pic[0]" alt="AssistImage1" class="imgSearch">
+                  <img v-else referrerPolicy='no-referrer' src="https://football-1316860845.cos.ap-shanghai.myqcloud.com/home_slider2.jpg"
+                    alt="AssistImage2" class="imgSearch">
                 </div>
                 <div class="TextWrapper" @click="openNewsDetails(item.newsId)" style="left:-8vw;">
                   <div class="titleSearch">{{ truncateText(item.title, 20) }}</div>
@@ -356,14 +344,12 @@
           <p class="titleLeagueLeft" style="left:3vw;">搜索结果</p>
           <div class="line" style="width: 40vw;height: 0.2px;top:4vh;left:-24vw;"></div>
           <el-col :span="18">
-            <div v-for="item  in  searchNewsResults " :key="item.id" class="itemSearch" style="top:1vh">
+            <div v-for="item  in  searchNewsResults " :key="item.id" class="itemSearch" style="top:5vh">
               <div class="imgWrapper" style=" position: relative;top: -10vh;left: -4vw;" @click="openNewsDetails(item.newsId)">
-                <img v-if="item.pic != null && (matchMP4(item.pic[0]) == false)" referrerPolicy='no-referrer'
-                  :src="item.pic[0]" alt="Image" class="imgSearch">
-                <img v-if="item.pic == null" referrerPolicy='no-referrer' src="../../assets/img/home_slider2.jpg"
-                  alt="Image" class="imgSearch">
-                <video v-if="item.pic != null && matchMP4(item.pic[0]) == true" referrerPolicy='no-referrer'
-                  ref="videoPlayer" :src="item.pic[0]" class="imgSearch imgForVideo" />
+                <img v-if="item.pic != ''" referrerPolicy='no-referrer'
+                  :src="item.pic[0]" alt="SearchImage" class="imgSearch">
+                <img v-else referrerPolicy='no-referrer' src="https://football-1316860845.cos.ap-shanghai.myqcloud.com/home_slider2.jpg"
+                  alt="SearchImage" class="imgSearch">
               </div>
               <div class="TextWrapper" @click="openNewsDetails(item.newsId)">
                 <div v-if="item != null" class="titleSearch" style="top:-9vh;left:-11vw;">{{
@@ -642,11 +628,6 @@ export default {
         return text.substring(0, maxLength) + '...';
       }
       return text;
-    },
-
-    //匹配mp4字符，用于判断视频还是图片的渲染
-    matchMP4(str) {
-      return str.includes('mp4');
     },
 
     //切换联赛展示
