@@ -5,6 +5,7 @@ spring:
     nacos:
       discovery:
         server-addr: 110.40.206.206:8848  #nacos端口
+        namespace: 59e72a86-b13e-469f-8983-e4583f18539b
 
 
   main:

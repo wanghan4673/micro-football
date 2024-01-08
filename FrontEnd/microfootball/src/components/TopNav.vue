@@ -123,7 +123,7 @@ const redirectToPlayers = () => {
     router.push('/Players');
 }
 
-const redirectToPlayers = () => {
+const redirectToTeam = () => {
     router.push('/Team')
 }
 
