@@ -1,96 +1,67 @@
 package com.football.news.controller;
 
-import com.football.mfapi.dto.NewsDTO;
-import com.football.news.mapper.NewsMapper;
-import com.football.news.model.Entity.NewsEntity;
+import com.football.common.utils.UserContext;
+import com.football.news.model.Result;
+import com.football.news.model.News;
 import com.football.news.service.intf.NewsService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.coyote.Response;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-@RestController
+@RequiredArgsConstructor
 @Slf4j
+@RestController
 @RequestMapping("/news")
 public class NewsController {
+    private final NewsService newsService;
 
-    @Autowired
-    private NewsMapper newsMapper;
-    @Autowired
-    private NewsService newsService;
-
-    // 按照新闻ID返回新闻内容（测试用）
-    @GetMapping("/newsdetails")
-    public ResponseEntity<?> getNewsDetailsById(@RequestParam Integer id){
-       return ResponseEntity.ok().body(newsService.getDetailsById(id));
+    @GetMapping()
+    public Result getNews(@RequestParam("page") Integer page,
+                          @RequestParam("pageSize") Integer pageSize){
+        log.info("----------------------获取新闻------------------------");
+        try{
+            List<News> newsResult = newsService.getNewsByPage(page,pageSize);
+            return Result.success(newsResult);
+        } catch (Exception e){
+            return Result.error("errorGetNews");
+        }
     }
 
-    //初始化新闻页面的信息，防止初始化页面请求次数过多
-    @GetMapping("/init")
-    public ResponseEntity<?> initNews(){
-        return ResponseEntity.ok().body(newsService.Init());
+    @GetMapping("/detail/{id}")
+    public Result getNewsDetail(@PathVariable("id") Long newsId){
+        log.info("----------------------查看新闻详情------------------------");
+        News newsDetail = newsService.getNewsById(newsId);
+        return Result.success(newsDetail);
     }
 
-    // 返回所有新闻
-    @GetMapping("/allnews")
-    public List<NewsDTO> getAllNews(){
-        return newsService.getAllNewsDTO();
+    @GetMapping("/detail/{id}/report-status")
+    public Result getReportStatus(@PathVariable("id") Long newsId){
+        log.info("----------------------判断用户对新闻的举报状态------------------------");
+        Long userId = UserContext.getUser();
+        if(userId == null){
+            return Result.success("noLogin");
+        } else{
+            return Result.success(newsService.getReportStatus(newsId, userId) ? "isReported" : "noReported");
+        }
     }
 
-
-    // 按照新闻的两个Tag返回新闻列表，num代表返回数量
-    @GetMapping("/news")
-    public ResponseEntity<?> getNews(@RequestParam String Tag1,String Tag2,Integer num){
-        return ResponseEntity.ok().body(newsService.getNewsInfo(Tag1,Tag2,num));
+    @PostMapping("/report")
+    public Result reportNews(){
+        log.info("----------举报新闻----------");
+        Long userId = UserContext.getUser();
+        if(userId == null){
+            return Result.success("noLogin");
+        } else{
+            // 这里调管理员的接口
+            return Result.success();
+        }
     }
 
-    // 按照新闻的两个Tag返回视频列表，num代表返回数量
-    @GetMapping("/video")
-    public ResponseEntity<?> getVideo(@RequestParam String Tag1,String Tag2,Integer num){
-        return ResponseEntity.ok().body(newsService.getVideo(Tag1,Tag2,num));
+    @GetMapping("/all")
+    public List<News> getAllNews(){
+        log.info("----------获取所有新闻(为管理员准备)----------");
+        return newsService.getAllNews();
     }
-
-//    //按tag筛选新闻
-//    @GetMapping("/SelectNews")
-//    public ResponseEntity<?> selectNews(@RequestParam String Tag1,String Tag2){
-//        return ResponseEntity.ok().body(newsService.getNewsInfo(Tag1,Tag2));
-//    }
-//
-//    //按tag筛选视频
-//    @GetMapping("/SelectVideo")
-//    public ResponseEntity<?> selectVideo(@RequestParam String Tag1,String Tag2){
-//        return ResponseEntity.ok().body(newsService.getVideo(Tag1,Tag2));
-//    }
-
-    //搜索新闻
-    @GetMapping("/searchnews")
-    public ResponseEntity<?> SearchNews(@RequestParam String SearchItem){
-        return ResponseEntity.ok().body(newsService.searchNews(SearchItem));
-    }
-
-    //搜索视频
-    @GetMapping("/searchvideo")
-    public ResponseEntity<?> SearchVideo(@RequestParam String SearchItem){
-        return ResponseEntity.ok().body(newsService.searchVideo(SearchItem));
-    }
-
-    //添加一个新闻
-    @PostMapping("/news")
-    public void AddNews(@RequestParam NewsEntity news){
-        int id=newsMapper.getMaxNewId()+1;
-        newsMapper.addNews(id,news.getPublishdatetime(),news.getSummary(),news.getContains(),news.getMatchtag(),news.getPropertag(),news.getTitle());
-        return;
-    }
-
-    //删除一个新闻
-    @DeleteMapping("/news")
-    public void DeleteNews(@RequestParam Integer news_id){
-        newsMapper.deleteNews(news_id);
-        return;
-    }
-
-
 }

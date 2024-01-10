@@ -1,5 +1,5 @@
 server:
-  port: 90
+  port: 8090
 
 mybatis:
   configuration:
@@ -13,10 +13,13 @@ spring:
     nacos:
       discovery:
         server-addr: 110.40.206.206:8848  #nacos端口
-        ip: 1.15.170.195
-        port: 90
+#        ip: 1.15.170.195
+#        port: 8090
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://101.43.38.150/football_news
-    username: football_News
-    password: 183022
+    url: jdbc:mysql://43.142.145.176:3306/football_news_db?useSSL=false&serverTimezone=UTC
+    username: remoteUser
+    password: superremote
+    type: com.alibaba.druid.pool.DruidDataSource
+  main:
+    allow-bean-definition-overriding: true
