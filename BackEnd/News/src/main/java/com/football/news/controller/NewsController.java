@@ -1,8 +1,7 @@
 package com.football.news.controller;
 
 import com.football.common.utils.UserContext;
-import com.football.news.model.Result;
-import com.football.news.model.News;
+import com.football.news.model.*;
 import com.football.news.service.intf.NewsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,22 +16,44 @@ import java.util.List;
 public class NewsController {
     private final NewsService newsService;
 
-    @GetMapping()
-    public Result getNews(@RequestParam("page") Integer page,
+    @GetMapping("/text")
+    public Result getTextNews(@RequestParam("page") Integer page,
                           @RequestParam("pageSize") Integer pageSize){
-        log.info("----------------------获取新闻------------------------");
+        log.info("----------------------获取仅含文本的新闻------------------------");
         try{
-            List<News> newsResult = newsService.getNewsByPage(page,pageSize);
+            List<News> newsResult = newsService.getTextNewsByPage(page,pageSize);
             return Result.success(newsResult);
         } catch (Exception e){
             return Result.error("errorGetNews");
         }
     }
 
+    @GetMapping("/picture")
+    public Result getPicNews(@RequestParam("count") Integer count){
+        log.info("----------------------获取n个随机的图片新闻------------------------");
+        try{
+            List<PictureNews> newsResult = newsService.getRandomPicNews(count);
+            return Result.success(newsResult);
+        } catch (Exception e){
+            return Result.error("errorGetPicNews");
+        }
+    }
+
+    @GetMapping("/video")
+    public Result getVideoNews(@RequestParam("count") Integer count){
+        log.info("----------------------获取n个随机的视频新闻------------------------");
+        try{
+            List<VideoNews> newsResult = newsService.getRandomVideoNews(count);
+            return Result.success(newsResult);
+        } catch (Exception e){
+            return Result.error("errorGetVideoNews");
+        }
+    }
+
     @GetMapping("/detail/{id}")
     public Result getNewsDetail(@PathVariable("id") Long newsId){
         log.info("----------------------查看新闻详情------------------------");
-        News newsDetail = newsService.getNewsById(newsId);
+        NewsDetail newsDetail = newsService.getNewsById(newsId);
         return Result.success(newsDetail);
     }
 
