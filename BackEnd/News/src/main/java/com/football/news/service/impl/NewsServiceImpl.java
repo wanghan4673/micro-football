@@ -42,7 +42,7 @@ public class NewsServiceImpl implements NewsService {
 
     @Override
     public Boolean getReportStatus(Long newsId, Long userId) {
-        return newsMapper.getReportStatus(newsId,userId);
+        return (newsMapper.getReportStatus(newsId, userId) > 0);
     }
 
     @Override

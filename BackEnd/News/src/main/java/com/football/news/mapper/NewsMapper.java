@@ -44,8 +44,8 @@ public interface NewsMapper {
             "WHERE n.id = #{newsId}")
     NewsDetail getNewsById(Long newsId);
 
-    @Select("SELECT id FROM newsreport WHERE reporter_id = #{userId} AND news_id = #{newsId}")
-    Boolean getReportStatus(Long newsId, Long userId);
+    @Select("SELECT COUNT(id) FROM newsreport WHERE reporter_id = #{userId} AND news_id = #{newsId}")
+    int getReportStatus(Long newsId, Long userId);
 
     @Select("SELECT * FROM news")
     List<News> getAllNews();

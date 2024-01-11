@@ -92,8 +92,13 @@ const getNewsDetail = async (id: any) => {
 }
 
 const getReportStatus = async (id: any) => {
+    const token = localStorage.getItem('token')
     try {
-        const response = await axios.get(`/api/token-news/detail/${id}/report-status`)
+        const response = await axios.get(`/api/token-news/detail/${id}/report-status`,{
+            headers: {
+                'token': token,
+            }
+        })
         if (response.data.code === 1) {
             const msg = response.data.data
             if (msg === 'noLogin') {
@@ -117,11 +122,16 @@ const getReportStatus = async (id: any) => {
 
 const reportNews = async () => {
     try {
+        const token = localStorage.getItem('token')
         let formData = new FormData()
         formData.append("name", userName.value)
         formData.append("newsId", newsDetail.value.id)
         formData.append("content", reportContent.value)
-        const response = await axios.post('/api/token-news/report', formData)
+        const response = await axios.post('/api/token-news/report', formData,{
+            headers: {
+                'token': token,
+            }
+        })
         if (response.data.code === 1) {
             ElMessage({
                 message: '举报成功,感谢您的反馈!',
