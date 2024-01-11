@@ -166,4 +166,5 @@ const errorEvent = (text) => {
     /* 每个项目占用大约四分之一的宽度 */
     max-width: 22%;
     /* 确保宽度不超过四分之一 */
-}</style>
+}
+</style>

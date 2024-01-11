@@ -14,11 +14,12 @@
 
             <div id="QC-bg">
                 <div id="Box" v-if="post.content">
-                    <div style="width: 100%;word-wrap: break-word; margin-top: 5px;margin-bottom:15px; font-size: larger; ">
-                        <!-- <img :src="poster.avatar" alt=""> -->
-                        <!-- <div> -->
+                    <div style="display: flex;width: 300px;gap:20px;margin-bottom: 20px;">
+                        <p style="font-weight: light; font-size: x-large;">帖主 </p>
+                        <p style="font-weight: bold; font-size: x-large;">{{ poster.name }}</p>
+                    </div>
+                    <!-- <div style="width: 100%;word-wrap: break-word; margin-top: 5px;margin-bottom:15px; font-size: larger; ">
                             <span style="font-weight: bold;">帖主 </span>
-                            <!-- <span> {{ poster.name }}</span> -->
                             <el-popover :visible="visible" placement="top" :width="360">
                                 <div style="padding: 10px;">
                                     <div style="display: flex;justify-content: space-between;">
@@ -59,7 +60,7 @@
                                     </div>
                                 </template>
                             </el-popover>
-                        </div>
+                        </div> -->
                     <!-- </div> -->
                     <div style="width: 100%;word-wrap: break-word;font-size: x-large;">
                         <p v-html="post.content"></p>
@@ -97,7 +98,6 @@
                             </div>
                         </template>
                     </el-popover>
-
                 </div>
             </div>
             <div id="QC-bg" v-if="comments != []">
@@ -302,7 +302,7 @@ const getUserProfile = async () => {
     }
 }
 const handleSubmitClick = async () => {
-console.log(store.user.username)
+    console.log(store.user.username)
     let response
     let token = localStorage.getItem('token')
     try {
