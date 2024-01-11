@@ -1,17 +1,18 @@
 package com.football.player.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 
 /**
  * 球员的基本信息
  */
-@Getter
-@Setter
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class PlayerSimpleInfo {
     private Integer id;
     private String name;
+    private String league;
     private String firstName;
     private String lastName;
     private Integer age;
@@ -19,4 +20,5 @@ public class PlayerSimpleInfo {
     private String weight;
     private String country;
     private String photo;
+    private String birth;
 }

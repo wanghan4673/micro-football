@@ -1,135 +1,169 @@
 <template>
-    <div style="">
-        <TitleElement :mainTitle="titleText" :subTitle="subTitleText"/>
-        <div class="search-element">
-            <SearchBox :defaultText="searchDefaultText" @search-event="search" @error-event="errorEvent"/>
+    <!-- <TitleElement :mainTitle="titleText" :subTitle="subTitleText" /> -->
+    <div style="display: flex; padding: 30px;">
+        <PlayerSideNave></PlayerSideNave>
+        <div style="padding-left: 20px;">
+            <el-input style="height: 60px; max-width: 300px; padding: 10px;" v-model="store.keyword" placeholder="关键词"
+                @keyup.enter="search">
+                <template #suffix>
+                    <el-icon class="el-input__icon">
+                        <Search />
+                    </el-icon>
+                </template>
+            </el-input>
+
+            <div id="playercard">
+                <PlayerItem v-for="player in playerList" :key="player" :player="player" @click="toplayerInfo(player)" />
+            </div>
+            <div style="display: flex;justify-content: center; margin: 20px;">
+                <el-pagination @current-change="handleCurrentChange" background layout="prev, pager, next"
+                    :total=totalElements
+                    :page-size="pageSize"
+                    :current-page= page />
+            </div>
         </div>
-        <div class="button-container" style="padding-bottom:50px">
-            <ImageButton :imgurl='require("@/assets/img/bllogo.png")' initbackground="write" buttonname="德甲" @select-event="setLeagueSearch" @recover-event="removeLeagueSearch"/>
-            <ImageButton :imgurl='require("@/assets/img/cslogo.png")' initbackground="write" buttonname="中超" @select-event="setLeagueSearch" @recover-event="removeLeagueSearch"/>
-            <ImageButton :imgurl='require("@/assets/img/le1logo.png")' initbackground="write" buttonname="法甲" @select-event="setLeagueSearch" @recover-event="removeLeagueSearch"/>
-            <ImageButton :imgurl='require("@/assets/img/pmlogo.png")' initbackground="write" buttonname="英超" @select-event="setLeagueSearch" @recover-event="removeLeagueSearch"/>
-            <ImageButton :imgurl='require("@/assets/img/salogo.png")' initbackground="write" buttonname="意甲" @select-event="setLeagueSearch" @recover-event="removeLeagueSearch"/>
-            <ImageButton :imgurl='require("@/assets/img/lllogo.png")' initbackground="write" buttonname="西甲" @select-event="setLeagueSearch" @recover-event="removeLeagueSearch" />
-        </div>
-        <div class="list-content">
-            <PlayerListComponent v-if="isSearch" :dataList="playerList"/>
-        </div>
-        
     </div>
+ 
 </template>
 
-<script>
-import {ref} from 'vue'
+<script setup>
+import { ref, onMounted, watch } from 'vue'
+import { useRouter } from 'vue-router'
 import TitleElement from '@/components/TitleElement.vue'
 import SearchBox from '@/components/SearchBox.vue'
 import ImageButton from '@/components/ImageButton.vue'
 import axios from 'axios'
 import { ElMessage } from 'element-plus'
-import PlayerListComponent from '@/components/PlayerListComponent.vue'
-export default{
-    name:'PlayersView',
-    components:{
-        TitleElement,
-        SearchBox,
-        ImageButton,
-        ElMessage,
-        PlayerListComponent
-    },
-    setup(){
+import PlayerItem from '@/components/PlayerComponents/PlayerItem.vue'
+import PlayerSideNave from '@/components/PlayerComponents/PlayerSideNav.vue'
+import { useGeneralStore } from '../../stores/general.ts'
 
-        const BaseUrl = '/api/player'
-        const titleText = ref('联赛球员信息')
-        const subTitleText = ref('数据驱动的联赛球员洞察')
-        const searchDefaultText = ref('搜索球员信息')
-        const searchLeagueSet = new Set()
-        const isSearch = ref(false)
-        const playerList = ref([])
-
-        const setLeagueSearch = League => {
-            searchLeagueSet.add(League)
-            console.log(searchLeagueSet)
-        }
-        const removeLeagueSearch = League => {
-            searchLeagueSet.delete(League)
-            console.log(searchLeagueSet)
-        }
-        const search = async searchText => {
-            playerList.value = []
-            isSearch.value = false
-            if(searchLeagueSet.size == 0){
-                
-                ElMessage({
-                    message: "请选择联赛",
-                    type: "error"
-                });
-                return
-            }
-            for(const league of searchLeagueSet){
-                try{
-                    const response = await axios.get(`${BaseUrl}?leagueName=${league}&searchKey=${searchText}`)//game/date=${dateStr}&leagueName=${league}`);
-                    console.log(response);
-                    playerList.value.push(...response.data.data);
-                    isSearch.value = true
-                } catch(err) {
-                    ElMessage({
-                        message: '获取失败',
-                        type:'error'
-                    });
-                    console.error(err);
-                }
-            }
-
-        }
-        const errorEvent = text => {
-            console.log('test', text)
-            ElMessage({
-                message: '搜索框为空',
-                type:'error'
-            });
-        }
-
-        return{
-            titleText,
-            subTitleText,
-            searchDefaultText,
-            setLeagueSearch,
-            removeLeagueSearch,
-            search,
-            errorEvent,
-            isSearch,
-            playerList
-        }
+const store = useGeneralStore()
+const BaseUrl = '/api/player'
+const titleText = ref('联赛球员信息')
+const subTitleText = ref('数据驱动的联赛球员洞察')
+const searchDefaultText = ref('搜索球员信息')
+let searchLeagueSet = ref[[]]
+const isSearch = ref(false)
+const router = useRouter()
+const playerList = ref([])
+let totalElements = ref(0)
+let page = ref(1)
+const pageSize = 20
+const getplayer = async () => {
+    playerList.value = []
+    try {
+        const response = await axios.get(`${BaseUrl}?page=${page.value}&size=${pageSize}&league=${store.leagueChoice}`)
+        console.log(response)
+        playerList.value.push(...response.data.data.playerSimpleInfos);
+        totalElements.value = response.data.data.count;
+    } catch (err) {
+        ElMessage({
+            message: '获取失败',
+            type: 'error'
+        });
+        console.error(err);
     }
 }
 
+const handleCurrentChange = async (newPage) => {
+    page.value = newPage
+    getplayer()
+}
 
+onMounted(() => {
+    store.leagueChoice = '全部赛事'
+    getplayer()
+})
+watch(() => store.leagueChoice, (newleague) => {
+    getplayer()
+})
+
+const search = async () => {
+    if(store.keyword == null || store.keyword == ""){
+        getplayer()
+        return;
+    }
+        
+    // console.log(store.leagueChoice)
+    // store.leagueChoice = '全部赛事'
+    playerList.value = []
+    totalElements.value = 0
+    isSearch.value = false
+    searchLeagueSet = []
+    // if (store.leagueChoice = '全部赛事')
+    // {
+    searchLeagueSet.push('英超')
+    searchLeagueSet.push('西甲')
+    searchLeagueSet.push('意甲')
+    searchLeagueSet.push('德甲')
+    searchLeagueSet.push('法甲')
+    searchLeagueSet.push('中超')
+    // }else{
+    // searchLeagueSet.push(store.leagueChoice)
+    // }
+    for (const league of searchLeagueSet) {
+        try {
+            const response = await axios.get(`${BaseUrl}/info?leagueName=${league}&searchKey=${store.keyword}`)
+            console.log(response);
+            playerList.value.push(...response.data.data);
+            isSearch.value = true
+        } catch (err) {
+            ElMessage({
+                message: '获取失败',
+                type: 'error'
+            });
+            console.error(err);
+        }
+    }
+}
+const toplayerInfo = (player) => {
+    router.push({
+        path: `/Players/${player.id}`
+    })
+}
+
+
+const errorEvent = (text) => {
+    console.log('test', text)
+    ElMessage({
+        message: '搜索框为空',
+        type: 'error'
+    });
+}
 </script>
+
 
 <style lang="scss" scoped>
 .search-element {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 50px;
 }
 
 .button-element {
     width: '20px';
     height: '10px'
 }
-.button-container {
-  display: flex;
-  gap: 0px; /* Optional: Adjust the gap between buttons */
-  justify-content: center;
-  align-items: center;
+
+.list-content {
+    min-height: 450px;
 }
 
-
-.list-content{
-    min-height:450px;
-
+#playercard {
+    display: flex;
+    justify-content: flex-start;
+    /* 对齐到开始位置 */
+    flex-wrap: wrap;
+    /* 允许内容换行 */
+    gap: 10px;
+    /* 项目之间的间距 */
 }
 
-
-</style>
+.player-item {
+    flex: 1 0 22%;
+    /* 每个项目占用大约四分之一的宽度 */
+    max-width: 22%;
+    /* 确保宽度不超过四分之一 */
+}</style>

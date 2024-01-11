@@ -5,8 +5,12 @@ spring:
     nacos:
       discovery:
         server-addr: 110.40.206.206:8848  #nacos端口
-
-
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://110.40.206.206:3306/games?useSSL=false&serverTimezone=Asia/Shanghai
+    username: Games
+    password: DchPrtj2tdC2heCp
   main:
     allow-bean-definition-overriding: true
 

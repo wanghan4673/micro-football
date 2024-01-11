@@ -25,7 +25,9 @@ public class SearchTeamApi {
     };
     private final RestTemplate restTemplate=new RestTemplate();
 //    private final String api_key="bfd7a84e6c17a2010889853305a34463";
-    private final String api_key="130e3aed8e5e9780537823a7db871865";
+//    private final String api_key="130e3aed8e5e9780537823a7db871865";
+    private final String api_key="eec1ef8f197b996d5bdd54fef98da85e";
+//    private final String api_key = "5c4d82ebe346e04ad91e135ace9cc905";
     private final String url="https://v3.football.api-sports.io/teams";
 
     /**

@@ -11,5 +11,10 @@ public class TeamSimpleInfo {
     private String country;
     private String logo;
     private String founded;
+    private String venueName;
+    private String venueAddress;
+    private String venueCity;
+    private String venueImage;
+    private Integer venueCapacity;
 }
 
