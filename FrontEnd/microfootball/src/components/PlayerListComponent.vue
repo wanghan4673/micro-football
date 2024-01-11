@@ -42,7 +42,7 @@
 import { onMounted, ref, nextTick, watch } from 'vue';
 
 // props 接收 dataList
-const props = defineProps(['dataList']);
+const props = defineProps(['player']);
 
 // 初始化变量
 const initLoading = ref(true);

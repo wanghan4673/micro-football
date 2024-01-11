@@ -120,7 +120,6 @@ public class GameServiceImpl implements GameService {
         Integer leagueId=this.gameTypeMap.get(leagueName);
         if(leagueId==null) return null;
         Integer season=getSeasonYear(date);
-
         // 调用API获取赛事数据
         ResponseEntity<?> responseEntity =searchGameApi.getGamesByDate(date,leagueId,season);
 

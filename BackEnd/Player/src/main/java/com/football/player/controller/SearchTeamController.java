@@ -26,8 +26,14 @@ public class SearchTeamController {
     @Autowired
     private TeamServiceImpl teamServiceImpl;
 
+    @GetMapping()
+    public Result getAllPlayers(@RequestParam(defaultValue = "1",required = false) Integer page,
+                                @RequestParam(defaultValue = "10",required = false) Integer size
+    ) {
+        return Result.success(teamServiceImpl.getAllTeams(page,size));
+    }
 
-    @GetMapping("")
+    @GetMapping("/info")
     public Result getTeamsByKeyword(@RequestParam("searchKey") String searchKey) throws IOException {
         List<?> response= teamServiceImpl.getTeamsByKeyword(searchKey);
         return Result.success(response);

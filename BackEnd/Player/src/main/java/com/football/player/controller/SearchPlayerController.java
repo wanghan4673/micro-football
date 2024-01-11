@@ -25,8 +25,14 @@ public class  SearchPlayerController {
     @Autowired
     private PlayerServiceImpl playerServiceImpl;
 
-
-    @GetMapping("")
+    @GetMapping()
+    public Result getAllPlayers(@RequestParam(defaultValue = "1",required = false) Integer page,
+                           @RequestParam(defaultValue = "10",required = false) Integer size,
+                           @RequestParam(defaultValue = "全部赛事",required = false) String league
+    ) {
+        return Result.success(playerServiceImpl.getAllPlayers(page,size,league));
+    }
+    @GetMapping("/info")
     public Result getPlayersByKeywordAndLeague(@RequestParam("searchKey") String searchKey,
                                                   @RequestParam("leagueName") String leagueName){
         List<?> response= playerServiceImpl.getPlayersByKeywordAndLeague(searchKey,leagueName);

@@ -13,7 +13,9 @@ export const useGeneralStore = defineStore('general', {
         useraccount: '',
         userid: -1,
         league: '',
-      }
+      },
+      leagueChoice: '',
+      keyword: '',
   }),
   persist: {
     enabled: true // true 表示开启持久化保存
