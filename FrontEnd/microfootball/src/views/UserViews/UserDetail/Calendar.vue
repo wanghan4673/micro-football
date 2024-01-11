@@ -19,6 +19,7 @@
 import { ElMessage } from 'element-plus'
 import axios from 'axios'
 import { ref, onMounted } from 'vue'
+import { checkInStore } from '../../../stores/checkIn'
 import { Dayjs } from 'dayjs'
 import zhCN from 'ant-design-vue/es/locale/zh_CN'
 import dayjs from 'dayjs'
@@ -27,6 +28,7 @@ dayjs.locale('zh-cn')
 
 const value = ref<Dayjs>()
 const checkedDates = ref<string[]>([])  // 已签到的日期
+const checkStore = checkInStore()  // 实时改变积分
 
 onMounted(() => {
   getCheckDays()
@@ -80,6 +82,7 @@ const checkIn = async () => {
         message: '签到成功，积分+5!',
         type: 'success',
       })
+      checkStore.changeScore()
     } else {
       ElMessage({
         message: '签到失败!',
