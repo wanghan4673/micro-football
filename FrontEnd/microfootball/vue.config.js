@@ -5,7 +5,7 @@ module.exports = defineConfig({
     port: 9000,
     proxy: {
       '/api': {
-        target: 'http://localhost:8090/',
+        target: 'http://localhost:87/',
         // target: 'http://1.15.170.195:87/',
         changeOrigin: true,
         ws: true,  //是否代理 websocket
