@@ -84,7 +84,7 @@ onMounted(async () => {
     const res = await axios.get(`/api/player/detail?playerId=${playerId}`);
     const data = res.data.data;
     photo.value = data.photo;
-    name.value = data.firstName + ' ' + data.lastName;
+    name.value = data.name;
     age.value = data.age;
     height.value = data.height;
     weight.value = data.weight;

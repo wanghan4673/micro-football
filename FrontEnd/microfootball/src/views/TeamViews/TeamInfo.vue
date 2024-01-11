@@ -7,6 +7,9 @@
             </iframe>
         </div>
     </div> -->
+    <el-icon @click="back" style="margin-top: 30px; margin-left: 50px;">
+        <Back />
+    </el-icon>
     <div class="photo">
         <img :src="logo">
     </div>
@@ -27,7 +30,7 @@
 </template>
 
 <script setup>
-import { useRoute ,useRouter} from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
 import MemberItem from '@/components/PlayerComponents/MemberItem.vue'
@@ -51,6 +54,9 @@ let playerList = ref([{
     "photo": ""
 }])
 
+const back = () => {
+    router.back();
+}
 const columns = [
     {
         title: '姓名',

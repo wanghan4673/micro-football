@@ -64,6 +64,7 @@ public class PlayerServiceImpl implements PlayerService {
                 e.printStackTrace();
             }
             List<Map<String, Object>> playersData = (List<Map<String, Object>>) responseBody.get("response");
+//            System.out.println(playersData);
             // 开始添加信息
             List<PlayerSimpleInfo> players = new ArrayList<>();
             for(Map<String, Object> playerData : playersData) {
@@ -139,6 +140,9 @@ public class PlayerServiceImpl implements PlayerService {
         playerDetailInfo.setCountry(playerSimpleInfo.getCountry());
         playerDetailInfo.setPhoto(playerSimpleInfo.getPhoto());
         playerDetailInfo.setBirth(playerSimpleInfo.getBirth());
+
+//        playerMapper.updateplayerMore(playerDetailInfo);
+
         System.out.println("=================== 在数据库中寻找 ===================");
         seasonInfos = playerMapper.getSeasonInfo(playerId);
         if(seasonInfos != null && !seasonInfos.isEmpty()){
@@ -162,6 +166,7 @@ public class PlayerServiceImpl implements PlayerService {
                 }catch (Exception e){
                     e.printStackTrace();
                 }
+//                System.out.println(responseBody);
                 List<Map<String, Object>> responseList = (List<Map<String, Object>>) responseBody.get("response");
 
                 if (responseList != null && !responseList.isEmpty()) {

@@ -172,6 +172,8 @@ public class TeamServiceImpl implements TeamService {
                     for (Map<String, Object> playerMap : playersList) {
                         TeamDetailInfo.PlayerInfo playerInfo = new TeamDetailInfo.PlayerInfo();
 
+                        System.out.println(playerMap);
+
                         if (playerMap.get("id") != null) {
                             playerInfo.setId((Integer) playerMap.get("id"));
                         }

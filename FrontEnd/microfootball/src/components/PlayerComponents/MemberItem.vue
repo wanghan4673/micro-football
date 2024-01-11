@@ -1,5 +1,5 @@
 <template>
-    <el-card shadow="hover" style="width: 300px; border-radius: 15px;background-color: #edfdd029 ">
+    <el-card shadow="hover" style="width: 360px; border-radius: 15px;background-color: #edfdd029 ">
         <div id="playercard">
             <div>
                 <p class="player-name" style="font-size: larger; font-weight: bold;">{{ player.name }}</p>
@@ -28,7 +28,7 @@ const props = defineProps(['player']);
     // flex-direction: column;  // 垂直排列
     justify-content: center;
     align-items: center;
-    text-align: center;  // 文字居中
+    text-align: start;  // 文字居中
 
     p {
         word-wrap: break-word;  // 允许文本换行

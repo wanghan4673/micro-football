@@ -27,6 +27,23 @@ public interface PlayerMapper {
     void updateplayer(PlayerSimpleInfo player);
 
     @Insert("""
+    INSERT INTO player (id, name,firstName, lastName, age, height, weight, country, photo, birth,updateTime)
+    VALUES (#{id}, #{name}, #{firstName}, #{lastName}, #{age}, #{height}, #{weight}, #{country}, #{photo}, #{birth},NOW())
+    ON DUPLICATE KEY UPDATE
+    name = VALUES(name),
+    firstName = VALUES(firstName),
+    lastName = VALUES(lastName),
+    age = VALUES(age),
+    height = VALUES(height),
+    weight = VALUES(weight),
+    country = VALUES(country),
+    photo = VALUES(photo),
+    birth = VALUES(birth),
+    updateTime = NOW();
+    """)
+    void updateplayerMore(PlayerDetailInfo player);
+
+    @Insert("""
     INSERT INTO seasonInfo (playerid, seasonNum, teamName, leagueName, leagueLogo, position, goals, assists, passes, tackles, yellow, red, updateTime)
     VALUES (#{playerid}, #{detailInfo.seasonNum}, #{detailInfo.teamName}, #{detailInfo.leagueName}, #{detailInfo.leagueLogo}, #{detailInfo.position}, #{detailInfo.goals}, #{detailInfo.assists}, #{detailInfo.passes}, #{detailInfo.tackles}, #{detailInfo.yellow}, #{detailInfo.red}, NOW())
     ON DUPLICATE KEY UPDATE
