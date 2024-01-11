@@ -26,7 +26,15 @@
         </div>
         <div class="cat-rope-container">
             <div class="back-to-top" :class="{ 'animating': isScrollingToTop }" @click="scrollToTop"></div>
+            <el-button class="report-button" @click="judgeReportNews()">举报</el-button>
         </div>
+        <el-dialog title="填写举报理由" v-model="reportVisible" class="report-dialog-box">
+            <el-input v-model="reportContent" placeholder="请输入举报理由" />
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="reportVisible = false">取消</el-button>
+                <el-button type="primary" @click="reportNews()">提交</el-button>
+            </div>
+        </el-dialog>
     </div>
 </template>
 
@@ -46,6 +54,11 @@ const newsDetail = ref({
     picUrls: [],
 })
 const isScrollingToTop = ref(false)
+const isLoggedIn = ref(false)
+const hasReported = ref(false)
+const userName = ref('')
+const reportVisible = ref(false)
+const reportContent = ref('')
 
 onMounted(() => {
     const route = useRoute()
@@ -53,8 +66,8 @@ onMounted(() => {
     if (id && typeof id === 'string') {
         newsDetail.value.id = id
     }
-    console.log("id is " + id)
     getNewsDetail(id)
+    getReportStatus(id)
 })
 
 const getNewsDetail = async (id: any) => {
@@ -70,12 +83,71 @@ const getNewsDetail = async (id: any) => {
                 tags: data.tags ? data.tags.split(',') : [],
                 picUrls: data.picUrl ? data.picUrl.split(',') : [],
             }
-            console.log(newsDetail.value)
         } else {
             showError('获取新闻详情失败!')
         }
     } catch (error) {
         showError('获取新闻详情发送失败')
+    }
+}
+
+const getReportStatus = async (id: any) => {
+    try {
+        const response = await axios.get(`/api/token-news/detail/${id}/report-status`)
+        if (response.data.code === 1) {
+            const msg = response.data.data
+            if (msg === 'noLogin') {
+                isLoggedIn.value = false
+            } else if (msg === 'isReported') {
+                isLoggedIn.value = true
+                hasReported.value = true
+                getName()
+            } else {
+                isLoggedIn.value = true
+                hasReported.value = false
+                getName()
+            }
+        } else {
+            showError('获取举报状态失败!')
+        }
+    } catch (error) {
+        showError('获取举报状态请求发送失败')
+    }
+}
+
+const reportNews = async () => {
+    try {
+        let formData = new FormData()
+        formData.append("name", userName.value)
+        formData.append("newsId", newsDetail.value.id)
+        formData.append("content", reportContent.value)
+        const response = await axios.post('/api/token-news/report', formData)
+        if (response.data.code === 1) {
+            ElMessage({
+                message: '举报成功,感谢您的反馈!',
+                type: 'success'
+            })
+        } else {
+            showError('举报失败!')
+        }
+    } catch (error) {
+        showError('举报请求发送失败')
+    }
+}
+
+const getName = async () => {
+    const token = localStorage.getItem('token');
+    try {
+        const response = await axios.get('/api/users/login-status', {
+            headers: {
+                'token': token
+            }
+        })
+        if (response.data.code == 1 && response.data.data != null) {
+            userName.value = response.data.data.name;
+        }
+    } catch (err) {
+        showError('获取用户名请求发送失败')
     }
 }
 
@@ -85,6 +157,19 @@ const showError = (message: string) => {
         type: 'error',
     })
 }
+
+const judgeReportNews = () => {
+    if (!isLoggedIn.value) {
+        showError('您未登录,无法举报!')
+        return
+    } else if (hasReported.value) {
+        showError('您已举报过该新闻,管理员正在审核中!')
+        return
+    } else {
+        reportVisible.value = true
+    }
+}
+
 
 const getColor = (index: number) => {
     // 获取标签颜色
@@ -156,19 +241,46 @@ const scrollToTop = () => {
     }
 }
 
-.back-to-top {
-    cursor: pointer;
-    top: 0;
-    width: 70px;
-    height: 590px;
-    margin-left: 35%;
-    background: url(../../assets/img/scroll_cat.png);
-    transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
-    opacity: 1;
+.cat-rope-container {
+    display: flex;
+    flex-direction: column;
+
+    .back-to-top {
+        cursor: pointer;
+        top: 0;
+        width: 70px;
+        height: 590px; // 图片自身是px
+        margin-left: 35%;
+        background: url(../../assets/img/scroll_cat.png);
+        transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+        opacity: 1;
+    }
+
+    .back-to-top.animating {
+        transform: translateY(-200px);
+        opacity: 1;
+    }
+
+    .report-button {
+        align-self: center;
+        width: 40%;
+        margin-top: 2vh;
+        cursor: pointer;
+        transition: transform 0.3s ease;
+
+        &:hover {
+            transform: scale(1.1);
+        }
+    }
 }
 
-.back-to-top.animating {
-    transform: translateY(-200px);
-    opacity: 1;
+.report-dialog-box {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -75%);
+    width: 35vw;
 }
 </style>

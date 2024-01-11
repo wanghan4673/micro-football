@@ -7,6 +7,7 @@ spring:
     nacos:
       discovery:
         server-addr: 110.40.206.206:8848  # nacos端口
+        namespace: e2686c2c-46ce-48e7-819f-4b335ebe9dda
     gateway:
       routes:
         - id: user-service
@@ -41,6 +42,10 @@ spring:
           uri: lb://news-service
           predicates:
             - Path=/news/**
+        - id: news-service
+          uri: lb://news-service
+          predicates:
+            - Path=/token-news/**
 
 jwt:
   token:
@@ -62,3 +67,4 @@ jwt:
     bothPaths:  # 登录和未登录都需要校验的请求路径
       - /users/login-status
       - /forum  # 登录时有可能有偏好
+      - /token-news/**

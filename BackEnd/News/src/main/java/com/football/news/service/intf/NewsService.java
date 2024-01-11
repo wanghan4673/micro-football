@@ -1,9 +1,6 @@
 package com.football.news.service.intf;
 
-import com.football.news.model.News;
-import com.football.news.model.NewsDetail;
-import com.football.news.model.PictureNews;
-import com.football.news.model.VideoNews;
+import com.football.news.model.*;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,8 +14,13 @@ public interface NewsService {
     Boolean getReportStatus(Long newsId, Long userId);
 
     List<News> getAllNews();
+    List<ReportedNews> getReportedNews();
 
     List<PictureNews> getRandomPicNews(Integer count);
 
     List<VideoNews> getRandomVideoNews(Integer count);
+
+    Boolean insertReportedNews(Long userId, String userName,Long newsId,String content);
+
+    Boolean deleteNews(Long id);
 }

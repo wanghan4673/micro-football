@@ -19,6 +19,7 @@ public interface UserClient {
 
     @PutMapping("/users/ban-status")
     Boolean updateBanStatus(@RequestParam("id") Long id);
+
     @PostMapping("/users/subscribe-game")
     Boolean subscribeGame(@RequestParam("userId") Long userId,
                        @RequestParam("gameId") Long gameId,

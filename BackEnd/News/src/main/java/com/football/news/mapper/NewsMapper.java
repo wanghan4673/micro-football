@@ -1,9 +1,8 @@
 package com.football.news.mapper;
 
-import com.football.news.model.News;
-import com.football.news.model.NewsDetail;
-import com.football.news.model.PictureNews;
-import com.football.news.model.VideoNews;
+import com.football.news.model.*;
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
@@ -45,9 +44,18 @@ public interface NewsMapper {
             "WHERE n.id = #{newsId}")
     NewsDetail getNewsById(Long newsId);
 
-    @Select("SELECT id FROM newsreport WHERE reporterid = #{userId} AND newsid = #{newsId}")
+    @Select("SELECT id FROM newsreport WHERE reporter_id = #{userId} AND news_id = #{newsId}")
     Boolean getReportStatus(Long newsId, Long userId);
 
     @Select("SELECT * FROM news")
     List<News> getAllNews();
+
+    @Select("SELECT * FROM newsreport")
+    List<ReportedNews> getReportedNews();
+
+    @Insert("INSERT INTO newsreport(content, reporter_id,reporter_name,news_id) VALUES (#{content},#{userId},#{userName},#{newsId})")
+    Boolean insertReportedNews(Long userId, String userName,Long newsId,String content);
+
+    @Delete("DELETE FROM news WHERE id = #{id}")
+    Boolean deleteNewsById(Long id);
 }
