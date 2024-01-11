@@ -25,9 +25,11 @@
 import { ref, onMounted, defineEmits } from 'vue'
 import { ElMessage } from 'element-plus'
 import axios from 'axios'
+import { followNumStore } from '../../../stores/followNum';
 
 const follows = ref<{ id: number; name: string; signature: string }[]>([])
 const edmitEvents = defineEmits(['son-click'])  // 向父组件传值
+const store = followNumStore()
 
 onMounted(() => {
     getMyFollow()
@@ -76,9 +78,8 @@ const deleteFollow = async (deleteId: number) => {
                 message: '取消关注成功!',
                 type: 'success',
             })
-            setTimeout(() => {
-                window.location.reload()
-            }, 500)
+            getMyFollow()
+            store.changeFollowNum()
         } else {
             ElMessage({
                 message: '取消关注失败!',

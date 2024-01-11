@@ -84,14 +84,18 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, defineEmits, reactive } from 'vue'
+import { ref, onMounted, defineEmits, reactive, watch } from 'vue'
 import { ElMessage, type FormRules } from 'element-plus'
 import axios from 'axios'
 import { sha256 } from 'js-sha256';
 import { storeToRefs } from 'pinia';
 import { useGeneralStore } from '@/stores/general';
+import { followNumStore } from '../../../stores/followNum';
+import { checkInStore } from '../../../stores/checkIn';
 
 const store = useGeneralStore()
+const followStore = followNumStore()
+const checkStore = checkInStore()
 
 interface RuleForm {
     username: string
@@ -154,6 +158,17 @@ onMounted(() => {
     getUserInfo()
 })
 
+watch([() => followStore.shouldMinus, () => checkStore.shouldAddScore], ([newFollow, newScore]) => {
+    if (newFollow) {
+        followNum.value--;
+        followStore.changeOver();
+    }
+    if (newScore) {
+        score.value += 5;
+        checkStore.changeOver();
+    }
+});
+
 const getUserInfo = async () => {
     const token = localStorage.getItem('token')
     try {
@@ -171,7 +186,7 @@ const getUserInfo = async () => {
             console.log(response.data.data)
         } else {
             ElMessage({
-                message: '获取积分失败!',
+                message: '获取用户信息失败!',
                 type: 'error',
             })
         }
@@ -225,9 +240,7 @@ const submitEditForm = async () => {
                 message: '个人信息更新成功',
                 type: 'success',
             })
-            setTimeout(() => {
-                window.location.reload()
-            }, 500)
+            getUserInfo()
         } else {
             ElMessage({
                 message: '个人信息更新失败',
