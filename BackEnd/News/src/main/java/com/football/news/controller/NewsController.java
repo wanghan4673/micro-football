@@ -101,4 +101,11 @@ public class NewsController {
         log.info("----------删除新闻(为管理员准备)----------");
         return newsService.deleteNews(id);
     }
+
+    @DeleteMapping("/news/report")
+    public Boolean deleteReport(@RequestParam("reporterId") Long reporterId,
+                                @RequestParam("newsId") Long newsId){
+        log.info("----------删除举报请求(为管理员准备)----------");
+        return newsService.deleteReport(reporterId,newsId);
+    }
 }

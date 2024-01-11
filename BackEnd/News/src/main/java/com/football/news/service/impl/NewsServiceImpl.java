@@ -59,4 +59,9 @@ public class NewsServiceImpl implements NewsService {
     public Boolean deleteNews(Long id) {
         return newsMapper.deleteNewsById(id);
     }
+
+    @Override
+    public Boolean deleteReport(Long reporterId, Long newsId) {
+        return newsMapper.deleteReportById(reporterId,newsId);
+    }
 }

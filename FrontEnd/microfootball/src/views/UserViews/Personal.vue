@@ -23,7 +23,14 @@
         </div>
     </div>
     <el-dialog v-model="gameDialogVisible" class="game-dialog-box">
-        {{ gameIds }}
+        <div v-if="gameIds.length>0">
+            <template v-for="gameId in gameIds">
+                <div>
+                    您订阅的赛事 {{ gameId }} 即将开赛，
+                    <span style="color: blue; cursor: pointer;" @click="goToGamesPage(gameId)">点击前往查看</span>
+                </div>
+            </template>
+        </div>
     </el-dialog>
 </template>
 
@@ -38,6 +45,7 @@ import BackWave from './UserDetail/BackWave.vue'
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
 import { ElMessage } from 'element-plus'
+import { useRouter } from 'vue-router'
 
 const viewPost = ref(true)
 const viewFans = ref(false)
@@ -50,6 +58,7 @@ const changeFromCard = (isPost: boolean, isFans: boolean, isFollow: boolean) => 
     viewFans.value = isFans
     viewFollow.value = isFollow
 }
+const router = useRouter()
 
 onMounted(() => {
     checkUpcomingGame()
@@ -64,13 +73,12 @@ const checkUpcomingGame = async () => {
             }
         })
         if (response.data.code == 1) {
-            console.log(checkDialogShown())
-            console.log(response.data.data)
-            if (response.data.data.length > 0) {
+            if(!checkDialogShown()){
+                if (response.data.data.length > 0) {
                 gameDialogVisible.value = true
                 setDialogShown()
                 gameIds.value = response.data.data.map((item: { gameId: number }) => item.gameId)
-
+            }
             }
         } else {
             ElMessage({
@@ -91,7 +99,11 @@ const checkDialogShown = () => {
 }
 
 const setDialogShown = () => {
-    sessionStorage.setItem('gameDialogShown', 'true');
+    sessionStorage.setItem('gameDialogShown', 'true')
+}
+
+const goToGamesPage = (gameId: number) => {
+    router.push(`/Games/${gameId}`)
 }
 </script>
 

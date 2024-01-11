@@ -19,4 +19,8 @@ public interface NewsClient {
 
     @DeleteMapping("/news")
     Boolean deleteNews(@RequestParam("id") Long id);
+
+    @DeleteMapping("/news/report")
+    Boolean deleteReport(@RequestParam("reporterId") Long reporterId,
+                         @RequestParam("newsId") Long newsId);
 }

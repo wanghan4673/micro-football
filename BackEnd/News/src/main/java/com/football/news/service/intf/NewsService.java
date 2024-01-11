@@ -23,4 +23,6 @@ public interface NewsService {
     Boolean insertReportedNews(Long userId, String userName,Long newsId,String content);
 
     Boolean deleteNews(Long id);
+
+    Boolean deleteReport(Long reporterId, Long newsId);
 }

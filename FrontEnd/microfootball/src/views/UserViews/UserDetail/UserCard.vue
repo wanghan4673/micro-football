@@ -243,7 +243,7 @@ const submitEditForm = async () => {
             getUserInfo()
         } else {
             ElMessage({
-                message: '个人信息更新失败',
+                message: '个人信息更新失败,用户名已存在!',
                 type: 'error',
             })
         }

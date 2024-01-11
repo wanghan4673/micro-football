@@ -58,4 +58,7 @@ public interface NewsMapper {
 
     @Delete("DELETE FROM news WHERE id = #{id}")
     Boolean deleteNewsById(Long id);
+
+    @Delete("DELETE FROM newsreport WHERE reporter_id = #{reporterId} AND news_id = #{newsId}")
+    Boolean deleteReportById(Long reporterId, Long newsId);
 }
