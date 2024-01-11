@@ -17,4 +17,5 @@ public class News {
     String tags;  // 新闻标签
     Timestamp createTime;  // 发布时间
     Boolean hasPic;  // 是否有图片
+    Boolean hasVideo;  // 是否有视频
 }

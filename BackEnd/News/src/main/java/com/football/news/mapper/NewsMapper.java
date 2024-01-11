@@ -14,7 +14,7 @@ public interface NewsMapper {
     @Select({
             "SELECT id,title,content,tags,createtime",
             "FROM news ",
-            "WHERE haspic = 0",
+            "WHERE haspic = 0 AND hasvideo = 0",
             "LIMIT #{start}, #{pageSize}"
     })
     List<News> getTextNewsByPage(Integer start, Integer pageSize);
@@ -23,19 +23,22 @@ public interface NewsMapper {
             "FROM news n " +
             "LEFT JOIN picture pi ON n.id = pi.newsid " +
             "WHERE n.haspic = 1 " +
+            "GROUP BY n.id " +
             "ORDER BY RAND() " +
             "LIMIT #{count}")
     List<PictureNews> getRandomPicNews(Integer count);
+    // TODO:图片和视频一样 都获取一个图片/视频即可 这里的逻辑要优化一下
 
-    @Select("SELECT n.*, GROUP_CONCAT(DISTINCT vi.videourl) AS videoUrls " +
+    @Select("SELECT n.*, GROUP_CONCAT(DISTINCT vi.videourl) AS videoUrls, GROUP_CONCAT(DISTINCT vi.cover) AS cover " +
             "FROM news n " +
             "LEFT JOIN video vi ON n.id = vi.newsid " +
-            "WHERE n.haspic = 1 " +
+            "WHERE n.hasvideo = 1 " +
+            "GROUP BY n.id " +
             "ORDER BY RAND() " +
             "LIMIT #{count}")
     List<VideoNews> getRandomVideoNews(Integer count);
 
-    @Select("SELECT n.tags AS tags, " +
+    @Select("SELECT n.*, " +
             "GROUP_CONCAT(DISTINCT p.picurl) AS picUrl " +
             "FROM news n " +
             "LEFT JOIN picture p ON n.id = p.newsid " +

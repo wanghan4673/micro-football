@@ -11,4 +11,5 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 public class VideoNews extends News{
     String videoUrls;
+    String cover;
 }
