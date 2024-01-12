@@ -24,8 +24,15 @@ public class AdminNewsController {
         return Result.success();
     }
 
-    @GetMapping("reports")
+    @GetMapping("/reports")
     public Result getReportedNews(){
         return Result.success(newsClient.getReportedNews());
+    }
+
+    @DeleteMapping("/reports/{reporterId}/{newsId}")
+    public Result deleteReport(@PathVariable("reporterId") Long reporterId,
+                               @PathVariable("newsId") Long newsId){
+        newsClient.deleteReport(reporterId,newsId);
+        return Result.success();
     }
 }

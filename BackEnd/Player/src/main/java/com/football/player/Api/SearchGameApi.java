@@ -11,11 +11,7 @@ import org.springframework.web.client.RestTemplate;
 public class SearchGameApi {
 
     private final RestTemplate restTemplate=new RestTemplate();
-
-//    private final String api_key="bfd7a84e6c17a2010889853305a34463";
-//    private final String api_key="130e3aed8e5e9780537823a7db871865";
-//    private final String api_key="eec1ef8f197b996d5bdd54fef98da85e";
-    private final String api_key="fa3650a6229444fcd9d3dfc4c7a0f235";
+    private final String api_key="7d1251769b0f3d274e082634dd26086e";
     private final String url="https://v3.football.api-sports.io/fixtures";
 
     /**

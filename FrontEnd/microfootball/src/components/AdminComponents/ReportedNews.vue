@@ -4,11 +4,11 @@
             <el-timeline-item v-for="(item, index) in reports" :key="index" :timestamp="item.reportTime"
                 timestamp-color="rgb(209, 218, 225)" size="large" color="rgb(209, 218, 225)" placement="top"
                 class="report-item-animation">
-                <el-card @click="showDetail(item.postId)">
+                <el-card>
                     <p>举报理由：{{ item.content }}</p>
                     <p>举报人：{{ item.reporterName }}</p>
                     <el-container style="margin-top: 1vh;">
-                        <el-button type="primary" size="small" @click="delReport(item.id, index)">取消举报</el-button>
+                        <el-button type="primary" size="small" @click="delReport(item.newsId, item.reporterId, index)">取消举报</el-button>
                         <el-button type="primary" size="small" @click="confirm(item.newsId)">删除帖子</el-button>
                     </el-container>
                 </el-card>
@@ -60,31 +60,27 @@ export default {
         async init() {
             this.getReport()
         },
-        showDetail(id) {
-            const showDetailId = id
-            this.$emit('showDetailId', showDetailId);
-        },
-        async delReport(id) {
+        async delReport(id, reporterId,index) {
             const adminToken = localStorage.getItem('adminToken');
             const delId = id;
             const formData = new FormData()
             formData.append('id', delId);
             try {
-                const response = await axios.delete('/api/admin/forum/report/delete/' + delId, {
+                const response = await axios.delete('/api/admin/news/reports/'+reporterId+'/'+id, {
                     headers: {
                         'Content-Type': 'multipart/form-data',
                         'token': adminToken
                     },
                 });
                 if (response.status == 200) {
-                    ElMessage.success("删除举报成功")
+                    ElMessage.success("取消举报成功")
                     this.reports.splice(index, 1)
                 }
             } catch (e) {
                 console.log(e)
             }
         },
-        async confirm(id, post_id) {
+        async confirm(id) {
             const adminToken = localStorage.getItem('adminToken');
             const delId = id
             try {
@@ -94,7 +90,6 @@ export default {
                         'token': adminToken
                     },
                 });
-                console.log(response)
                 if (response.data.code == 1) {
                     ElMessage({
                         message: '已删除新闻',
