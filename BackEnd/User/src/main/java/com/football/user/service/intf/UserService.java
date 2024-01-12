@@ -52,7 +52,8 @@ public interface UserService {
 
     List<GameSubscription> getGamesByUserId(Long userId);
 
+    List<GameSubscription> getCompletedGamesByUserId(Long userId);
+
     User getCommentUser(Long userId, Long myid);
     void follow(Long fansid,Long followerid);
-
 }

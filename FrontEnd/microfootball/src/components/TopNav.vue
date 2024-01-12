@@ -10,8 +10,6 @@
                         :class="{ 'blue-text': menutextcolor === 2 }">新闻</el-menu-item>
                     <el-menu-item index="2" @click="redirectToForum"
                         :class="{ 'blue-text': menutextcolor === 3 }">论坛</el-menu-item>
-                    <el-menu-item index="3" @click="redirectToIM"
-                        :class="{ 'blue-text': menutextcolor === 4 }">聊天</el-menu-item>
                     <el-menu-item index="4" @click="redirectToGames"
                         :class="{ 'blue-text': menutextcolor === 5 }">赛事</el-menu-item>
                     <el-menu-item index="5" @click="redirectToPlayers"
@@ -98,10 +96,6 @@ const JudgeAccount = async () => {
 
 const redirectToForum = () => {
     router.push('/forum');
-}
-
-const redirectToIM = () => {
-    router.push('/IM');
 }
 
 const redirectToMain = () => {

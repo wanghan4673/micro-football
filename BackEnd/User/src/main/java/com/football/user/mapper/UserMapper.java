@@ -122,6 +122,9 @@ public interface UserMapper {
     @Insert("INSERT INTO gamebooking(userid,gameid,starttime) VALUES (#{userId},#{gameId},#{startTime})")
     boolean insertGameBook(Long userId, Long gameId, String startTime);
 
-    @Select("SELECT * FROM gamebooking WHERE userid = #{userId} AND STR_TO_DATE(starttime, '%Y-%m-%dT%H:%i:%s') BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 2 DAY)")
+    @Select("SELECT * FROM gamebooking WHERE userid = #{userId} AND CONVERT_TZ(STR_TO_DATE(starttime, '%Y-%m-%dT%H:%i:%s'), '+00:00', '+08:00') BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 2 DAY)")
     List<GameSubscription> getGamesByUserId(Long userId);
+
+    @Select("SELECT * FROM gamebooking WHERE userid = #{userId} AND CONVERT_TZ(STR_TO_DATE(starttime, '%Y-%m-%dT%H:%i:%s'), '+00:00', '+08:00')")
+    List<GameSubscription> getCompletedGamesByUserId(Long userId);
 }
