@@ -4,7 +4,7 @@
     </head>
     
     <div class="element">
-        <h1 :v-if='title_show' class = title >{{ title }}</h1>
+        <h1 class = title >{{ title }}</h1>
         <p class = sub-title>{{ text }}</p>
     </div>
 </template>
@@ -61,7 +61,7 @@
         font-weight:bold;
         color: #010c34;
         text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
-        padding-top: 60px;
+        padding-top: 20px;
         opacity: 0;
         transition: opacity 2s;
 

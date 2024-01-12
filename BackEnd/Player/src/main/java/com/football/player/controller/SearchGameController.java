@@ -25,12 +25,18 @@ public class SearchGameController {
     @Autowired
     private UserClient userClient;
 
-    @GetMapping("")
+    @GetMapping()
+    public Result getAllPlayers(@RequestParam(defaultValue = "1",required = false) Integer page,
+                                @RequestParam(defaultValue = "10",required = false) Integer size,
+                                @RequestParam(defaultValue = "全部赛事",required = false) String league
+    ) {
+        return Result.success(gameServiceImpl.getAllGames(page,size,league));
+    }
+    @GetMapping("/info")
     public Result getGamesByKeywordAndLeague(@RequestParam("date") String date,
                                                @RequestParam("leagueName") String leagueName){
         List<?> response= gameServiceImpl.getGamesByDateAndLeague(date,leagueName);
         return Result.success(response);
-
     }
 
     @GetMapping("/detail")

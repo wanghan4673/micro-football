@@ -1,16 +1,17 @@
 package com.football.player.service.impl;
 
-import com.alibaba.nacos.client.constant.Constants;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.football.player.Api.SearchGameApi;
-import com.football.player.Api.SearchPlayerApi;
+import com.football.player.mapper.GameMapper;
 import com.football.player.model.GameDetailInfo;
+import com.football.player.model.GameList;
 import com.football.player.model.GameSimpleInfo;
+import com.football.player.model.PlayerList;
 import com.football.player.service.intf.GameService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.lang.module.Configuration;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -18,6 +19,8 @@ import java.util.*;
 @Service
 public class GameServiceImpl implements GameService {
 
+    @Autowired
+    GameMapper gameMapper;
     private HashMap<String,Integer> gameTypeMap=new HashMap<>(){
         {
             put("英超", 39);
@@ -115,6 +118,15 @@ public class GameServiceImpl implements GameService {
             "}";
 
     @Override
+    public GameList getAllGames(Integer page, Integer size, String league){
+        Integer offset = (page - 1) * size;
+        GameList gameList = new GameList();
+        gameList.setCount(gameMapper.count(league));
+        gameList.setGameSimpleInfos(gameMapper.selectGames(offset, size,league));
+        return gameList;
+    }
+
+    @Override
     public List<GameSimpleInfo> getGamesByDateAndLeague(String date,String leagueName) {
 
         Integer leagueId=this.gameTypeMap.get(leagueName);
@@ -165,6 +177,7 @@ public class GameServiceImpl implements GameService {
                     gameInfo.setHomeGoal((Integer) goals.get("home"));
                     gameInfo.setAwayGoal((Integer) goals.get("away"));
 
+                    gameMapper.updateGame(gameInfo,leagueName);
                     games.add(gameInfo);
                 }
             } catch (Exception e) {

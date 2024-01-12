@@ -7,7 +7,6 @@ spring:
     nacos:
       discovery:
         server-addr: 110.40.206.206:8848  # nacos端口
-        namespace: e2686c2c-46ce-48e7-819f-4b335ebe9dda
     gateway:
       routes:
         - id: user-service
@@ -60,8 +59,7 @@ jwt:
       - /admin/login/getCode # 管理员获取验证码
       - /admin/login/checkCode  # 校验验证码
       - /player/**
-      - /game
-      - /game/detail
+      - /game/**
       - /team/**
       - /news/**
     bothPaths:  # 登录和未登录都需要校验的请求路径
