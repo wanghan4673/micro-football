@@ -251,6 +251,15 @@ public class UserController {
         return Result.success(upcomingGames);
     }
 
+    @GetMapping("/completed-games")
+    public Result getCompletedGames(){
+        // 获取已经结束的关注比赛
+        Long userId = UserContext.getUser();
+        log.info("----------获取已经结束的关注比赛:{}----------", userId);
+        List<GameSubscription> completedGames = userService.getCompletedGamesByUserId(userId);
+        return Result.success(completedGames);
+    }
+
     /* DELETE */
     @DeleteMapping("/follow/{deleteId}")
     public Result deleteFollow(@PathVariable Long deleteId) {

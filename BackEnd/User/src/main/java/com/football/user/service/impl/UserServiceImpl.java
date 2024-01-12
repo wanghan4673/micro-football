@@ -151,6 +151,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<GameSubscription> getCompletedGamesByUserId(Long userId) {
+        return userMapper.getCompletedGamesByUserId(userId);
+    }
+
+    @Override
     public boolean updateBanStatus(Long id) {
         return userMapper.updateBanStatus(id);
     }

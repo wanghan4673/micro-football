@@ -28,7 +28,7 @@
             <el-button class="report-button" @click="judgeReportNews()">举报</el-button>
         </div>
         <el-dialog title="填写举报理由" v-model="reportVisible" class="report-dialog-box">
-            <el-input v-model="reportContent" placeholder="请输入举报理由" />
+            <el-input style="margin-bottom: 2vh;" v-model="reportContent" placeholder="请输入举报理由" />
             <div slot="footer" class="dialog-footer">
                 <el-button @click="reportVisible = false">取消</el-button>
                 <el-button type="primary" @click="reportNews()">提交</el-button>

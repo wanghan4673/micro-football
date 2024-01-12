@@ -350,7 +350,9 @@ body {
 .change-videonews-button {
     color: blue;
     z-index: 99;
-
+    justify-self: end;
+    width: 5vw;
+    height: 60%;
     &:hover {
         color: red;
         cursor: pointer;
