@@ -221,7 +221,6 @@ public class GameServiceImpl implements GameService {
             // 比较时间
             // 当前时间已经超过gameDetailInfo.getDate()所表示的时间
             if (!(now.isAfter(gameDateTime) && gameDetailInfo.getStatus().equals("Not Started"))) {
-
                 return gameDetailInfo;
             }
         }

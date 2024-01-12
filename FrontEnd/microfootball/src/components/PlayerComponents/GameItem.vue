@@ -1,5 +1,5 @@
 <template>
-    <el-card shadow="hover" style="width: 700px; border-radius: 15px;background-color: #ffab7729 ">
+    <el-card shadow="hover" style="width: 600px; border-radius: 15px;background-color: #ffab7729 ">
         <div id="playercard">
             <div style="width: 100%; display: flex;flex-direction: column;">
                 <p style=" font-size: x-large; font-weight: bold; color: #043c8aa6;">{{ year }}-{{ month }}-{{ day }}&nbsp&nbsp{{ hour }}:{{ minute }}:{{ second }}</p>

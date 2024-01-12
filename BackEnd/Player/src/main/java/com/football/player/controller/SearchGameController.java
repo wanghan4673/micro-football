@@ -41,7 +41,18 @@ public class SearchGameController {
 
     @GetMapping("/detail")
     public Result getGameDetail(@RequestParam("id") int id){
+        // 记录开始时间
+        long startTime = System.currentTimeMillis();
         GameDetailInfo response= gameServiceImpl.getGameDetailById(id);
+        // 记录结束时间
+        long endTime = System.currentTimeMillis();
+
+        // 计算运行时间
+        long duration = endTime - startTime;
+
+        // 输出运行时间
+        System.out.println("Method execution time: " + duration + " milliseconds");
+
         return Result.success(response);
     }
 
@@ -49,6 +60,9 @@ public class SearchGameController {
     public Result subscribeGame(@RequestParam("gameId") Long gameId,
                                 @RequestParam("startTime") String startTime){
         Long userId = UserContext.getUser();
+        System.out.println(gameId);
+        System.out.println(userId);
+        System.out.println(startTime);
         boolean result = userClient.subscribeGame(userId,gameId,startTime);
         if(result){
             return Result.success();

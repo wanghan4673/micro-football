@@ -40,10 +40,8 @@ public class SearchTeamController {
     }
 
     @GetMapping("/detail")
-    public Result getTeamsByKeyword(@RequestParam("teamId") Integer teamId) throws IOException {
+    public Result getTeamsById(@RequestParam("teamId") Integer teamId) throws IOException {
         TeamDetailInfo response= teamServiceImpl.getTeamDetailById(teamId);
         return Result.success(response);
     }
-
-
 }
