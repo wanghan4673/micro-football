@@ -3,13 +3,14 @@
         <el-container style="margin-left: 5vw;width: 55vw;margin-top: 4vh;" class="set-vertical">
             <el-card style="height: 75vh;">
                 <h3>论坛帖子列表</h3>
-                <el-scrollbar height="68vh">
-                    <el-card v-for="(item,index) in allPost" :key="index" style="margin-top: 2vh;" @click="getDetailId(item.id)">
+                <el-scrollbar style="height: 62vh;">
+                    <el-card v-for="(item,index) in showPost" :key="index" style="margin-top: 2vh;" @click="getDetailId(item.id)">
                         <h3>{{ item.title }}</h3>
                         <el-text line-clamp="4" style="margin-top: 1vh;">{{ convertHtmlToText(item.content) }}</el-text>
                         <el-container>{{ item.time }}</el-container>
                     </el-card>
                 </el-scrollbar>
+                <el-pagination @current-change="handleCurrentChange" layout="prev, pager, next" :total="postCount/5" />
             </el-card>
         </el-container>
         <el-container class="set-vertical" style="margin-right: 5vw;width: 30vw;margin-left: 5vw;margin-top: 4vh;">
@@ -43,11 +44,20 @@ export default {
             allPost:[],
             showDetailId:'',
             reportedPost:{},
+            postCount:0,
+            showPost:[],
         }
     },
     methods: {
         async init(){
             this.getAllPost()
+        },
+        handleCurrentChange(page) {
+            // 计算起始位置，每页显示10条帖子
+            const startIndex = (page - 1) * 10;
+
+            // 根据起始位置获取对应的10条帖子数据
+            this.showPost = this.allPost.slice(startIndex, startIndex + 5);
         },
         async getAllPost(){
             const adminToken = localStorage.getItem('adminToken');
@@ -59,7 +69,9 @@ export default {
                     },
                 });
                 if (response.status == 200) {
-                    this.allPost = response.data.data;
+                    this.allPost = response.data.data
+                    this.postCount=this.allPost.length
+                    this.showPost = this.allPost.slice(0, 5);
                 }
             } catch (e) {
                 console.log(e)
