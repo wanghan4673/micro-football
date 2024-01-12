@@ -1,5 +1,4 @@
 <template>
-    <BackWave />
     <div class="top-news-container">
         <div class="text-news-container" @scroll="textScroll">
             <div v-for="news, index in textNews" :key="news.id" class="text-news-card" @click="toNewsDetail(news.id)">
@@ -13,14 +12,14 @@
             </div>
         </div>
         <div class="video-news-container">
+            <div class="change-videonews-button" @click="changeVideoNews()">
+                →换一批
+            </div>
             <div v-for="news, index in videoNews" :key="news.id" class="video-news-card">
-                <div v-if="index == 0" class="change-videonews-button" @click="changeVideoNews()">
-                    →换一批
-                </div>
-                <img :src="news.cover" alt="News Video" @click="toExternalWeb(news.videoUrl)"> <!-- todo:数据库增加cover 数据库判断两个条件 -->
+                <img style="border-radius: 1vw;margin-right: 1vw;" :src="news.cover" alt="News Video"
+                    @click="toExternalWeb(news.videoUrl)">
                 <div class="video-news-detail" @click="toExternalWeb(news.videoUrl)">
                     <div class="video-news-title">{{ news.title }}</div>
-                    <div class="video-news-content">{{ news.content }}</div>
                 </div>
             </div>
         </div>
@@ -28,7 +27,7 @@
     <div class="bottom-news-container">
         <div class="pic-news-container">
             <div v-for="news, index in picNews" :key="news.id" class="pic-news-card" @click="toNewsDetail(news.id)">
-                <img :src="news.picUrl" alt="News Image">
+                <img style="border-radius: 1vw;margin-right: 1vw;" :src="news.picUrl" alt="News Image">
                 <div class="pic-news-detail">
                     <div class="pic-news-title">{{ news.title }}</div>
                     <div class="pic-news-content">{{ news.content }}</div>
@@ -75,7 +74,7 @@ const getTextNews = async (currentPage: number, pageSize: number) => {
             textNews.value = [...textNews.value, ...response.data.data.map((item: { id: number; title: string; content: string; tags: string }) => ({
                 id: item.id,
                 title: item.title,
-                content: item.content,
+                content: item.content.replace(/\\n/g, '\n'),
                 tags: item.tags ? item.tags.split(',').slice(0, 3) : [],  // 返回的是一个字符串 将其按逗号分隔为一个字符串数组
             }))]
         } else {
@@ -100,10 +99,11 @@ const getVideoNews = async () => {
             },
         })
         if (response.data.code == 1) {
-            videoNews.value = response.data.data.map((item: { id: number; title: string; content: string; videoUrls: string; cover:string }) => ({
+            console.log(response.data.data)
+            videoNews.value = response.data.data.map((item: { id: number; title: string; content: string; videoUrls: string; cover: string }) => ({
                 id: item.id,
                 title: item.title,
-                content: item.content,
+                content: item.content.replace(/\\n/g, '\n'),
                 videoUrl: item.videoUrls.split(',')[0],
                 cover: item.cover,
             }))
@@ -133,7 +133,7 @@ const getPicNews = async () => {
             picNews.value = response.data.data.map((item: { id: number; title: string; content: string; picUrls: string }) => ({
                 id: item.id,
                 title: item.title,
-                content: item.content,
+                content: item.content.replace(/\\n/g, '\n'),
                 picUrl: item.picUrls.split(',')[0]
             }))
         } else {
@@ -190,22 +190,26 @@ const toNewsDetail = (id: number) => {
 }
 
 const toExternalWeb = (videoUrl: string) => {
-  window.open(videoUrl, '_blank');
+    window.open(videoUrl, '_blank');
 }
 </script>
 
 <style lang="scss" scoped>
-html, body {
+@import '../../assets/font/font.css';
+html,
+body {
     overflow: hidden;
 }
-::-webkit-scrollbar{
-  display:none;
+
+::-webkit-scrollbar {
+    display: none;
 }
+
 .top-news-container {
     display: grid;
     grid-template-columns: 3fr 1fr;
     height: 70vh;
-
+    gap: 2vw;
     .text-news-container {
         height: 70vh;
         background-color: rgba(247, 247, 248, 0.5);
@@ -221,7 +225,7 @@ html, body {
 
     .video-news-container {
         display: grid;
-        grid-template-rows: repeat(3, 1fr);
+        grid-template-rows: 1fr repeat(3, 3fr);
     }
 }
 
@@ -233,7 +237,8 @@ html, body {
     cursor: pointer;
 
     .text-news-title {
-        font-size: 1.2vw;
+        font-family: title;
+        font-size: 1.4vw;
         align-self: center;
         margin-top: 0.5vh;
         margin-bottom: 1vh;
@@ -244,8 +249,9 @@ html, body {
     }
 
     .text-news-content {
-        align-self: center;
-        width: 95%;
+        font-family: words;
+        margin-right: 15%;
+        margin-left: 2%;
         font-size: 1vw;
         display: -webkit-box;
         -webkit-line-clamp: 2;
@@ -257,16 +263,17 @@ html, body {
         font-size: 0.8vw;
         align-self: end;
         margin-top: auto;
-        margin-right: 2vw;
+        margin-right: 1vw;
     }
 }
 
 .bottom-news-container {
-    background-color: rgba(229, 229, 248, 0.5);
-    height: 22vh;
+    height: 20vh;
+    margin-top: 2vh;
+
     .pic-news-container {
         height: 100%;
-        width: 80%;
+        width: 90%;
         margin: 0 auto;
         display: grid;
         grid-template-columns: repeat(3, 1fr);
@@ -289,19 +296,27 @@ html, body {
     @extend .pic-news-card;
 
     .video-news-detail {
-        display: grid;
-        grid-template-rows: 1fr 2fr;
+        display: flex;
+        .video-news-title {
+            margin-right: 0.5vw;
+            font-size: 1.3vw;
+            overflow: hidden;
+        }
     }
 }
 
-.video-news-card img,
 .pic-news-card img {
-    height: 22vh;
-    width: auto;
+    height: 20vh;
+    min-width: 13vw;
+    max-width: 13vw;
 }
 
-.video-news-title,
+.video-news-card img {
+    max-height: 17vh;
+}
+
 .pic-news-title {
+    font-family: title;
     font-size: 1.5vw;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -309,22 +324,22 @@ html, body {
     display: block;
 }
 
-.video-news-content,
 .pic-news-content {
-    font-size: 2vh;
+    font-size: 1.2vw;
     display: -webkit-box;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 5;
+    -webkit-line-clamp: 4;
     overflow: hidden;
     max-height: 13vh;
 }
 
-.change-picnews-button{
+.change-picnews-button {
     color: blue;
-    position:absolute;
+    position: absolute;
     right: 3vw;
     bottom: 20vh;
     transition: transform 0.3s ease;
+
     &:hover {
         color: red;
         transform: scale(1.1);
@@ -332,16 +347,12 @@ html, body {
     }
 }
 
-.change-videonews-button{
+.change-videonews-button {
     color: blue;
-    position:absolute;
-    right: 3vw;
-    top: 10vh;
     z-index: 99;
-    transition: transform 0.3s ease;
+
     &:hover {
         color: red;
-        transform: scale(1.1);
         cursor: pointer;
     }
 }
