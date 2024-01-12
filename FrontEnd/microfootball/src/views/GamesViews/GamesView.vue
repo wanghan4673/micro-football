@@ -1,6 +1,6 @@
 <template>
     <div style="padding-bottom:50px">
-        <TitleElement :mainTitle="titleText" :subTitle="subTitleText" style="padding:25px" />
+        <!-- <TitleElement :mainTitle="titleText" :subTitle="subTitleText" style="padding:25px" /> -->
         <div style="display: flex;">
             <PlayerSideNave />
             <div style="display: flex;flex-direction:column;width: 100%; padding: 20px;">
@@ -28,7 +28,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted,watch } from 'vue'
 import TitleElement from '@/components/TitleElement.vue'
 import SearchBox from '@/components/SearchBox.vue'
 import ImageButton from '@/components/ImageButton.vue'
@@ -37,19 +37,11 @@ import { ElMessage } from 'element-plus'
 import GameItem from '@/components/PlayerComponents/GameItem.vue'
 import PlayerSideNave from '@/components/PlayerComponents/PlayerSideNav.vue'
 import { useGeneralStore } from '../../stores/general.ts'
-import {useRouter } from 'vue-router'
+import { useRouter } from 'vue-router'
 
 const router = useRouter()
 const store = useGeneralStore()
-const searchLeagueSet = new Set()
-const setLeagueSearch = League => {
-    searchLeagueSet.add(League)
-    console.log(searchLeagueSet)
-}
-const removeLeagueSearch = League => {
-    searchLeagueSet.delete(League)
-    console.log(searchLeagueSet)
-}
+const searchLeagueSet = ref([])
 
 const dateRange = ref();
 const BaseUrl = '/api/game'
@@ -82,28 +74,31 @@ const handleCurrentChange = async (newPage) => {
     getgame()
 }
 
+watch(() => store.leagueChoice, (newleague) => {
+    getgame()
+})
+
 onMounted(() => {
     store.leagueChoice = '全部赛事'
-    let game = { "id": 1037664, "date": "2023-08-13T10:40:00+00:00", "status": "Match Finished", "venueName": "Polsat Plus Arena Gdańsk", "venueCity": "Gdańsk", "homeTeamId": 343, "homeTeamName": "Lechia Gdansk", "homeTeamLogo": "https://media-4.api-sports.io/football/teams/343.png", "awayTeamId": 6964, "awayTeamName": "Znicz Pruszków", "awayTeamLogo": "https://media-4.api-sports.io/football/teams/6964.png", "homeGoal": 1, "awayGoal": 0 }
-    gameList.value.push(game)
-    gameList.value.push(game)
-    gameList.value.push(game)
-    gameList.value.push(game)
-    // const res = {"code":1,"msg":"success","data":{"id":1037664,"date":"2023-08-13T10:40:00+00:00",
-    //"status":"Match Finished","venueName":"Polsat Plus Arena Gdańsk","venueCity":"Gdańsk","homeTeamId":343,
-    //"homeTeamName":"Lechia Gdansk","homeTeamLogo":"https://media-4.api-sports.io/football/teams/343.png","awayTeamId":6964,
-    //"awayTeamName":"Znicz Pruszków","awayTeamLogo":"https://media-4.api-sports.io/football/teams/6964.png",
-    //"homeGoal":1,"awayGoal":0,"leagueName":"I Liga",
-    //"leagueLogo":"https://media-4.api-sports.io/football/leagues/107.png","round":"Regular Season - 4"}}
-
-    // getgame()
+    getgame()
 })
 
 
 const search = async () => {
     gameList.value = []
     isSearch.value = false
-    if (searchLeagueSet.size == 0) {
+    searchLeagueSet.value = []
+    if (store.leagueChoice === '全部赛事') {
+        searchLeagueSet.value.push('英超')
+        searchLeagueSet.value.push('西甲')
+        searchLeagueSet.value.push('意甲')
+        searchLeagueSet.value.push('德甲')
+        searchLeagueSet.value.push('法甲')
+        searchLeagueSet.value.push('中超')
+    }else{
+        searchLeagueSet.value.push(store.leagueChoice)
+    }
+    if (searchLeagueSet.value.size == 0) {
         ElMessage({
             message: "请选择联赛",
             type: "error"
@@ -136,8 +131,9 @@ const search = async () => {
     }
     let dateStr = `${yearStr}-${monthStr}-${dayStr}`
     console.log(dateStr)
-    for (const league of searchLeagueSet) {
+    for (const league of searchLeagueSet.value) {
         try {
+            console.log(league)
             const response = await axios.get(`${BaseUrl}/info?date=${dateStr}&leagueName=${league}`)//,formData)
             console.log(response);
             gameList.value.push(...response.data.data);

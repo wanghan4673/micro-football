@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
@@ -130,7 +132,10 @@ public class GameServiceImpl implements GameService {
     public List<GameSimpleInfo> getGamesByDateAndLeague(String date,String leagueName) {
 
         Integer leagueId=this.gameTypeMap.get(leagueName);
-        if(leagueId==null) return null;
+        if(leagueId==null) {
+            System.out.println("leagueId==null");
+            return null;
+        }
         Integer season=getSeasonYear(date);
         // 调用API获取赛事数据
         ResponseEntity<?> responseEntity =searchGameApi.getGamesByDate(date,leagueId,season);
@@ -144,7 +149,12 @@ public class GameServiceImpl implements GameService {
 //                Map<String, Object> responseBody = new ObjectMapper().readValue(test, Map.class);
                 List<Map<String, Object>> gamesData = (List<Map<String, Object>>) responseBody.get("response");
 
-
+                System.out.println("=================== responseBody ===================");
+                System.out.println(responseBody);
+                System.out.println("=================== responseBody ===================");
+                System.out.println("=================== gamesData ===================");
+                System.out.println(gamesData);
+                System.out.println("=================== gamesData ===================");
                 for (Map<String, Object> gameData : gamesData) {
 
                     Map<String, Object> fixture = (Map<String, Object>) gameData.get("fixture");
@@ -181,7 +191,7 @@ public class GameServiceImpl implements GameService {
                     games.add(gameInfo);
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                System.out.println(e.toString());
                 return null;
             }
         }
@@ -198,14 +208,31 @@ public class GameServiceImpl implements GameService {
         // 调用API获取赛事数据，这里应该有一个实际的URL和可能的查询参数
         ResponseEntity<?> responseEntity =searchGameApi.getGameDetailById(id);
 
-
         GameDetailInfo gameDetailInfo = new GameDetailInfo();
+        System.out.println("=================== 先查询数据库 ===================");
+        gameDetailInfo = gameMapper.getgameDetail(id);
+        // 假设gameDetailInfo.getDate()返回的字符串是这样的
+        if(gameDetailInfo != null ) {
+            String dateString = gameDetailInfo.getDate();
+            // 解析字符串为ZonedDateTime对象
+            ZonedDateTime gameDateTime = ZonedDateTime.parse(dateString, DateTimeFormatter.ISO_DATE_TIME);
+            // 获取当前时间（转换为相同的时区）
+            ZonedDateTime now = ZonedDateTime.now(gameDateTime.getZone());
+            // 比较时间
+            // 当前时间已经超过gameDetailInfo.getDate()所表示的时间
+            if (!(now.isAfter(gameDateTime) && gameDetailInfo.getStatus().equals("Not Started"))) {
 
+                return gameDetailInfo;
+            }
+        }
+        System.out.println("=================== 查询外部接口 ===================");
         if (responseEntity.getStatusCode().is2xxSuccessful() && responseEntity.getBody() != null) {
             try {
                 Map<String, Object> responseBody = new ObjectMapper().readValue(responseEntity.getBody().toString(), Map.class);
 //                Map<String, Object> responseBody = new ObjectMapper().readValue(test, Map.class);
                 List<Map<String, Object>> gamesData = (List<Map<String, Object>>) responseBody.get("response");
+
+                System.out.println(responseBody);
 
                 for (Map<String, Object> gameData : gamesData) {
                     Map<String, Object> fixture = (Map<String, Object>) gameData.get("fixture");
@@ -243,6 +270,7 @@ public class GameServiceImpl implements GameService {
                     gameDetailInfo.setHomeGoal((Integer) goals.get("home"));
                     gameDetailInfo.setAwayGoal((Integer) goals.get("away"));
 
+                    gameMapper.updateGameDetail(gameDetailInfo);
                 }
             } catch (Exception e) {
                 e.printStackTrace();

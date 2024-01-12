@@ -4,14 +4,14 @@
             <div style="width: 100%; display: flex;flex-direction: column;">
                 <p style=" font-size: x-large; font-weight: bold; color: #043c8aa6;">{{ year }}-{{ month }}-{{ day }}&nbsp&nbsp{{ hour }}:{{ minute }}:{{ second }}</p>
                 <div style="display: flex;justify-content: space-between;padding: 30px;">
-                    <div>
+                    <div style="width: 30%;">
                         <div><img :src="game.homeTeamLogo"/></div>
                         <div class="teamText">{{ game.homeTeamName }}</div>
                     </div>
-                    <div style="display: flex;justify-content: center; align-items: center; font-size: xxx-large; font-weight: bolder;">
+                    <div style="width: 40%; display: flex;justify-content: center; align-items: center; font-size: xxx-large; font-weight: bolder;">
                         <p>{{ game.homeGoal }} : {{ game.awayGoal }}</p>
                     </div>
-                    <div>
+                    <div style="width: 30%;">
                         <div><img :src="game.awayTeamLogo"/></div>
                         <div class="teamText">{{ game.awayTeamName }}</div>
                     </div>
@@ -77,7 +77,7 @@ function convertToBeijingTime(isoString) {
     // flex-direction: column;  // 垂直排列
     justify-content: center;
     align-items: center;
-    text-align: start;  // 文字居中
+    text-align: center;  // 文字居中
 
     p {
         word-wrap: break-word;  // 允许文本换行
