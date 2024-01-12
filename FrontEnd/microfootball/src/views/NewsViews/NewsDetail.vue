@@ -14,8 +14,7 @@
                 </div>
             </div>
             <div class="news-content-box">
-                <div class="content-text-box">
-                    {{ newsDetail.content }}
+                <div v-html="newsDetail.content" class="content-text-box">
                 </div>
                 <div class="content-pic-box">
                     <div v-for="(pic, index) in newsDetail.picUrls" :key="index" style="margin-bottom: 4vh;">
@@ -78,7 +77,7 @@ const getNewsDetail = async (id: any) => {
             newsDetail.value = {
                 id,
                 title: data.title,
-                content: data.content,
+                content: data.content.replace(/\\n/g, '<br>'),
                 createTime: data.createTime,
                 tags: data.tags ? data.tags.split(',') : [],
                 picUrls: data.picUrl ? data.picUrl.split(',') : [],
@@ -223,7 +222,7 @@ const scrollToTop = () => {
         display: flex;
         align-items: center;
         justify-content: center;
-        height: 10vh;
+        height: 15vh;
         font-size: 5vh;
     }
 
