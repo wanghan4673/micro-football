@@ -73,11 +73,6 @@ const routes = [
     component: () => import('../views/TeamViews/TeamInfo.vue')
   },
   {
-    path: '/IM',
-    name: 'IM',
-    component: () => import('../views/IMViews/IMView.vue')
-  },
-  {
     path: '/forum/post',
     name: '/forum/post',
     component: () => import('../views/ForumViews/ForumPost.vue')
