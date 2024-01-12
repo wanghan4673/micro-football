@@ -142,6 +142,7 @@ const reportNews = async () => {
     } catch (error) {
         showError('举报请求发送失败')
     }
+    reportVisible.value = false
 }
 
 const getName = async () => {
