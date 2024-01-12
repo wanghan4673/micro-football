@@ -4,26 +4,16 @@
             <el-scrollbar style="height: 78vh;">
                 <el-card v-for="(item,index) in news" :key="index" style="margin-top: 1vh;border-radius: 15px;">
                     <h3>{{item.title}}</h3>
-                    <el-container>{{ item.content }}</el-container>
+                    <div v-html="item.content"></div>
                     <h4><el-icon style="margin-top: 1vh;margin-right: 1vw;"><Clock /></el-icon>{{ item.createTime }}</h4>
                     <el-button type="primary" size="small" style="margin-top: 1vh;" @click="delNews(item.id,index)">删除新闻</el-button>
                 </el-card>
             </el-scrollbar>
         </el-card>
-        <el-container class="set-vertical" style="margin-right: 5vw;width: 30vw;margin-left: 5vw;margin-top: 4vh;">
-            <el-card style="height: 35vh;">
-                <!-- <el-scrollbar style="height: 30vh;">
-                    <h4>帖子详情</h4>
-                    <h3 style="margin-top: 1vh;">{{ reportedPost.title }}</h3>
-                    <el-container><span v-html="reportedPost.content"></span></el-container>
-                    <el-container>{{ reportedPost.time }}</el-container>
-                </el-scrollbar> -->
-            </el-card>
-            <el-card style="margin-top: 2vh;height: 38vh;">
-                <h4>待处理举报</h4>
-                <reported-news-vue @showDetailId="getDetailId" style="height: 33vh;margin-top: 2vh;"></reported-news-vue>
-            </el-card>
-        </el-container>
+        <el-card class="set-vertical" style="margin-right: 5vw;width: 30vw;margin-left: 5vw;margin-top: 4vh;">
+            <h4>待处理举报</h4>
+            <reported-news-vue style="height: 60vh;"></reported-news-vue>
+        </el-card>
     </el-container>
 </template>
 
@@ -38,7 +28,6 @@ export default {
     data() {
         return {
             news:[],
-            showDetailId: '',
         }
     },
     methods: {
@@ -64,7 +53,6 @@ export default {
                         'token': adminToken
                     },
                 });
-                console.log(response)
                 if (response.data.code == 1) {
                     ElMessage({
                         message: '已删除新闻',
@@ -87,31 +75,13 @@ export default {
                 });
                 this.news=response.data.data
                 for (let i = 0; i < this.news.length; i++) {
+                    this.news[i].content=this.news[i].content.slice(0,60)
                     this.news[i].createTime = this.changeTime(this.news[i].createTime)
                 }
-                console.log(this.news)
             } catch (e) {
                 
             }
         },
-        async getDetailId(value) {
-            this.showDetailId = value
-            const adminToken = localStorage.getItem('adminToken');
-            try {
-                const response = await axios.get('/api/admin/forum/post/' + this.showDetailId, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data',
-                        'token': adminToken
-                    },
-                });
-                console.log(response)
-                if (response.status == 200) {
-                    this.reportedPost = response.data.data;
-                }
-            } catch (e) {
-                console.log(e)
-            }
-        }
     },
     created(){
         this.getNews();
