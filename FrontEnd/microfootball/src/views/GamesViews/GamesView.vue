@@ -50,11 +50,11 @@ const subTitleText = ref('不容错过的联赛赛事一览')
 const searchDefaultText = ref('搜索联赛信息')
 const gameList = ref([])
 const isSearch = ref(false)
-let totalElements = ref(0)
+let totalElements = ref(1)
 let page = ref(1)
 const pageSize = 20
 const getgame = async () => {
-    totalElements = 0
+    // totalElements = 1
     gameList.value = []
     try {
         const response = await axios.get(`${BaseUrl}?page=${page.value}&size=${pageSize}&league=${store.leagueChoice}`)

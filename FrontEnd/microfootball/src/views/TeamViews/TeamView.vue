@@ -32,11 +32,11 @@ const teamList = ref([]);
 const isSearch = ref(false);
 const router = useRouter()
 
-let totalElements = ref(0)
+let totalElements = ref(1)
 let page = ref(1)
 const pageSize = 20
 const getteam = async () => {
-    totalElements = 0
+    // totalElements = 1
     teamList.value = []
     try {
         const response = await axios.get(`${BaseUrl}?page=${page.value}&size=${pageSize}`)
