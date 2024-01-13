@@ -54,6 +54,7 @@ let totalElements = ref(0)
 let page = ref(1)
 const pageSize = 20
 const getgame = async () => {
+    totalElements = 0
     gameList.value = []
     try {
         const response = await axios.get(`${BaseUrl}?page=${page.value}&size=${pageSize}&league=${store.leagueChoice}`)
