@@ -16,7 +16,7 @@
                     <p>举报人：{{ item.reporterName }}</p>
                     <el-container style="margin-top: 1vh;">
                         <el-button type="primary" size="small" @click="delReport(item.id,index)">取消举报</el-button>
-                        <el-button type="primary" size="small" @click="confirm(item.id ,item.postId)">删除帖子</el-button>
+                        <el-button type="primary" size="small" @click="confirm(item.id ,item.postId)">删除新闻</el-button>
                     </el-container>
                 </el-card>
             </el-timeline-item>
